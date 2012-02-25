@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+
+	<!-- Set the viewport width to device width for mobile -->
+	<meta name="viewport" content="width=device-width" />
+
+	<title>Welcome to Foundation</title>
+  
+	<!-- Included CSS Files -->
+	<link rel="stylesheet" href="stylesheets/foundation.css">
+	<link rel="stylesheet" href="stylesheets/app.css">
+
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" href="stylesheets/ie.css">
+	<![endif]-->
+
+
+	<!-- IE Fix for HTML5 Tags -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+	<!-- container -->
+	<div class="container">
+		
+		<div class="row" style="margin-top:100px">
+			<div class="twelve columns">
+				<div class="six columns">
+					<h2><img src="images/quizzically-logo.png" style=" vertical-align:-40px;"></h2>
+					<div class="row">
+		<h2>Think you've got what it takes?</h2>
+			<p style="font-size:16px;">Test your brain against hours of user-made quizzes with quizzically.</p>
+			<!-- Change Login Button link -->
+			<p style="padding-top:20px"><a href="./LoginServlet" class="nice radius blue large button" >Login</a></p>
+				<!-- Change Signup link -->
+					<p ><a href="SignupServlet" style="font-size:16px">Sign up for a quiz.</a></p>
+			
+		</div>
+				</div>
+				
+				<div class="six columns">
+					<div>
+						<!-- Change Image link -->
+						<img src="images/quizzically-image.jpg"/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+	
+			
+		<div class="row" style="padding-top:30px;">
+			<hr/>
+			<h3>Current Quizzes</h3>
+			<div class="twelve columns show-panel">
+				<!-- Grid Example -->
+				<div class="row">
+					<div class="four columns show-panel">
+					
+						<!--
+						
+						Make sure the images you plop into these panel containers are 128 x 128 otherwise
+						you get irregularly sized panels
+						
+						
+						-->
+						<div id="around-the-world" class="panel hover-highlight">
+							<h4>Around the World</h4>
+							<br/>
+							<!-- <div><img src="http://files.softicons.com/download/object-icons/earth-icons-by-bjorn-lindberg/png/128/earth%20simple.png" width="100px" height="100px" /></div>-->
+							<div class="description">This is a description of the quiz. Come test your mental prowess in naming capitals of countries,
+							states, and random facts about the globe! </div>
+							<div><p><a href="#" class="nice medium radius blue button">Sign up to take</a></p></div>
+							<ul class='star-rating-fixed two-stars'>
+							</ul>
+						</div>
+					</div>
+					
+					<!-- Make sure for ratings to always give li children class="... star-child ..."
+						and then make sure that the first parent of this star-child with an ID is the 
+						quiz titie.
+						Here, the top container should contain the title of the quiz -->
+					<div id="calendar-arithmetic" class="four columns show-panel">
+						<div class="panel hover-highlight">
+							<h4>Calendar Arithmetic</h4>
+							<br/>
+							<!--<div><img src="http://icons.iconarchive.com/icons/walrick/openphone/128/Calendar-icon.png"  width="100px" height="100px" /></div>-->
+							<div class="description">You're good at managing your calendar, but can you do algebra with it? </div>
+							<div><p><a href="#" class="nice medium radius blue button">Sign up to take</a></p></div>
+							<ul class='star-rating'>
+							  <li><a href='#' title='Rate this 1 star out of 5' class='one-star star-child'>1</a></li>
+							  <li><a href='#' title='Rate this 2 stars out of 5' class='two-stars star-child'>2</a></li>
+							  <li><a href='#' title='Rate this 3 stars out of 5'  class='three-stars star-child'>3</a></li>
+							  <li><a href='#' title='Rate this 4 stars out of 5' class='four-stars star-child'>4</a></li>
+							  <li><a href='#' title='Rate this 5 stars out of 5' class='five-stars star-child'>5</a></li>
+							</ul>
+						</div>
+					</div>
+					
+					
+					<div id="books-aholic"  class="four columns show-panel">
+						<div class="panel hover-highlight">
+							<h4>BookWorms Challenge</h4>
+							<br/>
+							<!-- <div><img src="http://pmzilla.com/files/images/bookcase.png" width="100px" height="100px" /></div>-->
+							<div class="description">How much famous literature have you read up on lately? We explore
+										the latest and greatest.</div>
+							<div><p><a href="#" class="nice medium radius blue button">Sign up to take</a></p></div>
+							<ul class='star-rating'>
+							  <li><a href='#' title='Rate this 1 star out of 5' class='one-star star-child' >1</a></li>
+							  <li><a href='#' title='Rate this 2 stars out of 5' class='two-stars star-child'>2</a></li>
+							  <li><a href='#' title='Rate this 3 stars out of 5' class='three-stars star-child'>3</a></li>
+							  <li><a href='#' title='Rate this 4 stars out of 5' class='four-stars star-child'>4</a></li>
+							  <li><a href='#' title='Rate this 5 stars out of 5' class='five-stars star-child'>5</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<!-- SIX COLUMN 
+				<div class="row">
+					<div class="six columns">
+						<div class="panel">
+							<p>Six columns</p>
+						</div>
+					</div>
+					<div class="six columns">
+						<div class="panel">
+							<p>Six columns</p>
+						</div>
+					</div>
+				</div>
+		-->
+
+		<!--TABS
+				<h3>Tabs</h3>
+				<dl class="tabs">
+					<dd><a href="#simple1" class="active">Simple Tab 1</a></dd>
+					<dd><a href="#simple2">Simple Tab 2</a></dd>
+					<dd><a href="#simple3">Simple Tab 3</a></dd>
+				</dl>
+
+				<ul class="tabs-content">
+					<li class="active" id="simple1Tab">This is simple tab 1's content. Pretty neat, huh?</li>
+					<li id="simple2Tab">This is simple tab 2's content. Now you see it!</li>
+					<li id="simple3Tab">This is simple tab 3's content. It's, you know...okay.</li>
+				</ul>
+				
+		-->
+	
+		<!-- BUTTONS
+				<h3>Buttons</h3>
+
+				<p><a href="#" class="small blue button">Small Blue Button</a></p>
+				<p><a href="#" class="blue button">Medium Blue Button</a></p>
+				<p><a href="#" class="large blue button">Large Blue Button</a></p>
+
+				<p><a href="#" class="nice radius small blue button">Nice Blue Button</a></p>
+				<p><a href="#" class="nice radius blue button">Nice Blue Button</a></p>
+				<p><a href="#" class="nice radius large blue button">Nice Blue Button</a></p>
+
+			-->
+		
+		<!--OTHER
+			</div>
+`		
+			<div class="four columns">			
+				<h4>Getting Started</h4>
+				<p>We're stoked you want to try Foundation! To get going, this file (index.html) includes some basic styles you can modify, play around with, or totally destroy to get going.</p>
+
+				<h4>Other Resources</h4>
+				<p>Once you've exhausted the fun in this document, you should check out:</p>
+				<ul class="disc">
+					<li><a href="http://foundation.zurb.com/docs">Foundation Documentation</a><br />Everything you need to know about using the framework.</li>
+					<li><a href="http://github.com/zurb/foundation">Foundation on Github</a><br />Latest code, issue reports, feature requests and more.</li>
+					<li><a href="http://twitter.com/foundationzurb">@foundationzurb</a><br />Ping us on Twitter if you have questions. If you build something with this we'd love to see it (and send you a totally boss sticker).</li>
+				</ul>
+			</div>
+		</div>
+		-->
+		<div id="footer" class="row">
+			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
+
+	</div>
+	<!-- container -->
+
+
+
+
+	<!-- Included JS Files -->
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/modernizr.foundation.js"></script>
+	<script src="javascripts/foundation.js"></script>
+	<script src="javascripts/app.js"></script>
+
+</body>
+</html>

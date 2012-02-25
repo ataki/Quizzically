@@ -1,0 +1,338 @@
+/* --------------------------------------------------------------
+ * Team Mach One : CS 108, Stanford University
+ * Credits
+
+   Foundation v2.1.5 http://foundation.zurb.com 
+   Artfully masterminded by ZURB 
+
+   Glyphish icons by Joseph Wain 
+	(see http://penandthink.com) at and downloaded from http://glyphish.com
+	
+   jQuery by John Resig
+   
+   star-rating by Rogie, formerly Jesse (long story) at http://komodomedia.com
+   
+   --------------------------------------------------------------- */
+
+/* -------------------------------------------------- 
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Index - Front-facing page 
+:: Main - User login page
+:: Admin - Administrator page
+:: Quiz - Pertaining to quiz creation/taking/reporting
+:: Star-rating - 
+*/
+
+/* -----------------------------------------
+   Shared Styles
+----------------------------------------- */
+.dark-gradient {
+	background: #3f4c6b; /* Old browsers */
+	background: -moz-linear-gradient(top,  #3f4c6b 0%, #151d3d 67%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3f4c6b), color-stop(67%,#151d3d)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #3f4c6b 0%,#151d3d 67%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #3f4c6b 0%,#151d3d 67%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #3f4c6b 0%,#151d3d 67%); /* IE10+ */
+	background: linear-gradient(top,  #3f4c6b 0%,#151d3d 67%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f4c6b', endColorstr='#151d3d',GradientType=0 ); /* IE6-9 */
+}
+
+.float { 
+	float:left; 
+}
+
+h2 {
+	font-family:Helvetica, sans-serif;
+	font-weight:bold;
+	color:#000;
+	font-size:35px;
+}	
+
+.hover-highlight:hover {
+	background:#FEF1B5;
+}
+	
+#footer {
+	position:relative;
+	
+	margin-top:50%;
+	padding:15px 20px 15px 10px;
+}
+
+/*@ Override */
+.tabs a {
+	font-weight:bold;
+	color:#0593dc;
+	background-color:#0593dc;
+ }
+ 
+ h3 {
+ 	font-size:20px;
+ }
+ 
+ h5, .title {
+ 	font-size:15px;
+ 	font-weight:bold;
+ 	padding:0px; 20px;
+ 	color:#777;
+ }
+ 
+ h6 {
+ 	font-size:12px;
+ 	padding-top:5px;
+ 	padding-bottom:5px;
+ 	color:#555;
+ 	font-weight:normal;
+ }
+ 
+ img.icons {
+ 	
+ 	width:25px;
+ 	padding:0px 10px;
+ }
+ 
+ .hover-light:hover {
+ 	opacity:0.8;
+ }
+
+/* -----------------------------------------
+   Index
+----------------------------------------- */
+
+/* the glorious top bar */
+div#quizTopBar {
+	position:static;
+	width:100%;
+	padding:15px 20px 15px 10px;
+}
+
+.show-panel {
+	height:150px;
+}	
+
+.description {
+	padding:20px 10px 20px 10px;
+	min-height:75px;
+}
+
+/* --------------------------------------
+   Main
+------------------------------------------ */
+.annoucement, .message, .quiz, .activity, 
+{
+	font-size:15px;
+	padding:7px;
+}
+
+li.announcement {
+	font-size:15px;
+}
+
+.annoucement h4, .message h4, .quiz h4, .activity h4 {
+	font-size:15px;
+	padding:10px;
+	font-weight:bold;
+	color:#000;
+}
+
+/* -----------------------------------------
+	Admin
+------------------------------------------- */
+.custom-nav-menu {
+ 	background: #fff; margin-top: 0px; border-color:#fff; 
+}	
+
+/* -----------------------------------------
+   	Quiz Page
+----------------------------------------- */
+
+.choice {
+	padding:10px;
+	font-size:15px;
+}
+ 
+.choice:hover {
+	font-weight:bold;
+	background-color:#0593dc;
+}
+
+.selected {
+	border-style:solid;
+	border-color:#0593dc;
+	border-width:1px;
+}
+
+
+/* -----------------------------------------
+   Star Rater
+----------------------------------------- */
+/*             styles for the star rater                */
+.star-rating-wrap{
+	white-space:nowrap;
+}
+
+.star-rating,
+.star-rating a:hover,
+.star-rating a:active,
+.star-rating a:focus,
+.star-rating li.current-rating,
+.star-rating-fixed, 
+.star-rating-fixed a:hover,
+.star-rating-fixed a:active,
+.star-rating-fixed a:focus,
+.star-rating-fixed a {
+	background: url(../images/star_rating.gif) left -1000px repeat-x;
+}
+
+.star-rating {
+	position:relative;
+	width:100px !important;
+	height:25px !important;
+	overflow:hidden !important;
+	list-style:none;
+	margin:0 !important;
+	padding:0 !important;
+	background-position:left top;
+	display: block;
+}
+
+.star-rating li {
+	display: inline;
+	background: none !important;
+	border: 0 !important;
+}
+ul.star-rating a, 
+ul.star-rating li.current-rating, 
+ul.star-rating-fixed a,
+ul.star-rating-fixed li.current-rating {
+	position:absolute;
+	top:0;
+	left:0;
+	text-indent:-9999px;
+	height:25px !important;
+	line-height:25px !important;
+	outline:none;
+	overflow:hidden;
+	border: none;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.star-rating a:hover,
+.star-rating a:active,
+.star-rating a:focus{
+	background-position: left bottom;
+}
+.star-rating a.one-star {
+	width:20%;
+	z-index:6;
+}
+.star-rating a.two-stars{
+	width:40%;
+	z-index:5;
+}
+.star-rating a.three-stars{
+	width:60%;
+	z-index:4;
+}
+.star-rating a.four-stars{
+	width:80%;
+	z-index:3;
+}
+.star-rating a.five-stars{
+	width:100%;
+	z-index:2;
+}
+.star-rating li.current-rating{
+	z-index:1;
+	background-image: url(../images/star_rating.gif) !important;
+	background-position: left center !important;
+}	
+
+/* fixed star styles - no hover */
+.star-rating-fixed {
+	position:relative;
+	height:25px !important;
+	overflow:hidden !important;
+	list-style:none;
+	margin:0 !important;
+	padding:0 !important;
+	background: url(../images/star_rating.gif);
+	background-position:left bottom;
+	display: block;
+}
+
+.one-star {
+	width:20px;
+	z-index:6;
+}
+.two-stars{
+	width:40px;
+	z-index:5;
+}
+.three-stars{
+	width:60px;
+	z-index:4;
+}
+.four-stars{
+	width:80px;
+	z-index:3;
+}
+.five-stars{
+	width:100px;
+	z-index:2;
+}
+
+/* -----------------------------------------
+	For Matching -- Our Draggable Divs
+	--------------------------------------- */
+.draggable * {
+	font-family: 'lucida grande', 'Segoe UI', arial, verdana, 'lucida sans unicode', tahoma, sans-serif;
+	font-size: 12px;
+}
+
+.draggable > div {
+	border-style:solid;
+	border-width:1px;
+	border-color:#FFF;
+	width:500px;
+	height:15px;
+	margin:0px;
+	padding:5px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.draggable > div:hover {
+	border-color:#00B2EE;
+	cursor:move;
+}
+
+.draggable .active,
+.draggable .active-fixed{
+	border-color:#88b73F;
+}
+
+.undo-matching {
+	cursor:pointer;
+}
+	
+.name {
+	color:#1F75CC;
+}
+
+.info, .move-icon {
+	margin-left:20px;
+}
+.move-icon {
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid black;
+	vertical-align:-10px;
+}

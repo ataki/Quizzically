@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+
+	<!-- Set the viewport width to device width for mobile -->
+	<meta name="viewport" content="width=device-width" />
+
+	<title>Welcome to Foundation</title>
+  
+	<!-- Included CSS Files -->
+	<link rel="stylesheet" href="stylesheets/foundation.css">
+	<link rel="stylesheet" href="stylesheets/app.css">
+
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" href="stylesheets/ie.css">
+	<![endif]-->
+
+
+	<!-- IE Fix for HTML5 Tags -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+	<!-- container -->
+	<div class="container">
+
+		<!-- Heading -->
+		<div class="row" style="padding-top:30px">
+			<div class="twelve columns">
+				<div class="six columns">
+					<div><img src="images/quizzically-logo-small.png" /></div>
+					<p>Powered by Team Mach-One, cs108, Stanford University</p>
+				</div>
+				
+				<div class="six columns">
+					<!--
+					<p style="padding-top:40px; padding-left:180px;"><a href="/LogoutServlet" class="nice radius blue button" >Logout</a></p>
+					<div style="padding-top:30px; margin-left:-50px;">
+					
+					</div>
+					-->
+					<div style="margin-left:-50px;">
+						<p style="padding-top:10px; padding-left:180px;"><a href="/LogoutServlet" class="nice radius blue button" >Logout</a></p>
+      				</div>
+      			</ul>
+				</div>
+			</div>
+		<hr />
+		</div>
+		
+		
+		<!-- End Heading -->
+		
+		<!-- TABS: SHOULD NOT HAVE TO CHANGE -->
+		<div class="row">
+			<div class="four columns" style="height:100%; border: solid 0 #ddd; border-width: 0px 1px 0px 0px;">
+				<h5>Control Panel</h5>
+				<dl class="nice vertical tabs">
+				  <dd><a href="#announcements" class="active hover-light" style="font-size:15px;"><img class="icons" src="images/icons/28-star.png" />Announcements</a></dd>
+				  <dd><a href="#manage-users" class="hover-light" style="font-size:15px;"><img class="icons" src="images/icons/111-user.png" />Manage Users</a></dd>
+				  <dd><a href="#quizzes" class="hover-light" style="font-size:15px;"><img class="icons" src="images/icons/140-gradhat.png" />Quizzes</a></dd>
+				  <dd><a href="#site-statistics" class="hover-light" style="font-size:15px;"><img class="icons" src="images/icons/123-id-card.png" />Site Statistics</a></dd>
+				</dl>
+			</div>
+			
+			<!-- Main Administrative Cotent -->
+			<div class="seven columns content">
+				<h5>Announcements</h5>
+				<ul class="tabs-content contained">
+					<!-- Annnouncements Tab Content -->
+					 <li class="active" id="announcementsTab">
+					 <div>
+							<h5>Make Announcements</h5>
+							 <!-- Make an announcement -->
+							 <form class="nice" action="MessageServlet"><br/>
+								<textarea placeholder="Attention!" id="announcement" rows="3"></textarea>
+								<input type="submit" class="small blue button" value="Announce!" />
+							 </form>
+						 </div>
+						 <hr/>
+						 <br/>
+					 	<div style=""margin-bottom:10px;>
+					 	<h5>Recent Announcements</h5><br/>
+							 <!-- Previous announcements -->
+							 <ul id="announcement-container" style="width:75%;">
+								<li class="announcement" id="333333"><div class="alert-box success">Here is an announcement. <br/><a href="" class="close">&times;</a>
+									Quiz changes are coming! We're happy to announce that we're bringing a social component to the whole site.
+									In addition, we're going to revamp our messaging and challenge system so that you can better 
+								</div></li>
+								<li class="announcement" id="444444"><div class="alert-box">Here is a less important announcement<a href="" class="close">&times;</a></div></li>
+								<li class="announcement" id="555555"><div class="alert-box success">Here is an announcement.<br/> <a href="" class="close">&times;</a></div></li>
+								<li class="announcement" id="6666"><div class="alert-box error">Here is an important announcement. Your account may have been hacked into
+									by an anonymous third party. Please verify your information by going to the authentication pary of our wsebsite now.<a href="" class="close">&times;</a></div></li>
+								<li class="announcement" id="8888"><div class="alert-box success">Here is an announcement<a href="" class="close">&times;</a></div></li>
+							</ul>
+						</div>
+					 </li>
+					 
+					 <!-- User Tab Content -->
+					 <li id="manage-usersTab">
+					 	<!-- a typical user -->
+					 	<table width="600">
+							<thead>
+								<tr id="quizID">
+									<th width="20%">UserName</th>
+									<th width="10%">Points</th>
+									<th width="20%">Quizzes Taken</th>
+									<th widht="15%">Joined</th>
+									<th>Options</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- Table Row representing a user -->
+								<tr>
+									<td class="hover-highlight"><a href="QuizServlet?<%=username%>">oneuser2034</a></b></td>
+									<td>150000</td>
+									<td>3434</td>
+									<td>Feb 12 2012</td>
+									<td>
+										<ul class="nav-bar" style="padding:0px; margin-left:-18px; margin-top:-15px; height:5px;">
+											<li class="has-flyout" style="height:25px;">
+												<a href="#" class="main" style="font-size:12px; margin:0px; padding-top:0px; vertical-align:top; height:30px;">Options</a>
+												<a href="#" class="flyout-toggle"><span></span></a>
+												<div class="flyout small">
+													<h6 class="hover-highlight"><a href="#">Remove user</a></h6>
+													<h6 class="hover-highlight"><a href="#">Promote to Administrator</a></h6>
+													<h6 class="hover-highlight"><a href="#">Demote From Administrator</a></h6>
+													<h6 class="hover-highlight"><a href="#">Send message</a></h6>
+												</div>
+											</li>
+										</ul>
+									</td>
+								</tr>
+								
+								
+								
+							</tbody>
+				</table>
+					 </li>
+					 
+					 <!-- Quiz Tab Content -->
+					 <li id="quizzesTab">Quizzes content goes here
+					 </li>
+					 
+					 <!-- Statistics Tab Content -->
+					 <li id="site-statisticsTab">Statistics go here
+					 </li>
+				</ul>
+			</div>
+			<!-- End administrative content -->
+			<div style="clear: both;"></div>
+		</div>
+	
+		
+		<!-- SIX COLUMN 
+				<div class="row">
+					<div class="six columns">
+						<div class="panel">
+							<p>Six columns</p>
+						</div>
+					</div>
+					<div class="six columns">
+						<div class="panel">
+							<p>Six columns</p>
+						</div>
+					</div>
+				</div>
+		-->
+
+		<!--TABS
+				<h3>Tabs</h3>
+				<dl class="tabs">
+					<dd><a href="#simple1" class="active">Simple Tab 1</a></dd>
+					<dd><a href="#simple2">Simple Tab 2</a></dd>
+					<dd><a href="#simple3">Simple Tab 3</a></dd>
+				</dl>
+
+				<ul class="tabs-content">
+					<li class="active" id="simple1Tab">This is simple tab 1's content. Pretty neat, huh?</li>
+					<li id="simple2Tab">This is simple tab 2's content. Now you see it!</li>
+					<li id="simple3Tab">This is simple tab 3's content. It's, you know...okay.</li>
+				</ul>
+				
+		-->
+	
+		<!-- BUTTONS
+				<h3>Buttons</h3>
+
+				<p><a href="#" class="small blue button">Small Blue Button</a></p>
+				<p><a href="#" class="blue button">Medium Blue Button</a></p>
+				<p><a href="#" class="large blue button">Large Blue Button</a></p>
+
+				<p><a href="#" class="nice radius small blue button">Nice Blue Button</a></p>
+				<p><a href="#" class="nice radius blue button">Nice Blue Button</a></p>
+				<p><a href="#" class="nice radius large blue button">Nice Blue Button</a></p>
+
+			-->
+		
+		<!--OTHER
+			</div>
+`		
+			<div class="four columns">			
+				<h4>Getting Started</h4>
+				<p>We're stoked you want to try Foundation! To get going, this file (index.html) includes some basic styles you can modify, play around with, or totally destroy to get going.</p>
+
+				<h4>Other Resources</h4>
+				<p>Once you've exhausted the fun in this document, you should check out:</p>
+				<ul class="disc">
+					<li><a href="http://foundation.zurb.com/docs">Foundation Documentation</a><br />Everything you need to know about using the framework.</li>
+					<li><a href="http://github.com/zurb/foundation">Foundation on Github</a><br />Latest code, issue reports, feature requests and more.</li>
+					<li><a href="http://twitter.com/foundationzurb">@foundationzurb</a><br />Ping us on Twitter if you have questions. If you build something with this we'd love to see it (and send you a totally boss sticker).</li>
+				</ul>
+			</div>
+		</div>
+		-->
+		<div id="footer" class="row">
+			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
+
+	</div>
+	<!-- container -->
+
+
+
+
+	<!-- Included JS Files -->
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/modernizr.foundation.js"></script>
+	<script src="javascripts/foundation.js"></script>
+	<script src="javascripts/app.js"></script>
+	<script src="javascripts/admin.js"></script>
+
+</body>
+</html>
