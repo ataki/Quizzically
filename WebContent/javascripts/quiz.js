@@ -93,10 +93,10 @@ $(document).ready(function() {
 				},
 				empty:function() {
 					return this.stackLen === 0;
-				},
+				}
 			},
 			
-			numAnswersToMatch:0,
+			numAnswersToMatch:0
 		});
 	}
 	/* If we don't detect windows.MACH, just abort*/

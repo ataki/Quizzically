@@ -76,7 +76,7 @@ function drag_n_drop(wrapper_name) {
 		* keeps track of whether we've started dragging
 		*/
 		started:false
-		,
+		
 	};
 	
 	/* Getters */

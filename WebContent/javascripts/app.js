@@ -53,7 +53,7 @@ var _Mach = {
 	*/
 	user:readCookie("#username"),
 	userInfo:readCookie("#userInformation"),
-	securityKey:$('#securityKey').html(),
+	securityKey:$('#securityKey').html()
 	
 }
 // attach as window variable

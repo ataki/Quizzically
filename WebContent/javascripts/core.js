@@ -116,7 +116,7 @@ var CLIB = {
 		}
 		return getElementsByClassName(className, tag, elm);
 	}
-	, // end 
+	 // end 
 	
 	
 

@@ -17,7 +17,7 @@ $(document).ready(function() {
 		* here */
 		window.Mach.admin = 
 		{
-			f	
+			
 		
 		}
 	}

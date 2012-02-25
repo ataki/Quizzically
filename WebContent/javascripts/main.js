@@ -36,7 +36,7 @@ $(document).ready(function() {
 			announcementContainer:"announcement-container",
 			recentActivityContainer:"recent-activity-container",
 			friendsActivityContainer:"friends-activity-container",
-			achievementsContainer:"achievements-container",
+			achievementsContainer:"achievements-container"
 			
 		});
 	}

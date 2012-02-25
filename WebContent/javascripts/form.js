@@ -66,7 +66,7 @@ $(document).ready(function() {
 			* Increment this every time we add another pair field
 			* to a matching quesiton.
 			*/
-			matchCount:0,
+			matchCount:0
 		});
 	}
 	/* If we don't detect windows.MACH, just abort*/
