@@ -14,7 +14,7 @@
 	<title>Welcome to Foundation</title>
   
 	<!-- Included CSS Files -->
-	<link rel="stylesheet" href="stylesheets/foundation.css">
+	<!-- <link rel="stylesheet" href="stylesheets/foundation.css"> -->
 	<link rel="stylesheet" href="stylesheets/app.css">
 
 	<!--[if lt IE 9]>
@@ -62,7 +62,7 @@
 		
 		<!-- TABS: SHOULD NOT HAVE TO CHANGE -->
 		<div class="row">
-			<div class="four columns" style="height:100%; border: solid 0 #ddd; border-width: 0px 1px 0px 0px;">
+			<div class="three columns" style="height:100%; border: solid 0 #ddd; border-width: 0px 1px 0px 0px;">
 				<h5>Control Panel</h5>
 				<dl class="nice vertical tabs">
 				  <dd><a href="#announcements" class="active hover-light" style="font-size:15px;"><img class="icons" src="images/icons/28-star.png" />Announcements</a></dd>
@@ -73,7 +73,7 @@
 			</div>
 			
 			<!-- Main Administrative Cotent -->
-			<div class="seven columns content">
+			<div class="six columns content" style="padding-left:20px;">
 				<h5>Announcements</h5>
 				<ul class="tabs-content contained">
 					<!-- Annnouncements Tab Content -->
@@ -81,9 +81,9 @@
 					 <div>
 							<h5>Make Announcements</h5>
 							 <!-- Make an announcement -->
-							 <form class="nice" action="MessageServlet"><br/>
-								<textarea placeholder="Attention!" id="announcement" rows="3"></textarea>
-								<input type="submit" class="small blue button" value="Announce!" />
+							 <form action="MessageServlet"><br/>
+								<textarea class="expand" placeholder="Attention!" id="announcement" rows="3"></textarea>
+								<input type="submit" class="blue button" value="Announce!" />
 							 </form>
 						 </div>
 						 <hr/>
@@ -91,7 +91,7 @@
 					 	<div style=""margin-bottom:10px;>
 					 	<h5>Recent Announcements</h5><br/>
 							 <!-- Previous announcements -->
-							 <ul id="announcement-container" style="width:75%;">
+							 <ul id="announcement-container">
 								<li class="announcement" id="333333"><div class="alert-box success">Here is an announcement. <br/><a href="" class="close">&times;</a>
 									Quiz changes are coming! We're happy to announce that we're bringing a social component to the whole site.
 									In addition, we're going to revamp our messaging and challenge system so that you can better 
@@ -131,10 +131,12 @@
 												<a href="#" class="main" style="font-size:12px; margin:0px; padding-top:0px; vertical-align:top; height:30px;">Options</a>
 												<a href="#" class="flyout-toggle"><span></span></a>
 												<div class="flyout small">
-													<h6 class="hover-highlight"><a href="#">Remove user</a></h6>
-													<h6 class="hover-highlight"><a href="#">Promote to Administrator</a></h6>
-													<h6 class="hover-highlight"><a href="#">Demote From Administrator</a></h6>
-													<h6 class="hover-highlight"><a href="#">Send message</a></h6>
+													<!-- Be sure to put this among the options -->
+													<h6 class="options-user-id">oneuser2034</div>
+													<h6 class="hover-highlight"><a class="remove-user" href="#">Remove user</a></h6>
+													<h6 class="hover-highlight"><a class="promote-user" href="#">Promote to Administrator</a></h6>
+													<h6 class="hover-highlight"><a class="demote-user" href="#">Demote From Administrator</a></h6>
+													<h6 class="hover-highlight"><a class="send-message" href="#">Send message</a></h6>
 												</div>
 											</li>
 										</ul>

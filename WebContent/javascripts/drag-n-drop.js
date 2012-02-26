@@ -244,9 +244,9 @@ function drag_n_drop(wrapper_name) {
 		if(_dragElement) {
 			var mpos = mousePosition(e);
 			var new_left = (_elemPosition.x + mpos.x - _start.x) 
-			_fakeElement.style.left = new_left + 'px';  
+			_fakeElement.style.left = (new_left + 10) + 'px';  
 			var new_top = (_elemPosition.y + mpos.y - _start.y) 
-			_fakeElement.style.top =  new_top + 'px';  
+			_fakeElement.style.top =  (new_top + 10) + 'px';  
 		}
 		$_drag_n_drop_settings.onDragRun(e);
 		return false; // don't allow text to be highlighted still 

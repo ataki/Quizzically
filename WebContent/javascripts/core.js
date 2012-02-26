@@ -115,10 +115,13 @@ var CLIB = {
 			};
 		}
 		return getElementsByClassName(className, tag, elm);
-	}
-	 // end 
-	
-	
+	}//end
+}
 
-
+/* MISC --------------------
+	
+* -------------------- */
+function semaphore(initialCount) {
+	this.count = initialCount;
+	
 }

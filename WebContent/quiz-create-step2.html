@@ -70,7 +70,9 @@
 				
 				<div class="twelve columns">
 					<form id="create-container" name="create-editor" >	
-					
+					<h5>Options</h5>
+					<br/><input type="checkbox" name="ordered" placeholder="Allow" />In this particular order?<br />
+					<br/><br/>
 					<!-- class of question-block means that on-click, jQuery allows us
 					to insert a dynamic form magically -->
 					<div>
@@ -79,15 +81,17 @@
 							<div class=".error-section">
 								<!-- <span class="red label">Incomplete</span>-->
 							</div>
-							<select class="question-block red" id="vquestion-block-1">
+							<select class="question-block red" id="question-type-1" name="question-type-1">
 								  <option value="0" selected></option>
-								  <option value="1">Question-Response</option>
-								  <option value="2">Fill-in-the-Blank</option>
-								  <option value="3">Multiple Choice</option>
-								  <option value="21">Picture-Response</option>
-								  <option value="3">Multi-answer</option>
-								  <option value="22">Matching</option>
-								  <option value="23">Timed Question</option>
+								  <option value="question-response">Question-Response</option>
+								  <option value="fill-in-the-blank">Fill-in-the-Blank</option>
+								  <option value="multi-answer-question">Multiple Choice</option>
+								  <option value="multiple-choice">Picture-Response</option>
+								  <option value="multiple-choice-multiple-answer">Multi-answer</option>
+								  <option value="picture-response">Picture Response</option>
+								  <option value="matching">Matching</option>
+								  <option value="auto-generated">Auto-Generated</option>
+								  <option value="graded-questions">Graded Question</option>
 							</select>
 							<div id="question-block-1">
 							</div>
@@ -97,39 +101,23 @@
 					<div>
 					<h6>Question 2</h6>
 						<div id="question-2">
-							<select class="question-block" id="vquestion-block-2">
-								  <option value="0" selected></option>
-								  <option value="1">Question-Response</option>
-								  <option value="2">Fill-in-the-Blank</option>
-								  <option value="3">Multiple Choice</option>
-								  <option value="21">Picture-Response</option>
-								  <option value="3">Multi-answer</option>
-								  <option value="22">Matching</option>
-								  <option value="23">Timed Question</option>
+							<select class="question-block" id="question-type-2" name="question-type-2">
+								 <option value="0" selected></option>
+								  <option value="question-response">Question-Response</option>
+								  <option value="fill-in-the-blank">Fill-in-the-Blank</option>
+								  <option value="multi-answer-question">Multiple Choice</option>
+								  <option value="multiple-choice">Picture-Response</option>
+								  <option value="multiple-choice-multiple-answer">Multi-answer</option>
+								  <option value="picture-response">Picture Response</option>
+								  <option value="matching">Matching</option>
+								  <option value="auto-generated">Auto-Generated</option>
+								  <option value="graded-questions">Graded Question</option>
 							</select>
 							<div id="question-block-2">
 							</div>
 						</div>
 					</div>
 					<br/><br/><!-- Divider between questions -->
-					<div>
-					<h6>Question 2</h6>
-						<div id="question-3">
-							<select class="question-block" id="vquestion-block-3">
-								  <option value="0" selected></option>
-								  <option value="1">Question-Response</option>
-								  <option value="2">Fill-in-the-Blank</option>
-								  <option value="3">Multiple Choice</option>
-								  <option value="21">Picture-Response</option>
-								  <option value="3">Multi-answer</option>
-								  <option value="22">Matching</option>
-								  <option value="23">Timed Question</option>
-							</select>
-							<div id="question-block-3">
-							</div>
-						</div>
-					</div>
-					
 					
 					<input type="submit" style="margin-top:20px" class="small button" id="generate-editor" value="Generate Quiz" />
 					</form>
@@ -147,7 +135,7 @@
 					<input type="text" name="question" placeholder="Your Question" size="50" /><br/>
 					</h6>Your Response</h6><br/>
 					<input type="text" name="answer" placeholder="Your Answer" size="50" /><br/><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				
 				<div id="fill-in-the-blank" style="display:none;">
@@ -155,7 +143,7 @@
 					<input type="text" name="question" placeholder="Your Question" size="50" /><br/>
 					</h6>Your Response</h6><br/>
 					<input type="text" name="answer" placeholder="Your Answer" size="50" /><br/><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				
 				<div id="multi-answer-question" style="display:none;">
@@ -164,8 +152,7 @@
 					</h6>Your Response(s)</h6><br/>
 					<h6 class="add-input-text"><a>[+] Add a Response</a></h6>
 					<input type="text" name="answer" placeholder="Your Answer" size="50" /><br/><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />In this particular order?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				
 				<div id="multiple-choice" style="display:none;">
@@ -174,7 +161,7 @@
 					</h6>Your Response</h6><br/>
 					<h6 class="add-input-text"><a>[+] Add a Response</a></h6>
 					<input type="text" name="answer" placeholder="Your Answer" size="50" /><br/><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				
 				<div id="multiple-choice-multiple-answer" style="display:none;">
@@ -182,7 +169,7 @@
 					<input type="text" name="question" placeholder="Your Question" size="50" /><br/>
 					</h6>Your Response</h6><br/>
 					<input type="text" name="answer" placeholder="Your Answer" size="50" /><br/><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 					
 				<div id="picture-response" style="display:none;">
@@ -192,7 +179,7 @@
 					<input type="text" name="question" placeholder="Your Question" size="50" /><br/>
 					</h6>Your Response</h6><br/>
 					<input type="text" name="answer" placeholder="Your Answer" size="50" /><br/><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				
 				<div id="matching" style="display:none;">
@@ -201,7 +188,16 @@
 					<input type="text" name="matchquestion" placeholder="Your Question" size="25" />
 					Matching Elem
 					<input type="text" name="matchanswer" placeholder="Your Answer" size="25" /><br/>
-					<br/><input type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
+				</div>
+				
+				<div id="graded-questions" style="display:none;">
+					<h6>Ask your open-ended question here</h6>
+					<input type="text" name="question" placeholder="Your Question" size="25" /><br/>
+				</div>
+				
+				<div id="time-limit" style="display:none;">
+					<input type="text" name="time" placeholder="10" size="5" />
 				</div>
 				
 		</div>

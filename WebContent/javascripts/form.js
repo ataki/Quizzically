@@ -33,9 +33,10 @@ $(document).ready(function() {
 						},
 						
 			/* classes that allow you to dynamically
-			* add single checkboxes */
+			* add single checkboxes or textboxes */
 			addInputText:"add-input-text",
 			addInputRadio:"add-input-radio",
+			addMatchPair:"add-match-text",
 
 			/* divs that we should populate with
 			* an actual question form once we know
@@ -66,7 +67,7 @@ $(document).ready(function() {
 			* Increment this every time we add another pair field
 			* to a matching quesiton.
 			*/
-			matchCount:0
+			matchCount:0,
 		});
 	}
 	/* If we don't detect windows.MACH, just abort*/
@@ -79,16 +80,18 @@ $(document).ready(function() {
 	a list of new forms and questions. 
 	------------------------------------ */
 	if($('#' + Mach.createForm.name) != null) {
-		
 		// whenever user confirms a quiz type, 
 		// append the appropriate form below
 		// the type
 		$('.question-block').change(function() {
 			var type = $("#" + $(this).attr("id")).val();
-			var containerID = $(this).attr("id").substring(1);
-			var text = generateQuestionBlock(type);
-			$('#' + containerID).empty();
+			var containerID = $(this).attr("id");
 			var num = containerID.charAt(containerID.length-1);
+			
+			var targetContainerID = "question-block-" + num;
+
+			var text = generateQuestionBlock(type);
+			$('#' + targetContainerID).empty();
 			var toAppend = $(text);
 			toAppend.each(function(index) {
 				if($(this).attr("name") != null) {
@@ -96,7 +99,7 @@ $(document).ready(function() {
 				}
 				
 			});
-			toAppend.appendTo('#' + containerID);
+			toAppend.appendTo('#' + targetContainerID);
 			
 			// ALLOWING USER TO ADD TO VARIABLE FIELDS 
 			// we have variable text box fields that allow a user to enter more
@@ -104,8 +107,7 @@ $(document).ready(function() {
 			$('.' + Mach.addInputText).click(function() {
 				var parentID = find_parent_who_has_id(this);
 				var uniqueID = parentID.charAt(parentID.length-1);
-				console.log(parentID);
-				if(parentID.search("match") <= 0) {
+				if(parentID.search("match") < 0) {
 					$(generateTextBox("answer" + uniqueID)).insertAfter(this);
 				} 
 				else { /* do nothing, error in html */}
@@ -114,12 +116,50 @@ $(document).ready(function() {
 			$('.' + Mach.addMatchPair).click(function() {
 				var parentID = find_parent_who_has_id(this);
 				var uniqueID = parentID.charAt(parentID.length-1);
-				if(parentID.search("match") <= 0) {/* do nothing; error in html*/} 
+				if($(this).attr('class').search("match") < 0) {/* do nothing; error in html*/} 
 				else { 
 					Mach.matchCount++;
 					$(generateMatchPair("matchquestion" + Mach.matchCount, "matchanswer" + Mach.matchCount)).insertAfter(this);
 				}
 			});
+			
+			// timed option			
+			// if checked, add a specifying time box to the question.
+			$('.timed').unbind('change').change(function() {
+				var parentID = find_parent_who_has_id(this);
+				var uniqueID = parentID.charAt(parentID.length-1);
+				if($("#time-" + uniqueID).length == 0) 
+				{		
+					// timed box input error checking: must be a 
+					// number or else we disable submit button
+					var toAppend = $(generateQuestionBlock("time-limit")).change(function() {
+						if( $(this).val().length === 0 )
+        					generateWarningDisableSubmit(this);
+        				else {
+        					var result = parseInt($(this).val());
+        					if(isNaN(result)) 
+								generateWarningDisableSubmit(this);
+							else 
+        					if(typeof result == "number")
+								reEnableInputAndSubmit(this);
+        				}
+					});
+					
+					if( $(toAppend).val().length === 0 ) {
+						// don't let the user submit !
+						$(toAppend).addClass('warning');
+						$('input[type=submit]').attr('disabled', 'disabled');
+					}
+					$(toAppend).attr("name", "time-" + uniqueID).attr("id", "time-" + uniqueID).insertAfter(this);
+					
+				}
+				else 
+				{
+					$("#time-" + uniqueID).remove();
+				}
+				
+			});
+			
 		});
 		
 		// on submit button, send whole quiz
@@ -140,11 +180,23 @@ $(document).ready(function() {
 	}
 });
 
+function generateWarningDisableSubmit(inputbox) {
+	// don't let the user submit !
+	$(inputbox).addClass('warning');
+	$('input[type=submit]').attr('disabled', 'disabled');
+}
+
+function reEnableInputAndSubmit(input) {
+	// let the user submit
+	$(input).removeClass('warning');
+	$('input[type=submit]').removeAttr('disabled');
+}
+
 /* Generates an HTML block based on
 * existing hidden containers present
 * in the HTML */
 function generateQuestionBlock(type) {
-	return $("#" + Mach.questionType[type]).html();
+	return $("#" + type).html();
 }
 
 function generateTextBox(name) {
