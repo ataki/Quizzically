@@ -27,6 +27,7 @@ $(document).ready(function() {
 			friendServer:"FriendServlet",
 			ratingServer:"RatingServlet",
 			announcementServer:"AnnouncementServlet",
+			adminServer:"AdminServlet",
 			quizDataServer:"QuizDataServlet", /* not used*/
 			
 			/* Container class names */

@@ -102,6 +102,16 @@ $(document).ready(function() {
 	/* If we don't detect windows.MACH, just abort*/
 	else return;
 	
+	/* CHOICE -------------------------------
+   	* quiz; lets the user know what choice 
+    * he/she selected
+   	* --------------------------------------*/
+	$('.choice').click(function(event) {
+		$(".choice").removeClass("selected");
+		$(event.target).addClass("selected");
+	});
+	
+	
 	/* MATCHING ------------------------
 	* If we detect a matching question, 
 	* initialize our drag-drop features

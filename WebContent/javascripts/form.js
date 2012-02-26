@@ -1,6 +1,8 @@
 /* Form Creation ---------------
 * Team Mach One  
 * CS 108 Stanford University
+* Form is for when we're creating
+* the quizzes
 * ---------------------------- */
 $(document).ready(function() {
 
@@ -10,15 +12,15 @@ $(document).ready(function() {
 		* us add to the global MACH function 
 		*/
 		$.extend(true, window.Mach, {
-			/* create form names 
-			*/
+			
+			/* number of current questions */
+			numQuestions:0,
 			
 			/* controls submission process; default is
 			* false because the user has not made selections
 			* on the form type 
 			*/
 			canSubmit:false,
-			
 			/* form creation names */
 			createContainer:"create-container",
 			createForm: { name:"create-editor",
@@ -68,6 +70,17 @@ $(document).ready(function() {
 			* to a matching quesiton.
 			*/
 			matchCount:0,
+			
+			/* 
+			* InverseSemaphore for our timer field.
+			* when any timer is initialized, we allow it to
+			* up this semaphore until it is 0.
+			* At this point, it's valid to submit so
+			* we reenable the submit button.
+			* Javascript is single-threaded so ok 
+			* to have this global variable
+			*/
+			timerInverseSema:0,
 		});
 	}
 	/* If we don't detect windows.MACH, just abort*/
@@ -80,10 +93,102 @@ $(document).ready(function() {
 	a list of new forms and questions. 
 	------------------------------------ */
 	if($('#' + Mach.createForm.name) != null) {
-		// whenever user confirms a quiz type, 
-		// append the appropriate form below
-		// the type
-		$('.question-block').change(function() {
+		// first count the number of questions
+		$('.question-block').each(function() {
+			Mach.numQuestions++;
+		});	
+		
+		
+		// adding more questions
+		// prepend a question before the add button
+		$("#more-questions").click(function() {
+			var toAppend = $(generateQuestionBlock("question-type-box"));
+			var N = Mach.numQuestions + 1;
+			/*			
+				make necessary changes as listed in the question-type-box
+				note: 
+				N is number of total questions + 1
+						1. top-level div id: 		"question-N", 
+						2. select id: 				"question-type-N"
+						3. select name: 			"question-type-N"
+						4. the question block id: 	"question-block-N".
+						5. select class add: 		"question-block"
+						6. h6: add to innerHTML     "N"
+			*/
+			//1
+			$(toAppend).attr("question-" + N);
+			//6
+			$(toAppend).children("h6").html("Question " + N);
+			//5,2,3,
+			$(toAppend).children("select").addClass("question-block").attr("id", "question-type-" + N).attr("name", "question-type-" + N);
+			//4
+			$(toAppend).children("#question-block-").attr("id", "question-block-"+N);
+			//2
+			$(toAppend).children("#question-id-").attr("id", "question-id-" + N);
+			if($(toAppend).insertBefore(this))
+				Mach.numQuestions++;
+			// have to reattach change handler
+			addQuestionBlockChangeFunctions();
+		});
+		
+		addQuestionBlockChangeFunctions();
+		
+		// on submit button, send whole quiz
+		// over as JSON to the server. 
+		// We catch the submit here to send over an unescaped
+		// string
+		$('form').submit(function() {
+			var values = unescape($(this).serialize());
+			$.post(Mach.createServer, { user: Mach.username, data:values});
+		});
+		
+	} // end of Mach Detect
+});
+
+function generateWarningDisableSubmit(inputbox) {
+	Mach.timerInverseSema++;
+	// don't let the user submit !
+	$(inputbox).addClass('warning');
+	$('input[type=submit]').attr('disabled', 'disabled');
+}
+
+function reEnableInputAndSubmit(input) {
+	if(Mach.timerInverseSema > 0) Mach.timerInverseSema--;
+	$(input).removeClass('warning');
+	
+	if(Mach.timerInverseSema == 0) {
+		// let the user submit
+		$('input[type=submit]').removeAttr('disabled');
+	}
+}
+
+/* Generates an HTML block based on
+* existing hidden containers present
+* in the HTML */
+function generateQuestionBlock(type) {
+	return $("#" + type).html();
+}
+
+function generateTextBox(name) {
+	return '<input type="text" placeholder="New" size="50" name="' + name + '" /><br/>';
+}
+
+function generateMatchPair(box1Name, box2Name) {
+	return '<br/>Elem&nbsp;<input type="text" placeholder="Your Question" size="25" name="' + box1Name + '"/>&nbsp;'
+			+ 'Matching Elem&nbsp;<input type="text" placeholder="New" size="25" name="' + box2Name + '"/><br/>';
+}	
+
+function generateErrorMessage(divToAddTo, message) {
+	return $('<span class="red label">' + message + '</span>').appendTo(divToAddTo);
+}
+
+/* reattaches form handler to our generic question-block box.
+* Whenever a user clicks on an option in the select tags of question-block,
+* attach handlers to allow user to add variable answer fields,
+* to indicate how long to time the question, etc. 
+*/
+function addQuestionBlockChangeFunctions() {
+		$('.question-block').unbind("change").change(function() {
 			var type = $("#" + $(this).attr("id")).val();
 			var containerID = $(this).attr("id");
 			var num = containerID.charAt(containerID.length-1);
@@ -108,18 +213,19 @@ $(document).ready(function() {
 				var parentID = find_parent_who_has_id(this);
 				var uniqueID = parentID.charAt(parentID.length-1);
 				if(parentID.search("match") < 0) {
-					$(generateTextBox("answer" + uniqueID)).insertAfter(this);
+					$(generateTextBox("answer-" + uniqueID)).insertAfter(this);
 				} 
 				else { /* do nothing, error in html */}
 			});
 			
+			// special case of match questions
 			$('.' + Mach.addMatchPair).click(function() {
 				var parentID = find_parent_who_has_id(this);
 				var uniqueID = parentID.charAt(parentID.length-1);
 				if($(this).attr('class').search("match") < 0) {/* do nothing; error in html*/} 
 				else { 
 					Mach.matchCount++;
-					$(generateMatchPair("matchquestion" + Mach.matchCount, "matchanswer" + Mach.matchCount)).insertAfter(this);
+					$(generateMatchPair("match-question-" + Mach.matchCount, "match-answer-" + Mach.matchCount)).insertAfter(this);
 				}
 			});
 			
@@ -129,10 +235,12 @@ $(document).ready(function() {
 				var parentID = find_parent_who_has_id(this);
 				var uniqueID = parentID.charAt(parentID.length-1);
 				if($("#time-" + uniqueID).length == 0) 
-				{		
+				{
 					// timed box input error checking: must be a 
 					// number or else we disable submit button
 					var toAppend = $(generateQuestionBlock("time-limit")).change(function() {
+						// check to see whether we have a 
+						// number in our checkbox
 						if( $(this).val().length === 0 )
         					generateWarningDisableSubmit(this);
         				else {
@@ -147,67 +255,19 @@ $(document).ready(function() {
 					
 					if( $(toAppend).val().length === 0 ) {
 						// don't let the user submit !
-						$(toAppend).addClass('warning');
-						$('input[type=submit]').attr('disabled', 'disabled');
+						generateWarningDisableSubmit(this);
 					}
 					$(toAppend).attr("name", "time-" + uniqueID).attr("id", "time-" + uniqueID).insertAfter(this);
 					
 				}
-				else 
-				{
+				else {
+					// we've removed the checkbutton,
+					// so changes are no longer valid
+					reEnableInputAndSubmit(this);
 					$("#time-" + uniqueID).remove();
 				}
 				
 			});
 			
 		});
-		
-		// on submit button, send whole quiz
-		// over as JSON to the server
-		$('form').submit(function() {
-			var values = $(this).serialize();
-			// Get all the forms elements and 
-			// their values in one step
-			
-			/* assoc_arr = {};
-			for(var i=0;i< values.length;i++) {
-				assoc_arr[values[i][name]] = values[i][value];
-			}*/
-			// convert the data from Object Array form to JSON
-			
-			$.post(Mach.createServer, { user: Mach.username, friend:friendName , data:values});
-		});
-	}
-});
-
-function generateWarningDisableSubmit(inputbox) {
-	// don't let the user submit !
-	$(inputbox).addClass('warning');
-	$('input[type=submit]').attr('disabled', 'disabled');
-}
-
-function reEnableInputAndSubmit(input) {
-	// let the user submit
-	$(input).removeClass('warning');
-	$('input[type=submit]').removeAttr('disabled');
-}
-
-/* Generates an HTML block based on
-* existing hidden containers present
-* in the HTML */
-function generateQuestionBlock(type) {
-	return $("#" + type).html();
-}
-
-function generateTextBox(name) {
-	return '<input type="text" placeholder="New" size="50" name="' + name + '" /><br/>';
-}
-
-function generateMatchPair(box1Name, box2Name) {
-	return '<br/>Elem&nbsp;<input type="text" placeholder="Your Question" size="25" name="' + box1Name + '"/>&nbsp;'
-			+ 'Matching Elem&nbsp;<input type="text" placeholder="New" size="25" name="' + box2Name + '"/><br/>';
-}	
-
-function generateErrorMessage(divToAddTo, message) {
-	return $('<span class="red label">' + message + '</span>').appendTo(divToAddTo);
 }

@@ -12,27 +12,55 @@ $(document).ready(function() {
 		defined.
 	 --------------------------- */
 	if(window.Mach != null) {
-		
-		/* Mach admin constants defined
-		* here */
-		window.Mach.admin = 
-		{
-			
-		
-		}
-	}
+		$.extend(true, window.Mach, {
+			optionsArray:[
+						"remove-user",
+						"promote-user",
+						"demote-user",
+						"send-message"
+						]
+		});
 	
-	/* 
-	* Instantiation of the admin_init Object;
-	* when called, performs various features
-	* that allow the admin interface to 
-	* communicate with the server
-	*/
-	var admin_init = function() {
-		if(Mach.admin == undefined) {
-			// abort
-			return;
-		}	
-		
-	}
+	} else return;
+	
+	adminInit();
+	
 });
+
+/* 
+* Initializes various UI aspects of admin interface
+*/
+function adminInit() {
+	for(var i =0; i < Mach.optionsArray.length;i++) {
+		// send a POST request to let the system know
+		// what we want to do with that person.
+		$("." + Mach.optionsArray[i]).click(function() {
+			
+			generateGrowl("Title", "Message", false, 10000);
+			var opt = $(this).attr("class");
+			
+			var userid = $(this).parent().siblings(".options-user-id").html();
+			// find our user id
+			var spinnerPtr = $('<img class="spinner" src="images/spinner.gif" />');
+			$(spinnerPtr).insertAfter( $(find_parent_who_has_class(this, "nav-bar")).toggle(false));
+			
+			var thisPtr = this;
+			console.log(Mach.adminServer);
+			$.ajax({
+				url: Mach.adminServer,
+				type: "POST",
+				data: { type:"user", user:userid, option:opt },
+				success: function(data) {
+						$(spinnerPtr).remove();
+						$(find_parent_who_has_class(thisPtr, "nav-bar")).toggle(true);
+					},
+				error: function(data) {
+					$(spinnerPtr).remove();
+					$(find_parent_who_has_class(thisPtr, "nav-bar")).toggle(true);
+				}
+			});
+			
+			//$.post(Mach.adminServer, { type:"user", user:userid, option:opt }, 
+		});
+	}
+}

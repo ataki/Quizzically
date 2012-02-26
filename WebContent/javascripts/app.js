@@ -63,6 +63,13 @@ window.Mach = _Mach;
 /* Foundation v2.1.5 http://foundation.zurb.com */
 $(document).ready(function () {
 	
+	/* INCLUDES -----------------------------
+	* dynamically add javascript file to 
+	* every page, site-wide
+	*------------------------------------- */
+	include('javascripts/jquery.gritter.min.js');
+	
+	
 	/* TABS ----------------------
 	Activate our tabs
 	------------------------------- */
@@ -101,12 +108,6 @@ $(document).ready(function () {
 
 	$('input, textarea').placeholder();
 
-	/* UNCOMMENT THE LINE YOU WANT BELOW IF YOU WANT IE6/7/8 SUPPORT AND ARE USING .block-grids */
-//	$('.block-grid.two-up>li:nth-child(2n+1)').css({clear: 'left'});
-//	$('.block-grid.three-up>li:nth-child(3n+1)').css({clear: 'left'});
-//	$('.block-grid.four-up>li:nth-child(4n+1)').css({clear: 'left'});
-//	$('.block-grid.five-up>li:nth-child(5n+1)').css({clear: 'left'});
-
 	/* DROPDOWN NAV -------------
 	Activates dropdown tabs
 	-----------------------------*/
@@ -122,6 +123,7 @@ $(document).ready(function () {
 		}
 		lockNavBar = true;
 	});
+	
   if (Modernizr.touch) {
     $('.nav-bar>li.has-flyout>a.main').css({
       'padding-right' : '75px'
@@ -151,12 +153,6 @@ $(document).ready(function () {
    		UI more reponsive
    	------------------------------------ */
    		
-   	//	lets the user know what choice he/she selected
-	$('.choice').click(function(event) {
-		$(".choice").removeClass("selected");
-		$(event.target).addClass("selected");
-	});
-	
 	// when a user closes an announcement, delete
 	// it from that user's system
 	$('.close').click(function(event) {
@@ -237,4 +233,56 @@ function find_parent_who_has_id(elem) {
 		if(counter > 5) return null;
 		cur = parent;
 	}
+}
+
+/* finds the first parent who has an ID, and returns
+ 	that ID. If we go more than 5 generations above,
+ 	or we ever get to the 'document' elem, stop
+ 	and return NULL for unsuccessful search */
+function find_parent_who_has_class(elem, className) {
+	var cur = elem,
+		parent = null,
+		end = $('document');
+		counter = 0;
+		
+	while(true) {
+		counter++;
+		parent = $(cur).parent();
+		if(parent == end) return null;
+		if(parent.attr('class') == className)
+			return parent.attr('class');
+		if(counter > 5) return null;
+		cur = parent;
+	}
+}
+
+/* generates a growl Notification right on the page!
+* message disappears after x minutes
+* @param headline: bold title
+* @param message: the message you want to receive
+* @param shouldRemain: should the message persist? 
+*/
+function generateGrowl(headline, message, shouldRemain, time) {
+	var unique_id = $.gritter.add({
+		// (string | mandatory) the heading of the notification
+		title: headline,
+		// (string | mandatory) the text inside the notification
+		text: message,
+		// (bool | optional) if you want it to fade out on its own or just sit there
+		sticky: shouldRemain,
+		// (int | optional) the time you want it to be alive for before fading out
+		time: time,
+	});
+	return false;
+
+}
+
+/* a hacked around include function
+* that imports other js files
+*/
+function include(path) {
+	var script = document.createElement('script');
+	script.src = path;
+	script.type = 'text/javascript';
+	document.getElementsByTagName('head')[0].appendChild(script);
 }
