@@ -124,10 +124,8 @@
 						possible values 		: {0 = no selection, ignore
 												   "question-response"
 												   "fill-in-the-blank"
-												   ...
 												   (see <option>'s value field below)
 												   ...
-												   "graded-questions"
 											      }
 						
 						"question-N" 			: the question
@@ -135,13 +133,18 @@
 						
 						"answer-N"				: answer corresponding to question-N
 						possible values			: text of any size
+						
 						NOTE: for multiple choice or multiple answer questions, can have
 								many "answer-N" fields. Make sure you get them all.
 								Java Servlet requests should return a getParameterValues() array 
 								which allows you to iterate through and get all values
 								of that field.
 						
-						"timed
+						"timed-N"				: whether the N-th question should be timed
+						possible values			: "on" or doesn't exist
+						
+						"time-limit-N"			: the time limit for the Nth question
+						possible values			: a number represented as a string
 						
 					-->
 					
@@ -179,8 +182,11 @@
 				
 				
 				<!--
-					HIDDEN FORMS: Not used for actual forms, but just here so we can dynamically
+					////////////////////////////////////////////////////////////////////////////
+					HIDDEN FORMS: 
+					Not used for actual forms, but just here so we can dynamically
 					generate form content when the user selects a question type. 
+					////////////////////////////////////////////////////////////////////////////
 				-->
 				<div id="question-type-box" style="display:none">
 					<!-- for a question type, these fields need to be dynamically added:
@@ -221,7 +227,7 @@
 				<div id="question-response" style="display:none;">
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					</h6>Your Response</h6><br/>
+					<h6>Your Response</h6><br/>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
@@ -229,7 +235,7 @@
 				<div id="fill-in-the-blank" style="display:none;">
 					<h6>Your Question (must include <BLANK> to let us know where to put blank) </h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					</h6>Your Response</h6><br/>
+					<h6>Your Response</h6><br/>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
@@ -237,7 +243,7 @@
 				<div id="multi-answer-question" style="display:none;">
 					<h6>Your Question(s)</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					</h6>Your Response(s)</h6><br/>
+					<h6>Your Response(s)</h6><br/>
 					<h6 class="add-input-text"><a>[+] Add a Response</a></h6>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
@@ -246,7 +252,7 @@
 				<div id="multiple-choice" style="display:none;">
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					</h6>Your Response</h6><br/>
+					<h6>Your Response</h6><br/>
 					<h6 class="add-input-text"><a>[+] Add a Response</a></h6>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
@@ -255,7 +261,7 @@
 				<div id="multiple-choice-multiple-answer" style="display:none;">
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					</h6>Your Response</h6><br/>
+					<h6>Your Response</h6><br/>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
@@ -265,7 +271,7 @@
 					<input type="text" name="image-" placeholder="Your Question" size="50" /><br/>
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					</h6>Your Response</h6><br/>
+					<h6>Your Response</h6><br/>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
@@ -284,15 +290,22 @@
 					<input type="text" name="question-" placeholder="Your Question" size="25" /><br/>
 				</div>
 				
+				<!-- 
+				///////////////////////////////
+				Time limit textbox; when a user
+				checks the "Timed?" option for
+				any question, this is what
+				gets appended.
+				//////////////////////////////
+				 -->
 				<div id="time-limit" style="display:none;">
 					<input type="text" name="time" placeholder="10" size="5" />
 				</div>
-				
 		</div>
 		<div id="footer" class="row">
 			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
 		</div>
-		
+		</div><!--  row -->
 	</div>
 	<!-- container -->
 	
