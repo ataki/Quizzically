@@ -49,7 +49,7 @@ function adminInit() {
 			$.ajax({
 				url: Mach.adminServer,
 				type: "POST",
-				data: { type:"user", user:userid, option:opt },
+				data: { type:"user", targetID:userid, option:opt },
 				success: function(data) {
 						$(spinnerPtr).remove();
 						$(find_parent_who_has_class(thisPtr, "nav-bar")).toggle(true);

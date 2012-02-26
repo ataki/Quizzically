@@ -146,9 +146,12 @@ $(document).ready(function() {
 });
 
 function generateWarningDisableSubmit(inputbox) {
-	Mach.timerInverseSema++;
 	// don't let the user submit !
-	$(inputbox).addClass('warning');
+	if($(inputbox).attr("class") &&
+		$(inputbox).attr("class").search("warning") < 0)
+		Mach.timerInverseSema++;
+	else 
+		$(inputbox).addClass('warning');
 	$('input[type=submit]').attr('disabled', 'disabled');
 }
 

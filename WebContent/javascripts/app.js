@@ -68,7 +68,7 @@ $(document).ready(function () {
 	* every page, site-wide
 	*------------------------------------- */
 	include('javascripts/jquery.gritter.min.js');
-	
+	// include('javascripts/jquery.tablesorter.min.js');
 	
 	/* TABS ----------------------
 	Activate our tabs

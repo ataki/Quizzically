@@ -99,9 +99,9 @@
 				<ul class="nice tabs-content contained">
 			
 					<!-- YOUR OWN PAST RESULTS -->
-					<li class="active" id="pastTab" id="user-performance-table" class="tablesorter">
+					<li id="pastTab">
 				  		<br/>
-						<table width="800">
+						<table width="800" id="user-performance-table" class="tablesorter">
 									<thead>
 										<tr>
 											<th width="15%">Score</th>
@@ -114,14 +114,24 @@
 												<td>231</td>
 												<td>4344 seconds</td>
 												<td>Feb 12 2012</td>
-											</tr>
+										</tr>
+										<tr class="hover-highlight">
+												<td>232</td>
+												<td>4344 seconds</td>
+												<td>Feb 12 2012</td>
+										</tr>
+										<tr class="hover-highlight">
+												<td>234</td>
+												<td>4344 seconds</td>
+												<td>Feb 12 2012</td>
+										</tr>
 										
 									</tbody>
 						</table>
 				  	</li>
 				  	
 				  	<!-- USERS' BEST RESULTS -->
-				  	<li class="active" id="topTab">
+				  	<li id="topTab">
 						<br/>
 							<table width="800"  id="top-performance-table" class="tablesorter">
 										<thead>
@@ -142,7 +152,7 @@
 				  	</li>
 				  	
 				  	<!-- MOST RECENT REGARDLESS OF RESULTS -->
-					<li class="active" id="lastTab" >
+					<li id="lastTab" >
 				  		<br/>
 						<table width="800" id="last-performance-table" class="tablesorter">
 									<thead>
@@ -164,7 +174,7 @@
 				  	</li>
 				  	
 				  	<!-- TOP LAST DAY RESULTS -->
-					<li class="active" id="lastDayTab" >
+					<li id="lastDayTab" >
 				  		<br/>
 						<table width="800" id="top-last-day-performance-table" class="tablesorter">
 									<thead>
@@ -188,7 +198,7 @@
 				  	<!-- TOP LAST DAY RESULTS -->
 					<li class="active" id="statsTab">
 				  		<br/>
-						<table width="800">
+						<table width="800" class="tablesorter">
 									<thead>
 										<tr>
 											<th width="15%">Score</th>
@@ -211,70 +221,6 @@
 				
 			</div>
 		</div>
-		
-		
-		
-		<!-- SIX COLUMN 
-				<div class="row">
-					<div class="six columns">
-						<div class="panel">
-							<p>Six columns</p>
-						</div>
-					</div>
-					<div class="six columns">
-						<div class="panel">
-							<p>Six columns</p>
-						</div>
-					</div>
-				</div>
-		-->
-
-		<!--TABS
-				<h3>Tabs</h3>
-				<dl class="tabs">
-					<dd><a href="#simple1" class="active">Simple Tab 1</a></dd>
-					<dd><a href="#simple2">Simple Tab 2</a></dd>
-					<dd><a href="#simple3">Simple Tab 3</a></dd>
-				</dl>
-
-				<ul class="tabs-content">
-					<li class="active" id="simple1Tab">This is simple tab 1's content. Pretty neat, huh?</li>
-					<li id="simple2Tab">This is simple tab 2's content. Now you see it!</li>
-					<li id="simple3Tab">This is simple tab 3's content. It's, you know...okay.</li>
-				</ul>
-				
-		-->
-	
-		<!-- BUTTONS
-				<h3>Buttons</h3>
-
-				<p><a href="#" class="small blue button">Small Blue Button</a></p>
-				<p><a href="#" class="blue button">Medium Blue Button</a></p>
-				<p><a href="#" class="large blue button">Large Blue Button</a></p>
-
-				<p><a href="#" class="nice radius small blue button">Nice Blue Button</a></p>
-				<p><a href="#" class="nice radius blue button">Nice Blue Button</a></p>
-				<p><a href="#" class="nice radius large blue button">Nice Blue Button</a></p>
-
-			-->
-		
-		<!--OTHER
-			</div>
-`		
-			<div class="four columns">			
-				<h4>Getting Started</h4>
-				<p>We're stoked you want to try Foundation! To get going, this file (index.html) includes some basic styles you can modify, play around with, or totally destroy to get going.</p>
-
-				<h4>Other Resources</h4>
-				<p>Once you've exhausted the fun in this document, you should check out:</p>
-				<ul class="disc">
-					<li><a href="http://foundation.zurb.com/docs">Foundation Documentation</a><br />Everything you need to know about using the framework.</li>
-					<li><a href="http://github.com/zurb/foundation">Foundation on Github</a><br />Latest code, issue reports, feature requests and more.</li>
-					<li><a href="http://twitter.com/foundationzurb">@foundationzurb</a><br />Ping us on Twitter if you have questions. If you build something with this we'd love to see it (and send you a totally boss sticker).</li>
-				</ul>
-			</div>
-		</div>
-		-->
 		<div id="footer" class="row">
 			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
 		</div>
@@ -288,6 +234,9 @@
 	<script src="javascripts/foundation.js"></script>
 	<script src="javascripts/app.js"></script>
 	<script src="javascripts/main.js"></script>
+	<script src="javascripts/core.js"></script>
+	<script src="javascripts/drag-n-drop.js"></script>
+	<script src="javascripts/quiz.js"></script>
 	<script src="javascripts/jquery.tablesorter.min.js"></script>
 	
 </body>

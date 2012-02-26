@@ -82,7 +82,12 @@
 							<h5>Make Announcements</h5>
 							 <!-- Make an announcement -->
 							 <form action="MessageServlet"><br/>
-								<textarea class="expand" placeholder="Attention!" id="announcement" rows="3"></textarea>
+								<textarea class="expand" placeholder="Attention!" id="announcement" name="announcement" rows="3"></textarea>
+								<select name="priority">
+									<option value="low">Low</option>
+									<option value="med">Medium</option>
+									<option value="high">High</option>
+								</select><br/>
 								<input type="submit" class="blue button" value="Announce!" />
 							 </form>
 						 </div>
