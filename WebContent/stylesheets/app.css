@@ -850,6 +850,23 @@
 	
 	.hover-highlight:hover {
 		background:#FEF1B5;
+		color:#000;
+	}
+	
+	.pink.box,
+	.pink.box *,
+	.pinkhover-highlight:hover,
+	.pinkhover-highlight:hover * {
+		background:#F64A8A;
+		color:#FFF;
+	}
+	
+	.blue.box,
+	.blue.box *,
+	.bluehover-highlight:hover, 
+	.bluehover-highlight:hover *{
+		background:#318CE7;
+		color:#FFF;
 	}
 		
 	#footer {
@@ -874,6 +891,24 @@
 	 .hover-light:hover {
 		opacity:0.8;
 	 }
+	 
+	 /*	Blockquotes  */
+	blockquote, blockquote p { line-height: 20px; color: #777; }
+	blockquote { margin: 0 0 18px; padding: 9px 20px 0 19px; border-left: 1px solid #ddd; }
+	blockquote cite { display: block; font-size: 12px; font-size: 1.2rem; color: #555; }
+	blockquote cite:before { content: "\2014 \0020"; }
+	blockquote cite a, blockquote cite a:visited { color: #555; }
+	
+	.tag { cursor:pointer; padding: 0px 4px 2px; font-size: 11px; font-weight: bold; text-align: center; text-decoration: none; line-height: 1;  white-space: nowrap; display: inline; position: relative; bottom: 1px; color: #fff; background: #00a6fc; }
+	.tag.radius { -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px; }
+	.tag.round { padding: 1px 7px 2px; -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }
+	
+	/* Colors ---------- */
+	.blue..tag				{ background-color: #217ED3; }
+	.red..tag				{ background-color: #e91c21; }
+	.green..tag			{ background-color: #7fae00; }
+	.white..tag			{ background-color: #e9e9e9; color: #333; }
+	.black..tag			{ background-color: #141414; }
 	
 	/* -----------------------------------------
 	   Index
@@ -913,6 +948,22 @@
 		padding:10px;
 		font-weight:bold;
 		color:#000;
+	}
+	
+	.gray {
+		background-color:#ccc;
+	}
+	
+	.box {
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius: 5px;
+		margin:10px;
+		font-size:40px;
+		font-weight:bold;
+		padding:50px 10px 10px 0px;
+		vertical-align:center;
+		text-align:center;
 	}
 	
 	/* -----------------------------------------

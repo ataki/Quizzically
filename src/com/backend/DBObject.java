@@ -10,7 +10,8 @@ import java.sql.Statement;
 
 public class DBObject {
 	
-	DBOject() {
+	public DBObject() {
+		
 	}
 
 }

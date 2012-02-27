@@ -80,7 +80,7 @@ $(document).ready(function() {
 			* Javascript is single-threaded so ok 
 			* to have this global variable
 			*/
-			timerInverseSema:0,
+			timerInverseSema:0
 		});
 	}
 	/* If we don't detect windows.MACH, just abort*/

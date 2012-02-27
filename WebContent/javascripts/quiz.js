@@ -68,7 +68,7 @@ $(document).ready(function() {
 						  "matching":"type22",
 						  "timed-question":"type23",
 						  "auto-generated":"type24",
-						  "graded-questions":"type25",
+						  "graded-questions":"type25"
 			},
 			
 			/*
