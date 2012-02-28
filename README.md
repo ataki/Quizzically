@@ -58,5 +58,16 @@ jQuery growl - notification popup like Mac OSX growl.
 simple-json - Java Library for parsing JSON.
 
 
+------------------
+| System Details |
+------------------
+Communication:
+	We do client-to-server communcation mostly via POST requests to a server,
+		which processes the request according to a common object format that both
+		our Servlet and front-end "agrees" to identify. 
+	Push requests from server to client are done primarily using GSON, Google's
+	Java JSON parsing library. 
 
+
+	
 
