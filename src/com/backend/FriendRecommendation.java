@@ -24,40 +24,14 @@ public class FriendRecommendation {
 	private HashSet<FriendPair> noFriendPairs;
 	private int NUM_RECOMMENDATIONS = 5;
 	
-	public class FriendPair{
-		public int user1;
-		public int user2;
+	public class FriendPair extends HashSet<Integer>{
+		
 		FriendPair(int user1, int user2){
-			this.user1 = user1;
-			this.user2 = user2;
+			super.add(user1);
+			super.add(user2);
 		}
-
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (!(obj instanceof FriendPair)) {
-				return false;
-			}
-			FriendPair other = (FriendPair) obj;
-			
-			if (user1 == other.user1 && user2 == other.user2) {
-					return true;
-			}
-			if (user1 == other.user2 && user2 == other.user1) {
-				return true;
-			}
-			return false;
-		}
-
-		public String toString(){
-			return "(" + user1 + "," + user2 + ")";
-		}
+		
+		
 	}
 	
 	FriendRecommendation(){
@@ -113,7 +87,7 @@ public class FriendRecommendation {
 				tempj = users_list.get(j);	
 				
 				newPair = new FriendPair(tempi,tempj);
-				if(!noFriendPairs.contains(newPair));
+				if(!noFriendPairs.contains(newPair))
 					combinations.add(newPair);	
 			}
 				
