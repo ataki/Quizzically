@@ -34,7 +34,7 @@ public class GSONWrapper {
 		}
 		
 		public String toString() {
-			return alias + ":(" + first + " " + last + ")" + "pw: " + password;
+			return alias + ":(" + first + " " + last + ")" + " pw: " + password;
 		}
 	}
 	
@@ -58,13 +58,45 @@ public class GSONWrapper {
 						  "\"password\":\"secrettechnique\"" + 
 						  "}";
 		
-		System.out.println(JSONofUser);
+		// System.out.println(JSONofUser);
 		// STRING TO OBJECT CLASS
 		String json = gs.toJson(user);
-		System.out.println(json);
+		//System.out.println(json);
 		
 		// OBJECT CLASS TO STRING
 		User obj = gs.fromJson(JSONofUser, User.class);
-		System.out.println(obj);
+		//System.out.println(obj);
+		
+		// JSON STRING TO OBJECT ARRAY 
+		JSONofUser =	 "[" +  
+						  "{" +
+						  "\"alias\":\"cowabunga23\"," +
+						  "\"first\":\"William\"," +
+						  "\"last\":\"Johnson\"," +
+						  "\"password\":\"secrettechnique\"" + 
+						  "}," +
+						  
+						  "{" +
+						  "\"alias\":\"helios22a\"," +
+						  "\"first\":\"Nick\"," +
+						  "\"last\":\"Burley\"," +
+						  "\"password\":\"dontsweatit\"" + 
+						  "}," +
+						  
+						  "{" +
+						  "\"alias\":\"anon342\"," +
+						  "\"first\":\"William\"," +
+						  "\"last\":\"Johnson\"," +
+						  "\"password\":\"secrettechnique\"" + 
+						  "}," +
+						  
+						  "]";
+		JsonParser parser = new JsonParser();
+		JsonArray array = parser.parse(JSONofUser).getAsJsonArray();
+		
+		for(int i =0; i < array.size(); i++) {
+			User converted = gs.fromJson(array.get(i), User.class);
+			if(converted != null) System.out.println(converted);
+		}
 	}
 }

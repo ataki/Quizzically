@@ -160,32 +160,6 @@ $(document).ready(function () {
 		$.post(Mach.annoucementServer, { user : Mach.user , number : uniqueId });
 	});
 	
-	////////////// SEARCH FUNCTIONALITY ///////////////
-	/////////////// DOES NOT YET WORK ////////////////
-	if($("#searchbar") != null) {
-		$("#searchbar").focusin(function() {
-			var thisPtr = this;
-			Mach.searchIntervalID = setInterval(function() {
-				// first check our cache. If not there, go to
-				// backend and get first few recommendations
-				// if no recommendations set up, just get
-				// by alphabetical order.
-				var data;
-				for(var i = 0; i < data.length; i++) {
-					$('#searchpanel').append(data[i]);
-				}
-			}, 500);
-		});
-		
-		$("#searchbar").focusout(function() {
-			if(Mach.searchIntervalID != null) {
-				clearInterval(Mach.searchIntervalID);
-			}
-		});
-		
-	}
-	
-	
 });	// end of document.ready
 
 /* Lib.js --------------------

@@ -8,6 +8,10 @@ package com.models;
  * the front-end.
  * Use these in coordination with GSON to easily
  * produce JSON Strings from Objects and vice versa.
+ * 
+ * Most of the communication will be push, i.e.
+ * from server to client, but these are still helpful
+ * in case the client translates from server to client.
  *  
  * For more info see DESIGNDOCS (Google Docs).
  * 
@@ -34,6 +38,29 @@ public class Parcel {
 		}
 	}
 	
+	/**
+	 * Ask is a way for the front end to request 
+	 * data from the backend by doing an "ask".
+	 * Based on the type, the server would
+	 * respond with a JSON String representing
+	 * an array of objects, each representing
+	 * a suggestion
+	 * 
+	 * @author jimzheng
+	 *
+	 */
+	public static class Ask { 
+		public String type;
+		public int id;
+		public String aux;
+		
+		public Ask(int id, String type, String aux) {
+			this.id = id;
+			this.type = type;
+			this.aux = aux;
+		}
+	}
+	
 	public static class Recommendation {
 		public String type;			/* see Type.java for enum */
 		public String name;			/* recommended names */
@@ -51,6 +78,7 @@ public class Parcel {
 	public static class Admin {
 		public String type;			/* see Type.java for enum */		
 		public Aux aux;				/* Extensible aux field. */
+		
 		public Admin(String type, Object aux) {
 			this.type = type;
 			if(aux != null && aux instanceof Aux) {

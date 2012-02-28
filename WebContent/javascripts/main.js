@@ -28,6 +28,7 @@ $(document).ready(function() {
 			ratingServer:"RatingServlet",
 			announcementServer:"AnnouncementServlet",
 			adminServer:"AdminServlet",
+			recommendationServer:"RecommendationServlet",
 			quizDataServer:"QuizDataServlet", /* not used*/
 			
 			/* Container class names */
@@ -98,21 +99,86 @@ $(document).ready(function() {
 		}, 1000);
 	}
 	
+	/* SEARCH FUNCTIONALITY -----------
+	* Fetch and cache data in browser.
+	* Search thru cache, then go by
+	* alphabetical order by requesting
+	* from server.
+	----------------------------------- */
+	if($("#searchbar") != null) {
+		
+		// FetchRecommendationDataFromServer();
+		
+		$("#searchbar").focusin(function() {
+			var thisPtr = this;
+			Mach.searchIntervalID = setInterval(function() {
+				// first check our cache. If not there, go to
+				// backend and get first few recommendations
+				// if no recommendations set up, just get
+				// by alphabetical order.
+				var queryWord = $("#searchbar").val(),
+					result = isInCache(queryWord);
+				
+				if(!!(result == undefined)) {
+					appendToSuggestionsBox(result);
+				}
+				
+				
+			}, 500);
+		});
+		
+		$("#searchbar").focusout(function() {
+			if(Mach.searchIntervalID != null) {
+				clearInterval(Mach.searchIntervalID);
+			}
+		});
+		
+	}
+	
 });
+
+/* appends <span> suggestions </span> rows
+ * to suggestions box below search bar
+ */
+function appendToSuggestionsBox(data) {
+	for(var i = 0; i < data.length; i++) {
+		$('#searchpanel').append('<span>' + data[i] + '</span>');
+	}
+}
+
+function isInCache(query) {
+	if(Mach.recommendationData == undefined) 
+		return false;
+	var section = Mach.recommendationData[query[i]]
+}
+
+/*
+ * gets a huge json string from the server and stores it in JSON
+ * form within our universal Mach var.
+ */
+function FetchRecommendationDataFromServer() {
+	$.post(Mach.recommendationServer, 
+		{user:Mach.username, type:"Ask", type_type:"recommendations", id:Mach.userid},
+		function(json) {
+			Mach.recommendationData = json;
+		}
+	);
+}
+
 
 /* pushes form data into quiz container based on certain
 * parameters 
 */
 function appendQuiz() {
 	$('#' + Mach.createForm.name).empty();
-	
 }
 
 /* Bunch of code that retrieves 
 * data from server and appends it 
 * to our containers. Don't need to
 * actually use this function unless
-* we're doing something fancy.
+* we're doing something fancy like
+* synchronization in real-time
 */
 function RetrieveFromServer() {
 	/* MESSAGE DATA ------------------------
