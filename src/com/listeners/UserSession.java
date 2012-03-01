@@ -1,9 +1,15 @@
 package com.listeners;
 
+import java.util.ArrayList;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import com.models.Parcel.User;
+/**
+ * Updated by Sydney 2/29/2012
+ */
 /**
  * Application Lifecycle Listener implementation class UserSession
  * 
@@ -28,12 +34,14 @@ public class UserSession implements HttpSessionListener {
 	/**
 	 * User object for this session
 	 */
-	// private User user;
-	
+	 private ArrayList<User> usersList;
+	 private int num_sessions;
     /**
      * Default constructor. 
      */
     public UserSession() {
+    	usersList = new ArrayList<User>();
+    	num_sessions = 0;
         // TODO Auto-generated constructor stub
     }
 
@@ -41,14 +49,22 @@ public class UserSession implements HttpSessionListener {
      * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
      */
     public void sessionCreated(HttpSessionEvent arg0) {
-        // TODO Auto-generated method stub
+        //assuming loginSevlet will update these perameters    	
+    	num_sessions++;
+    	User user = new User(null, null, null, -1, null);
+    	usersList.add(user);
+    	arg0.getSession().setAttribute("User",user);
+    	arg0.getSession().setAttribute("SessionId", num_sessions-1);
+
     }
 
 	/**
      * @see HttpSessionListener#sessionDestroyed(HttpSessionEvent)
      */
     public void sessionDestroyed(HttpSessionEvent arg0) {
-        // TODO Auto-generated method stub
+        int sessionId = (Integer) arg0.getSession().getAttribute("SessionId");
+        usersList.remove(sessionId-1);
+        num_sessions--;
     }
 	
 }
