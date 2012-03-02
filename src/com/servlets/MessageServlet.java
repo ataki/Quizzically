@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.backend.MessageManager;
+import com.google.gson.Gson;
 import com.models.Parcel;
 import com.models.Type;
 import com.models.Type_Type;
@@ -48,6 +49,11 @@ public class MessageServlet extends HttpServlet {
 		try {
 			MessageManager.Message msg	= mmg.getMessage(id);
 			Parcel.User parcel_message = new Parcel.User(Type.message, Type_Type.valueOf(msg.messageType), msg.message, msg.fromUser_id,null);
+			Gson converter = new Gson();
+			String result = converter.toJson(parcel_message);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
