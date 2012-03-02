@@ -23,13 +23,13 @@ package com.models;
 public class Parcel {
 
 	public static class User {
-		public String type;			/* see Type.java for enum */
-		public String type_type;	/* see Type_Type.java for enum */
+		public Type type;			/* see Type.java for enum */
+		public Type_Type type_type;	/* see Type_Type.java for enum */
 		public String text;			/* body of text related to type */
 		public int id;				/* userid/announcementID/... */
-		public String aux;			/* any auxiliary data */
+		public Aux aux;			/* any auxiliary data */
 		
-		public User(String type, String type_type, String text, int id, String aux) {
+		public User(Type type, Type_Type type_type, String text, int id, Aux aux) {
 			this.type = type;
 			this.type_type = type_type;
 			this.text = text;
