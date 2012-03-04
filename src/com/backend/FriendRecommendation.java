@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -112,8 +110,7 @@ public class FriendRecommendation {
 		Collections.sort(recommendations, new Comparator<FriendPair>(){
 
 			@Override
-			public int compare(FriendPair arg0, FriendPair arg1) {
-				
+			public int compare(FriendPair arg0, FriendPair arg1) {				
 				return friendsRecTable.get(arg1)- friendsRecTable.get(arg0);
 			}
 		});

@@ -72,8 +72,8 @@ public class User extends DBObject {
 		}
 	}
 	
-	public int getId() { return id; }
-	public String getName() { return name; }
+	public int getUserId() { return id; }
+	public String getUserName() { return name; }
 	public String getAchievements() { return achievements; }
 		
 	public int getId(String name) {
@@ -129,35 +129,11 @@ public class User extends DBObject {
 		return buff.toString();
 	}	
 	
-	public String getName(int id) {
-		return "";
+	public String getName(int id) throws SQLException {
+		String query = "SELECT name FROM " + currentTable + " WHERE id = " + id;
+		ResultSet rs = super.getResults(query);
+		return rs.getString("name");
 	}
-
-	/*
-	public static ArrayList<User> getUsers(String filter) {
-		String query = "SELECT * FROM " + currentTable + " WHERE name LIKE \"%" + name +"%\"";
-		ResultSet rs = getResults(query);
-			
-		ArrayList<User> usersList = new ArrayList<User>();
-
-		try {
-			while(rs.next()){
-				User user = new User();
-				user.id = rs.getInt("id");
-				user.name = rs.getString("name");
-				user.password = rs.getString("password");
-				user.salt = rs.getInt("salt");
-				user.access = rs.getBoolean("access");
-				usersList.add(user);
-				return usersList;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	*/
 
 //	DB implemenation in User.java  getUsers(String userFilter);
 /*
