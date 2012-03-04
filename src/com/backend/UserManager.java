@@ -23,12 +23,7 @@ public class UserManager extends DBObject{
 
 		try {
 			while(rs.next()){
-				User user = new User();
-				userid = rs.getInt("id");
-				user.name = rs.getString("name");
-				user.password = rs.getString("password");
-				user.salt = rs.getInt("salt");
-				user.access = rs.getBoolean("access");
+				User user = new User(rs.getInt("id"),rs.getString("name"),rs.getString("achievements"));
 				usersList.add(user);
 				return usersList;
 			}
