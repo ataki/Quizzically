@@ -30,8 +30,8 @@ public class User extends DBObject {
 		this.achievements = achievements;
 	}
 	
-	public int getId() { return id; }
-	public String getName() { return name; }
+	public int getUserId() { return id; }
+	public String getUserName() { return name; }
 	public String getAchievements() { return achievements; }
 		
 	public int getId(String name) {
@@ -64,8 +64,10 @@ public class User extends DBObject {
 		return buff.toString();
 	}	
 	
-	public String getName(int id) {
-		return "";
+	public String getName(int id) throws SQLException {
+		String query = "SELECT name FROM " + currentTable + " WHERE id = " + id;
+		ResultSet rs = super.getResults(query);
+		return rs.getString("name");
 	}
 
 //	DB implemenation in User.java  getUsers(String userFilter);
