@@ -1,14 +1,23 @@
 package com.models;
 
+import java.sql.SQLException;
 import java.sql.Time;
 
 import com.backend.DBObject;
+import com.models.Question;
+
+import java.sql.*;
+import java.util.List;
+
 /**
  * 
  * @author Sydney
  * Quiz object stores information of a quiz
  */
 public class Quiz extends DBObject {
+	
+	public static String delim = "##";
+	
 	private int id;
 	private String author;
 	private Time timestamp;
@@ -16,11 +25,30 @@ public class Quiz extends DBObject {
 	private String tags;
 	private boolean randomness;
 	private int rating;
+	private int numRated;
+	
+	/** A quick way of creating a quiz and syncing it immediately
+	 * with the database
+	 */
+	public static void QuizUpload(List<Question>Q, List<Question.Answer>A) {
+		Quiz quiz = new Quiz();
+		// TODO: PLEASE FILL THIS OUT 
+		// THIS IS TOP PRIORITY
+		// can use executeBatch for this 
+	}
+	
 	public Quiz() {
 		super(DBObject.quizTable);
 		// TODO Auto-generated constructor stub
 	}
-	public Quiz(int id, String author, Time timestamp, String category, String tags, boolean randomness, int rating) {
+	public Quiz(int id, 
+			String author, 
+			Time timestamp, 
+			String category, 
+			String tags, 
+			boolean randomness, 
+			int rating,
+			int numRated) {
 		super(DBObject.quizTable);
 		this.id = id;
 		this.author = author;
@@ -28,6 +56,7 @@ public class Quiz extends DBObject {
 		this.tags = tags;
 		this.randomness = randomness;
 		this.rating = rating;
+		this.numRated = numRated;
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -115,5 +144,91 @@ public class Quiz extends DBObject {
 		this.rating = rating;
 	}
 
+	/** Fetches user info from database */
+	private String fetchString = "select * from "  + DBObject.quizTable +
+								"where ID = ? " + "limit 1";
+	public boolean fetch() {
+		if(! conPrepare(fetchString)) return false;
+		try {
+			prepStatement.setInt(1, this.id);
+			return this.executePrepared();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;							
+	}
 	
+	
+	/**
+	 * Private Objects
+	 */
+
+	/**
+	 * Rating Object - used to interact with remote server
+	 * to tell a user about the rating  
+	 * @author jimzheng
+	 */
+	public class Rating {
+		public int rating;
+		public int quizId;
+		public Rating(int rating, int quizId) {
+			this.rating = rating;
+			this.quizId = quizId;
+		}
+	}
+	
+	public class Category {
+		public String category;
+		public int quizId;
+		public Category(String category, int quizId) {
+			this.category = category;
+			this.quizId = quizId;
+		}
+	}
+	
+	/**
+	 * Database Operations
+	 */
+	
+	private String addRatingString = 
+		"update" + DBObject.quizTable + 
+		"set RATING = (RATING + ?) / (NUMRATED + 1) " + 
+		"	 NUMRATED  = NUMRATED + 1" +
+		"where ID = ?";
+	
+	public boolean addRating(Rating r) {
+		if(!this.conPrepare(addRatingString)) return false;
+		try {
+			prepStatement.setInt(1, r.quizId);
+			prepStatement.setInt(2, r.rating);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return this.executePrepared();
+	}
+	
+	private String addCategoriesString = 
+		"update" + DBObject.quizTable +
+		"set CATEGORY = concat(CATEGORY, ?) " +
+		"where ID = ?";
+	public boolean addCategories(List<Category> categories) {
+		int quizId = categories.get(0).quizId;
+		StringBuilder all= new StringBuilder();
+		for(Category cat : categories) {
+			all.append(cat.category);
+			all.append(Quiz.delim);
+		}
+		
+		if(!this.conPrepare(addCategoriesString)) return false;
+		try {
+			prepStatement.setString(1, all.toString());
+			prepStatement.setInt(2, quizId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return this.executePrepared();
+	}
+
 }

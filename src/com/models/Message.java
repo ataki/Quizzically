@@ -1,7 +1,7 @@
 package com.models;
 
-import java.sql.Time;
-
+// import java.sql.Time;
+import java.util.Date;
 import com.backend.DBObject;
 
 public class Message extends DBObject {
@@ -12,10 +12,10 @@ public class Message extends DBObject {
 	private String message;
 	private boolean read;
 	private String messageType;
-	private Time timestamp;
+	private Date timestamp;
 	
 	public Message(int id, int fromUserId, int toUserId, String message,
-			boolean read, String messageType, Time timestamp) {
+			boolean read, String messageType, Date timestamp) {
 		super(DBObject.messageTable);
 		this.id = id;
 		this.fromUserId = fromUserId;
@@ -43,7 +43,7 @@ public class Message extends DBObject {
 	public String getMessageType() {
 		return messageType;
 	}
-	public Time getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 	

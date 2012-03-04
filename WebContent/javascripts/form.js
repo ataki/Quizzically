@@ -150,6 +150,20 @@ $(document).ready(function() {
 			$.post(Mach.createServer, { user: Mach.username, data:values});
 		});
 		
+		if($('#quiz-name').val().length == 0) {
+			generateWarningDisableSubmit($('#quiz-name'));
+		}
+		
+		$('#quiz-name').change(function() {
+			var value = $(this).val();
+			if(value.length != 0) {
+				reEnableInputAndSubmit(this);
+			} else {
+				if($(this).attr('class').search("warning") < 0)
+					generateWarningDisableSubmit($('#quiz-name'));
+			}
+		});
+		
 		
 	} // end of Mach Detect
 });
@@ -205,18 +219,18 @@ function generateWarningDisableSubmit(inputbox) {
 	// don't let the user submit !
 	if($(inputbox).attr("class") &&
 		$(inputbox).attr("class").search("warning") < 0)
-		Mach.timerInverseSema++;
+		var a = 5;
 	else 
 		$(inputbox).addClass('warning');
+	Mach.timerInverseSema++;
 	$('input[type=submit]').attr('disabled', 'disabled');
 }
 
 function reEnableInputAndSubmit(input) {
 	if(Mach.timerInverseSema > 0) Mach.timerInverseSema--;
 	$(input).removeClass('warning');
-	
+	// let the user submit
 	if(Mach.timerInverseSema == 0) {
-		// let the user submit
 		$('input[type=submit]').removeAttr('disabled');
 	}
 }
@@ -273,6 +287,17 @@ function addQuestionBlockChangeFunctions() {
 				var uniqueID = parentID.charAt(parentID.length-1);
 				if(parentID.search("match") < 0) {
 					$(generateTextBox("answer-" + uniqueID)).insertAfter(this);
+				} 
+				else { /* do nothing, error in html */}
+			});
+			
+			// almost same as above, but for multi-choice-multi-answer,
+			// distinguish between the wrong choice
+			$('.' + 'n' + Mach.addInputText).click(function() {
+				var parentID = find_parent_who_has_id(this);
+				var uniqueID = parentID.charAt(parentID.length-1);
+				if(parentID.search("match") < 0) {
+					$(generateTextBox("nanswer-" + uniqueID)).insertAfter(this);
 				} 
 				else { /* do nothing, error in html */}
 			});

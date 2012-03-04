@@ -69,9 +69,9 @@
 				<!-- Begin creation form-->
 			
 				<div class="twelve columns">
-					<form action="CreateServlet" method="post" id="create-container" name="create-editor" >
+					<form action="CreateServlet" method="get" id="create-container" name="create-editor" >
 					<label for="quiz-name">Quiz Name</label>
-					<input name="quiz-name" type="text" placeholder=""/><br/><br/>	
+					<input id="quiz-name" name="quiz-name" type="text" placeholder=""/><br/><br/>	
 					<input id="num-questions" name="num-questions" type="hidden" value="1"/>
 					
 					<h5>Options</h5>
@@ -165,12 +165,13 @@
 								  <option value="0" selected></option>
 								  <option value="question-response">Question-Response</option>
 								  <option value="fill-in-the-blank">Fill-in-the-Blank</option>
-								  <option value="multi-answer-question">Multiple Choice</option>
+								  <option value="multi-answer">Multiple Answer</option>
+								  <option value="multiple-choice">Multiple Choice</option>
 								  <option value="picture-response">Picture-Response</option>
-								  <option value="multiple-choice-multiple-answer">Multi-answer</option>
+								  <option value="multiple-choice-multiple-answer">Multi-Choice-Multi-Answer</option>
 								  <option value="matching">Matching</option>
 								  <option value="auto-generated">Auto-Generated</option>
-								  <option value="graded-questions">Graded Question</option>
+								  <option value="graded-question">Graded Question</option>
 							</select>
 							<div id="question-block-1">
 							</div>
@@ -223,12 +224,13 @@
 								  <option value="0" selected></option>
 								  <option value="question-response">Question-Response</option>
 								  <option value="fill-in-the-blank">Fill-in-the-Blank</option>
-								  <option value="multi-answer-question">Multiple Choice</option>
+								  <option value="multi-answer">Multiple Answer</option>
+								  <option value="multiple-choice">Multiple Choice</option>
 								  <option value="picture-response">Picture-Response</option>
-								  <option value="multiple-choice-multiple-answer">Multi-answer</option>
+								  <option value="multiple-choice-multiple-answer">Multi-Choice-Multi-Answer</option>
 								  <option value="matching">Matching</option>
 								  <option value="auto-generated">Auto-Generated</option>
-								  <option value="graded-questions">Graded Question</option>
+								  <option value="graded-question">Graded Question</option>
 							</select>
 							<div id="question-block-">
 							</div>
@@ -254,7 +256,7 @@
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				
-				<div id="multi-answer-question" style="display:none;">
+				<div id="multi-answer" style="display:none;">
 					<h6>Your Question(s)</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
 					<h6>Your Response(s)</h6><br/>
@@ -266,7 +268,7 @@
 				<div id="multiple-choice" style="display:none;">
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					<h6>Your Response</h6><br/>
+					<br/><h6>Your Response:<br/><b><font color="red">The first response must be the correct one.</font></b></h6>
 					<h6 class="add-input-text"><a>[+] Add a Response</a></h6>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
@@ -275,8 +277,12 @@
 				<div id="multiple-choice-multiple-answer" style="display:none;">
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>
-					<h6>Your Response</h6><br/>
+					<br/><h6><b><font color="red">Your Correct Responses</font></b></h6>
+					<h6 class="add-input-text"><a>[+] Add a Response</a></h6>
 					<input type="text" name="answer-" placeholder="Your Answer" size="50" /><br/><br/>
+					<br/><h6><b><font color="red">Your Incorrect Responses</font></b></h6>
+					<h6 class="nadd-input-text"><a>[+] Add a Response</a></h6>
+					<input type="text" name="nanswer-" placeholder="Your Answer" size="50" /><br/><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 					

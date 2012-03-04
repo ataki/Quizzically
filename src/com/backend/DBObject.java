@@ -1,12 +1,14 @@
 package com.backend;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.BorderLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 // Author: Samir Patel
 
@@ -40,11 +42,12 @@ public class DBObject {
 	protected static String questionTable = "Quiz_question";
 	protected static String quizTable = "Quiz_quiz";
 	protected static String userTable = "Quiz_user";
-
+	
 	private static Connection connection;
 
 	// to be used by inherited classes to run queries
 	protected static Statement statement;
+	protected static PreparedStatement prepStatement;
 	
 	/**
 	 * Initialized connection and statement
@@ -97,5 +100,100 @@ public class DBObject {
 			e.printStackTrace();
 		}		
 	}
+	
+	/** @author Jim Zheng
+	 * Updated to include batch queries
+	 * and prepared statements
+	 * 
+	 * Don't use conPrepare if you have 
+	 * a query that requires questio marks
+	 * as this will detect it as incomplete. 
+	 * Instead, just prepare it raw.
+	 */
+	
+	/*
+	 * the main reason we have a wrapper for the 
+	 * PreparedStatement queries ; so that we can check 
+	 * for whehter a template is incomplete
+	 */
+	protected boolean checkPreparedQuery(String preparedQuery) {
+		return (preparedQuery.indexOf('?') != -1);
+	}
+	
+	/* Call first to initialize */
+	protected boolean conPrepare(String preparedQuery) {
+		if(! checkPreparedQuery(preparedQuery))
+			return false;
+		try {
+			connection.prepareStatement(preparedQuery);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/* update */
+	protected boolean updateTablePrepared() {
+		try {
+			prepStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/* execute */
+	protected boolean executePrepared() {
+		try {
+			prepStatement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	protected ResultSet getPrepared() {
+		try {
+			return prepStatement.executeQuery();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	/**
+	 * executeBatch
+	 * executing batch queries -- a lot faster than
+	 * doing a for-loop with execute stmts
+	 * @param batchQuery - a list of queries to execute */
+	protected int executeBatch(List<String>batchQuery) {
+		int [] results = null;
+		try {
+			connection.setAutoCommit(false);
+			for(String query : batchQuery) {
+				statement.addBatch(query);
+			}
+			results = statement.executeBatch();
+			connection.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+		if(results == null) return 0;
+		
+		int numUpdated = 0;
+		for(int i=0;i<results.length;i++)
+			numUpdated += results[i];
+		return numUpdated;
+	}
+	
+	
 }
 
