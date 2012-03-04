@@ -4,7 +4,8 @@
 <!DOCTYPE html>
 
 <%
-	int userId = request.getParameter("id");
+	int userId = Integer.parseInt(request.getParameter("id"));
+	User user = (User)session.getAttribute("user");
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -74,8 +75,8 @@
 		
 		<div class="row">
 			<div class="twelve columns">
-				<h3><%request.getParameter("id")%></h3>
-				<h6><a href="mailto:quantu323@gmail.com" style="margin-right:30px;">Email: quantum323@gmail.com</a>
+				<h3><%= request.getParameter("id") %></h3>
+				<h6><a href="mailto:<%= user.email %>" style="margin-right:30px;"><%= user.email %></a>
 				<a>Last Seen: 12 Feb 2012</a></h6>
 				
 				<div class="row">
@@ -92,9 +93,8 @@
 						id to whatever links necessitate them.
 						 -->				
 						
-						<h6>Hi! My name is Quantum and this is a description of me.
-						I'm afraid I'm treribly busy these days andhave no time for a proper,
-						long introduction. so please email me ! </h6>
+						<h6><%= user.description %> </h6>
+						
 						<blockquote>Tags: <a class="round tag" href="TagServlet/world">#world</a> 
 										<a class="round tag" href="TagServlet/geography">#georgraphy</a> 
 										<a class="round tag" href="TagServlet/news">#news</a> 

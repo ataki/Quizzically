@@ -6,16 +6,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import com.backend.DBObject;
+import com.models.*;
 
 public class User extends DBObject {
 
 	public static int INVALID_USER = -1;
 	private int id;
-	private String name;
+	public String email;
+	public String name;
+	public String description;
+	public int numQuizzesTaken;
 //	private boolean access;
 	private String achievements;
+	
 	
 	private void setValues(int id, String name, String achievements) {
 		this.id = id;
@@ -30,7 +36,7 @@ public class User extends DBObject {
 		achievements = "";
 		setValues(-1, "", "");
 	}
-
+	
 	public User(int id) {
 		super(DBObject.userTable);
 		id = -1;

@@ -80,7 +80,7 @@ public class MessageCreateServlet extends HttpServlet {
 			String messageType = (String)request.getAttribute("MessageType"); 			
 			MessageManager mm = new MessageManager();
 			try {
-				mm.addMessage(fromUser.getUserId(),toUser_id,message,messageType);
+				mm.addMessage(fromUser.getId(),toUser_id,message,messageType);
 				RequestDispatcher dispatch = request.getRequestDispatcher("MessageSent.HTML");
 				dispatch.forward(request, response);
 			} catch (SQLException e) {
