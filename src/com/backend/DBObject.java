@@ -1,11 +1,18 @@
 package com.backend;
 
-import java.sql.*;
+import java.util.ArrayList;
+import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 // Author: Samir Patel
 	
-public class DBObject {
+
+public class DBObject  {
 	private final String account = "ccs108wawa3070"; 
 	private final String password = "duhijieb";          
 	private final String server = "mysql-user.stanford.edu";
@@ -39,7 +46,7 @@ public class DBObject {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//let me know if the interface changes by Sydney
 	public Statement getStatement(){
 		return stmt;
