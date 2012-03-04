@@ -2,7 +2,7 @@ package com.backend;
 
 import java.util.ArrayList;
 
-public class User {
+public class User extends DBObject {
 	
 	private int id;
 	private String name;
@@ -11,7 +11,11 @@ public class User {
 	private boolean access;
 	private String acchievements;
 
-	public int getId(String name){
+//	DBObject db = new DBObject();
+//	stmt = db.getStatement();
+
+	
+	public int getId(String name) {
 		return 0;
 	}
 	
