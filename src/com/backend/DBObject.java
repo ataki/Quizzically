@@ -10,9 +10,7 @@ import java.sql.Statement;
 
 // Author: Samir Patel
 
-// this extends thread for future use... in case we want to protect against
-// concurrent DB updates... but this is not required.
-public class DBObject extends Thread {
+public class DBObject {
 	private static final String account = "ccs108wawa3070"; 
 	private static final String password = "duhijieb";          
 	private static final String server = "mysql-user.stanford.edu";
@@ -44,14 +42,12 @@ public class DBObject extends Thread {
 	protected static String userTable = "Quiz_user";
 
 	private static Connection connection;
+
+	// to be used by inherited classes to run queries
 	protected static Statement statement;
 	
-	public void run() {
-
-	}
-
 	/**
-	 * Initialized connection and 
+	 * Initialized connection and statement
 	 */
 	private void initConnection() {
 		try {
@@ -90,6 +86,15 @@ public class DBObject extends Thread {
 		}
 
 		return null;
+	}
+	
+	protected void updateTable(String query) {
+		try {
+			statement.executeUpdate(query);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 }
 

@@ -68,10 +68,6 @@ public class User extends DBObject {
 		}
 	}
 	
-	public User(String name, String password) {
-		createUser(name, password);
-	}
-	
 	public int getId() { return id; }
 	public String getUserName() { return name; }
 	public String getAchievements() { return achievements; }
@@ -83,9 +79,8 @@ public class User extends DBObject {
 	public static User getUser(String name) {
 		return new User(name);
 	}
-
 	
-	public User createUser(String name, String password) {
+	public static User createUser(String name, String password) {
 		if(getUser(name).getId() != -1) return null;
 
 		Random random = new Random();
@@ -107,16 +102,37 @@ public class User extends DBObject {
 			query.append("\"" + "\"); ");
 
 			System.out.println(query.toString());
-			updateTable(query.toString());
+			statement.executeUpdate(query.toString());
 
 			return new User(name);
 		}
 		catch(NoSuchAlgorithmException e) { 
 			e.printStackTrace();
 		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return null;
 	}
+	
+	public static boolean authenticateUser(String name, String password) {
+		User user = new User(name);
+		System.out.println("Password = " + user.password);
+		if(user.getId() == -1) return false;
+		
+		System.out.println("Password = " + user.password);
+
+		/*
+		try {
+		}
+		catch(NoSuchAlgorithmException e) { 
+			e.printStackTrace();
+		}
+*/		
+		return true;
+	}
+	
 	
 	// taken from Cracker assignment
 	private static String hexToString(byte[] bytes) {
