@@ -16,6 +16,7 @@ public class Message extends DBObject {
 	
 	public Message(int id, int fromUserId, int toUserId, String message,
 			boolean read, String messageType, Time timestamp) {
+		super(DBObject.messageTable);
 		this.id = id;
 		this.fromUserId = fromUserId;
 		this.toUserId = toUserId;
@@ -24,7 +25,7 @@ public class Message extends DBObject {
 		this.messageType = messageType;
 		this.timestamp = timestamp;
 	}
-	public int getId() {
+	public int getMessageId() {
 		return id;
 	}
 	public int getFromUserId() {
