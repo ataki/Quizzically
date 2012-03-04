@@ -73,6 +73,7 @@ public class DBObject {
 	}
 
 	public DBObject() {
+		if(connection == null) initConnection();
 	}
 	
 	protected ResultSet getResults(String query) {

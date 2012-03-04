@@ -15,8 +15,6 @@ import com.models.Message;
  */
 public class MessageManager extends DBObject {
 
-	
-	private Statement stmt;
 	private final String TABLE = "Quiz_message";
 	
 	public MessageManager(){
@@ -29,10 +27,10 @@ public class MessageManager extends DBObject {
 		str_builder.append(Integer.toString(to_id) + ",");
 		str_builder.append(message + ", FALSE,");
 		str_builder.append(messageType + ", NOW())");
-		stmt.executeQuery(str_builder.toString());
+		statement.executeQuery(str_builder.toString());
 	}
 	public void deleteMessage(int id) throws SQLException{
-		stmt.executeQuery("DELETE * FROM "+ TABLE + " WHERE id = " + Integer.toString(id));		
+		statement.executeQuery("DELETE * FROM "+ TABLE + " WHERE id = " + Integer.toString(id));		
 	}
 	/**
 	 * 
@@ -41,9 +39,9 @@ public class MessageManager extends DBObject {
 	 * @throws SQLException
 	 */
 	public Message getMessage(int id) throws SQLException{
-		ResultSet rs = stmt.executeQuery("SELECT * FROM "+ TABLE + " WHERE id = " + Integer.toString(id));
+		ResultSet rs = statement.executeQuery("SELECT * FROM "+ TABLE + " WHERE id = " + Integer.toString(id));
 		rs.next();
-		Message msg = new Message(id,rs.getInt("fromUser_id"),rs.getInt("toUser_id"),rs.getString("message"),rs.getBoolean("read"),rs.getString("messageTyps"),rs.getTime("timestamp"));
+		Message msg = new Message(id,rs.getInt("fromUser_id"),rs.getInt("toUser_id"),rs.getString("message"),rs.getBoolean("read"),rs.getString("messageType"),rs.getTime("timestamp"));
 	
 		return msg;
 	}
@@ -54,11 +52,10 @@ public class MessageManager extends DBObject {
 	 * @throws SQLException
 	 */
 	public ArrayList<Message> getUserMessages(int id) throws SQLException{
-		ResultSet rs = stmt.executeQuery("SELECT * FROM "+ TABLE + " WHERE toUser_id = " + Integer.toString(id));
+		ResultSet rs = statement.executeQuery("SELECT * FROM "+ TABLE + " WHERE toUser_id = " + Integer.toString(id));
 		ArrayList<Message> msgs = new ArrayList<Message>();
-		while(rs.next()){
-			msgs.add(new Message(id,rs.getInt("fromUser_id"),rs.getInt("toUser_id"),rs.getString("message"),rs.getBoolean("read"),rs.getString("messageTyps"),rs.getTime("timestamp")));
-			
+		while(rs.next()) {
+			msgs.add(new Message(id,rs.getInt("fromUser_id"),rs.getInt("toUser_id"),rs.getString("message"),rs.getBoolean("read"),rs.getString("messageType"),rs.getTime("timestamp")));		
 		}
 		return msgs;
 	}

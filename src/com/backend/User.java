@@ -25,6 +25,9 @@ public class User extends DBObject {
 
 	public User() {
 		super(DBObject.userTable);
+		id = 2;
+		name = "";
+		achievements = "";
 		setValues(-1, "", "");
 	}
 
@@ -149,7 +152,8 @@ public class User extends DBObject {
 	public String getName(int id) throws SQLException {
 		String query = "SELECT name FROM " + currentTable + " WHERE id = " + id;
 		ResultSet rs = super.getResults(query);
-		return rs.getString("name");
+		if (rs.next()) return rs.getString("name");
+		else return null;
 	}
 
 //	DB implemenation in User.java  getUsers(String userFilter);
