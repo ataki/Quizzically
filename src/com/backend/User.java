@@ -28,15 +28,6 @@ public class User extends DBObject {
 		setValues(-1, "", "");
 	}
 
-	public User(String name, String password) {
-		createUser(name, password);
-	}
-	
-	public User(int id, String name, String achievements) {
-		super(DBObject.userTable);
-		setValues(id, name, achievements);
-	}
-
 	public User(int id) {
 		super(DBObject.userTable);
 		id = -1;
@@ -52,6 +43,11 @@ public class User extends DBObject {
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public User(int id, String name, String achievements) {
+		super(DBObject.userTable);
+		setValues(id, name, achievements);
 	}
 
 	public User(String name) {
@@ -72,19 +68,23 @@ public class User extends DBObject {
 		}
 	}
 	
-	public int getUserId() { return id; }
+	public User(String name, String password) {
+		createUser(name, password);
+	}
+	
+	public int getId() { return id; }
 	public String getUserName() { return name; }
 	public String getAchievements() { return achievements; }
-		
+
 	public int getId(String name) {
-		return 0;
+		return id;
 	}
 
 	public static User getUser(String name) {
 		return new User(name);
 	}
 
-	/*
+	
 	public User createUser(String name, String password) {
 		if(getUser(name).getId() != -1) return null;
 
@@ -117,7 +117,6 @@ public class User extends DBObject {
 		
 		return null;
 	}
-*/
 	
 	// taken from Cracker assignment
 	private static String hexToString(byte[] bytes) {
