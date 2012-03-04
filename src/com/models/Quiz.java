@@ -62,7 +62,7 @@ public class Quiz extends DBObject {
 	/**
 	 * @return the id
 	 */
-	public int getQuizId() {
+	public int getId() {
 		return id;
 	}
 	/**

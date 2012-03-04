@@ -49,7 +49,7 @@ public class Announcement extends DBObject {
 	/**
 	 * @return the id
 	 */
-	public int getAnnouncementId() {
+	public int getId() {
 		return id;
 	}
 	/**

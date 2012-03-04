@@ -25,7 +25,7 @@ public class Message extends DBObject {
 		this.messageType = messageType;
 		this.timestamp = timestamp;
 	}
-	public int getMessageId() {
+	public int getId() {
 		return id;
 	}
 	public int getFromUserId() {
