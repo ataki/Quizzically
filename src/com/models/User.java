@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import com.backend.DBObject;
 
@@ -13,9 +14,7 @@ public class User extends DBObject {
 	public static int INVALID_USER = -1;
 	private int id;
 	private String name;
-	private String password;
-	private int salt;
-	private boolean access;
+//	private boolean access;
 	private String achievements;
 	
 	private void setValues(int id, String name, String achievements) {
@@ -61,7 +60,7 @@ public class User extends DBObject {
 		query.append("SELECT id, name, achievements FROM " + userTable + " ");
 		query.append("WHERE name = \"" + name + "\";");
 		
-		System.out.println(query.toString());
+//		System.out.println(query.toString());
 		ResultSet rs = getResults(query.toString());
 		try {
 			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
@@ -105,7 +104,7 @@ public class User extends DBObject {
 			query.append("\"0\", ");
 			query.append("\"" + "\"); ");
 
-			System.out.println(query.toString());
+//			System.out.println(query.toString());
 			statement.executeUpdate(query.toString());
 
 			return new User(name);
@@ -119,24 +118,57 @@ public class User extends DBObject {
 		
 		return null;
 	}
-	
-	public static boolean authenticateUser(String name, String password) {
-		User user = new User(name);
-		System.out.println("Password = " + user.password);
-		if(user.getId() == -1) return false;
-		
-		System.out.println("Password = " + user.password);
 
-		/*
+	private ArrayList<String> getPassword() {
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT password, salt FROM " + userTable + " ");
+		query.append("WHERE name = \"" + name + "\";");
+		
+//		System.out.println(query.toString());
+		ResultSet rs = getResults(query.toString());
 		try {
+			ArrayList<String> pwd = new ArrayList<String>();
+			if(rs.next()) {
+				pwd.add(rs.getString(1));
+				pwd.add(rs.getString(2));
+				return pwd;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static User authenticateUser(String name, String password) {
+		User user = new User(name);
+		if(user.getId() == -1) return null;
+
+		ArrayList<String> pwd = user.getPassword();
+		String passwd = pwd.get(0);
+		String salt = pwd.get(1);
+		
+//		System.out.println("Password = " + passwd + " Salt = " + salt);
+
+		password = password + salt;
+
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA");
+			password = hexToString(md.digest(password.getBytes()));
+//			System.out.println("Input password: " + password);
+			if(password.equals(passwd)) return user;
 		}
 		catch(NoSuchAlgorithmException e) { 
 			e.printStackTrace();
 		}
-*/		
-		return true;
+		
+		return null;
 	}
 	
+	public String toString() {
+		return name;
+	}
 	
 	// taken from Cracker assignment
 	private static String hexToString(byte[] bytes) {
