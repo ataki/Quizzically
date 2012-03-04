@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import com.models.Announcement;
 
 public class AnnouncementManager extends DBObject {
-	AnnouncementManager(){
+	public AnnouncementManager(){
 		super();
 	}
 	public ArrayList<Announcement> getAllAnnouncement() throws SQLException{
@@ -15,13 +15,10 @@ public class AnnouncementManager extends DBObject {
 		ResultSet rs = getResults(query);			
 		ArrayList<Announcement> announcementList = new ArrayList<Announcement>();
 		while(rs.next()){
-			Announcement an = new Announcement(rs.getInt("id"), rs.getString("text"),rs.getTime("timestamp"));
+			Announcement an = new Announcement(rs.getInt("id"), rs.getString("text"), rs.getInt("importance"), rs.getTime("timestamp"));
 			announcementList.add(an);
 		}
-			return announcementList;
-		
-		
-
+		return announcementList;
 
 	}
 }

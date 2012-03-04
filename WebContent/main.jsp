@@ -83,19 +83,22 @@
 			  <li class="active" id="nice1Tab">
 			  	<div class="row">
 					<div class="twelve columns show-panel">
-						<h3>Annoucements</h3>
+						<h3>Announcement</h3>
 						<div>
 							<ul id="announcement-container" style="width:75%;">
-							
-								<li class="announcement" id="333333"><div class="alert-box success">Here is an announcement. <br/><a href="" class="close">&times;</a>
-									Quiz changes are coming! We're happy to announce that we're bringing a social component to the whole site.
-									In addition, we're going to revamp our messaging and challenge system so that you can better 
-								</div></li>
-								<li class="announcement" id="444444"><div class="alert-box">Here is a less important announcement<a href="" class="close">&times;</a></div></li>
-								<li class="announcement" id="555555"><div class="alert-box success">Here is an announcement.<br/> <a href="" class="close">&times;</a></div></li>
-								<li class="announcement" id="6666"><div class="alert-box error">Here is an important announcement. Your account may have been hacked into
-									by an anonymous third party. Please verify your information by going to the authentication pary of our wsebsite now.<a href="" class="close">&times;</a></div></li>
-								<li class="announcement" id="8888"><div class="alert-box success">Here is an announcement<a href="" class="close">&times;</a></div></li>
+								
+								<% 
+									AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
+									ArrayList<Announcement> announcementArray = announcementManager.getAllAnnouncement();
+									for (int i = 0; i < announcementArray.size(); i++) {
+										Announcement announcement = announcementArray.get(i);
+								%>
+									<li class="announcement">
+										<div class="alert-box <%=announcement.getImportance()%>"><%=announcement.getText()%></div>
+									</li>
+								<% 
+									} 
+								%>
 							</ul>
 						</div>
 					</div>
@@ -243,25 +246,24 @@
 				<table width="800">
 							<thead>
 								<tr>
-									<th width="30%">From</th>
+									<th width="15%">From</th>
 									<th width="45%">Message</th>
-									<th width="15%">Time</th>
+									<th width="30%">Time</th>
 								</tr>
 							</thead>
 							<tbody>
 							<% 
-								MessageManager manager = (MessageManager) request.getServletContext().getAttribute("messageManager");
-								ArrayList<Message> messageArray = manager.getUserMessages(userId);
+								MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
+								ArrayList<Message> messageArray = messageManager.getUserMessages(userId);
 								for (int i = 0; i < messageArray.size(); i++) {
 									Message message = messageArray.get(i);
 							%>
-							
-							<tr>
-								<td class="hover-highlight"><a href="user.jsp?id=<%=message.getFromUserId()%>"><%=user.getName(message.getFromUserId())%></a></td>
-								<td><%=message.getMessage()%></td>
-								<td><%=message.getTimestamp()%></td>
-							</tr>
-							<%
+								<tr>
+									<td class="hover-highlight"><a href="user.jsp?id=<%=message.getFromUserId()%>"><%=user.getName(message.getFromUserId())%></a></td>
+									<td><%=message.getMessage()%></td>
+									<td><%=message.getTimestamp()%></td>
+								</tr>
+							<% 
 								} 
 							%>
 							</tbody>
