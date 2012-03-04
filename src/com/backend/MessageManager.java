@@ -13,15 +13,14 @@ import com.models.Message;
  * @author Sydney
  *	handles db Table Quiz_message <-> servlets 
  */
-public class MessageManager {
+public class MessageManager extends DBObject {
 
 	
 	private Statement stmt;
 	private final String TABLE = "Quiz_message";
 	
 	public MessageManager(){
-		DBObject db = new DBObject();
-		stmt = db.getStatement();
+		super();
 	}
 	public void addMessage(int from_id, int to_id, String message, String messageType) throws SQLException{
 	StringBuilder str_builder = new StringBuilder();
