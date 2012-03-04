@@ -20,11 +20,13 @@ import com.google.gson.Gson;
 import com.models.Parcel;
 import com.models.Type;
 import com.models.Type_Type;
+import com.models.User;
 
 
 /**
  * Sydney
  * Servlet implementation class MessageCreateServlet
+ * @@@not done yet
  */
 @WebServlet("/MessageCreateServlet")
 public class MessageCreateServlet extends HttpServlet {
@@ -50,35 +52,35 @@ public class MessageCreateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		Parcel.User fromUser = (Parcel.User)request.getSession().getAttribute("User");
+		User fromUser = (User)request.getSession().getAttribute("User");
 		String actionType = (String)request.getAttribute("ActionType");
 		if(actionType.equals(COMPOSETO)){
 			String toUser = (String)request.getAttribute("ToUser");
 			//go through user table to dynamically feedback to the front end
 			UserManager userMg = new UserManager();
-			ArrayList<UserManager.User> toUsers = userMg.usersLookup(toUser);
-			Gson converter = new Gson();
-			//convert into Parcel form
-			ArrayList<Parcel.User> parcel_toUsers = new ArrayList<Parcel.User>();
-			for(UserManager.User user: toUsers){
-				parcel_toUsers.add(new Parcel.User(Type.user, null, user.name, user.id, null));
+			ArrayList<User> toUsers;
+			try {
+				toUsers = userMg.getUsers(toUser);
+				Gson converter = new Gson();
+				//convert into Parcel form
+					
+				String result = converter.toJson(toUsers);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(result);	
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-				
-			String result = converter.toJson(parcel_toUsers);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(result);
-				
-		
+	
 			
 		}else{
 			int toUser_id = (Integer)request.getAttribute("Id");
 			String message = (String)request.getAttribute("Text");
 			String messageType = (String)request.getAttribute("MessageType"); 			
-		
 			MessageManager mm = new MessageManager();
 			try {
-				mm.addMessage(fromUser.id,toUser_id,message,messageType);
+				mm.addMessage(fromUser.getUserId(),toUser_id,message,messageType);
 				RequestDispatcher dispatch = request.getRequestDispatcher("MessageSent.HTML");
 				dispatch.forward(request, response);
 			} catch (SQLException e) {
