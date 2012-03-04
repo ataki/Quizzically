@@ -1,8 +1,11 @@
 package com.backend;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class User extends DBObject {
 	
@@ -11,28 +14,59 @@ public class User extends DBObject {
 	private String password;
 	private int salt;
 	private boolean access;
-	private String acchievements;
-
-//	DBObject db = new DBObject();
-//	stmt = db.getStatement();
+	private String achievements;
 
 	public User() {
 		super(DBObject.userTable);
+		id = -1;
+		name = "";
+		achievements = "";
 	}
 	
+	public User(int id, String name, String achievements) {
+		super(DBObject.userTable);
+		this.id = id;
+		this.name = name;
+		this.achievements = achievements;
+	}
+	
+	public int getId() { return id; }
+	public String getName() { return name; }
+	public String getAchievements() { return achievements; }
+		
 	public int getId(String name) {
 		return 0;
 	}
 	
-	public boolean createUser(String user, String password) {
+	public static boolean createUser(String user, String password) {
+		Random random = new Random();
+		int salt = random.nextInt();
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA");
+			System.out.println(hexToString(md.digest(password.getBytes())));
+		}
+		catch(NoSuchAlgorithmException e) { 
+			e.printStackTrace();
+		}		
 		return false;
 	}
+	
+	// taken from Cracker assignment
+	private static String hexToString(byte[] bytes) {
+		StringBuffer buff = new StringBuffer();
+		for (int i=0; i<bytes.length; i++) {
+			int val = bytes[i];
+			val = val & 0xff;  // remove higher bits, sign
+			if (val<16) buff.append('0'); // leading 0
+			buff.append(Integer.toString(val, 16));
+		}
+		return buff.toString();
+	}	
 	
 	public String getName(int id) {
 		return "";
 	}
-	
-
 
 //	DB implemenation in User.java  getUsers(String userFilter);
 /*
@@ -56,6 +90,6 @@ public class User extends DBObject {
 		e.printStackTrace();
 	}
 	*/
-	
+
 }
  
