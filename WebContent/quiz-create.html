@@ -69,8 +69,13 @@
 				<!-- Begin creation form-->
 			
 				<div class="twelve columns">
-					<form action="CreateServlet" id="create-container" name="create-editor" >	
+					<form action="CreateServlet" method="post" id="create-container" name="create-editor" >
+					<label for="quiz-name">Quiz Name</label>
+					<input name="quiz-name" type="text" placeholder=""/><br/><br/>	
+					<input id="num-questions" name="num-questions" type="hidden" value="1"/>
+					
 					<h5>Options</h5>
+					
 					<!--
 					Quiz Options:
 						////////////////////////////////////////////////////////
@@ -120,6 +125,9 @@
 						(Note that all question fields' last character indicates
 						the question number).
 						
+						"num-questions:"        : the number of questions
+						possible values         : an integer 
+						
 						"question-type-N"		: the question type
 						possible values 		: {0 = no selection, ignore
 												   "question-response"
@@ -149,9 +157,10 @@
 					-->
 					
 					<!-- ///////////////////////////// Begin Creation Form ////////////////////////////////// -->
+					
 					<div>
-					<h6>Question 1</h6>
 						<div id="question-1">
+							<h6 class="label close-question" >Question 1 <a style="font-size:16px;">&times;</a></h6><br/>
 							<select class="question-block red" id="question-type-1" name="question-type-1">
 								  <option value="0" selected></option>
 								  <option value="question-response">Question-Response</option>
@@ -165,9 +174,11 @@
 							</select>
 							<div id="question-block-1">
 							</div>
+							
+							<br/><br/><!-- Divider between questions -->
 						</div>
 					</div>
-					<br/><br/><!-- Divider between questions -->
+					
 					
 					<div id="more-questions" style="max-width:200px; cursor:pointer;"><a>[+] Add a Question</a></div>
 					<br/><br/><!-- Divider between questions -->
@@ -188,8 +199,7 @@
 					generate form content when the user selects a question type. 
 					////////////////////////////////////////////////////////////////////////////
 				-->
-				<div id="question-type-box" style="display:none">
-					<!-- for a question type, these fields need to be dynamically added:
+				<!-- for a question type, these fields need to be dynamically added:
 						N is number of total questions + 1
 						
 						1. top-level div id: 		"question-N", 
@@ -201,9 +211,11 @@
 						See javascript implementation.
 						These fields allow the wrapping form to identify the number
 						in its sequence
-						-->
+				-->
+				<div id="question-type-box" style="display:none">
+					
 					<div id="question-">
-							<h6>Question </h6>
+							<h6 class="label close-question">Question </h6><br/>
 							<div class=".error-section">
 								<!-- <span class="red label">Incomplete</span>-->
 							</div>
@@ -220,10 +232,12 @@
 							</select>
 							<div id="question-block-">
 							</div>
+							<br/><br/><!-- Divider between questions -->
 					</div>
-					<br/><br/><!-- Divider between questions -->
 				</div>
 				
+				
+				<!--  Hidden Questions -->
 				<div id="question-response" style="display:none;">
 					<h6>Your Question</h6>
 					<input type="text" name="question-" placeholder="Your Question" size="50" /><br/>

@@ -16,6 +16,7 @@ $(document).ready(function() {
 			/* number of current questions */
 			numQuestions:0,
 			
+			questionsArray:[],
 			/* controls submission process; default is
 			* false because the user has not made selections
 			* on the form type 
@@ -96,13 +97,17 @@ $(document).ready(function() {
 		// first count the number of questions
 		$('.question-block').each(function() {
 			Mach.numQuestions++;
+			Mach.questionsArray.push($(this).parent());
 		});	
 		
+		// attach close actionlistener to listener
+		attachCloseQuestionListener();
 		
 		// adding more questions
 		// prepend a question before the add button
 		$("#more-questions").click(function() {
 			var toAppend = $(generateQuestionBlock("question-type-box"));
+			
 			var N = Mach.numQuestions + 1;
 			/*			
 				make necessary changes as listed in the question-type-box
@@ -116,9 +121,9 @@ $(document).ready(function() {
 						6. h6: add to innerHTML     "N"
 			*/
 			//1
-			$(toAppend).attr("question-" + N);
+			$(toAppend).attr("id", "question-" + N);
 			//6
-			$(toAppend).children("h6").html("Question " + N);
+			$(toAppend).children("h6 ").html("Question " + N + '<a style="font-size:16px;">&times;</a>');
 			//5,2,3,
 			$(toAppend).children("select").addClass("question-block").attr("id", "question-type-" + N).attr("name", "question-type-" + N);
 			//4
@@ -129,10 +134,13 @@ $(document).ready(function() {
 				Mach.numQuestions++;
 			// have to reattach change handler
 			addQuestionBlockChangeFunctions();
+			attachCloseQuestionListener();
+			
+			Mach.questionsArray.push($(toAppend));
+			$("#num-questions").attr("value", Mach.numQuestions);
 		});
-		
 		addQuestionBlockChangeFunctions();
-		
+
 		// on submit button, send whole quiz
 		// over as JSON to the server. 
 		// We catch the submit here to send over an unescaped
@@ -142,8 +150,56 @@ $(document).ready(function() {
 			$.post(Mach.createServer, { user: Mach.username, data:values});
 		});
 		
+		
 	} // end of Mach Detect
 });
+
+function attachCloseQuestionListener() {
+	/* Closing a question 
+	 * remove the question, update all question numbers 
+	 */
+	$('.close-question').off("click").on("click", function() {
+		if(Mach.numQuestions == 1) {
+			return;
+		} else { 
+			Mach.numQuestions--;
+			var i;
+			var matchingID = $(this).parent().attr("id");
+			for(i = 0; i < Mach.questionsArray.length;i++) {
+				if(Mach.questionsArray[i].attr("id") == matchingID) {
+					break;
+				}
+			}
+			if(Mach.questionsArray[i] == undefined)
+				return;
+			
+			/* removal process */
+			$(Mach.questionsArray[i]).remove();
+			Mach.questionsArray.splice(i, 1);
+			
+			/* reset all question numerics */
+			for(i = 0; i < Mach.questionsArray.length ;i++) {
+				var proper = 1 + i;
+				var oldId = $(Mach.questionsArray[i]).attr("id").charAt($(Mach.questionsArray[i]).attr("id").length - 1);
+				$(Mach.questionsArray[i]).attr("id", "question-" + proper)
+				$(Mach.questionsArray[i]).children("h6").attr("class", "label").html("Question " + proper + '<a style="font-size:16px;">&times;</a>');
+				$(Mach.questionsArray[i]).children("select").attr("id", "question-type-" + proper).attr("name", "question-type-" + proper);
+				$(Mach.questionsArray[i]).children("#question-block-" + oldId).attr("id", "question-block-" + proper);
+				
+				$(Mach.questionsArray[i]).children("#question-block-" + proper).children().each(function() {
+					if($(this).attr("name") != null) {
+						$(this).attr("name", $(this).attr("name").slice(0, -1).concat(proper));
+					}
+					if($(this).attr("id") != null) {
+						$(this).attr("name", $(this).attr("name").slice(0, -1).concat(proper));
+					}
+				});
+			}
+			reEnableInputAndSubmit(this);
+			$("#num-questions").attr("value", Mach.numQuestions);
+		}
+	});
+}
 
 function generateWarningDisableSubmit(inputbox) {
 	// don't let the user submit !

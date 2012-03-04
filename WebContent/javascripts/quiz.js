@@ -144,10 +144,10 @@ $(document).ready(function() {
 	--------------------------------- */
 	for(var i = 0; i < Mach.tableSorterIDs.length; i++) {
 		if($('#' + Mach.tableSorterIDs[i]) != null) {
-			console.log("********** here *******");
 			$('#' + Mach.tableSorterIDs[i]).tablesorter(); 
 		}
 	}
+	
 });
 
 /* submit button callback for matching
