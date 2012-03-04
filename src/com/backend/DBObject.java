@@ -34,6 +34,13 @@ public class DBObject extends Thread {
 	+----------------------------+
 	*/
 	
+	protected static String announcementTable = "Quiz_announcement";
+	protected static String categoryTable = "Quiz_category";
+	protected static String friendshipTable = "Quiz_friendship";
+	protected static String historyTable = "Quiz_history";
+	protected static String messageTable = "Quiz_message";
+	protected static String questionTable = "Quiz_question";
+	protected static String quizTable = "Quiz_quiz";
 	protected static String userTable = "Quiz_user";
 
 	private static Connection connection;
