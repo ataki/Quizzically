@@ -15,23 +15,20 @@ public class UserManager extends DBObject{
 	public UserManager(){
 		super();
 	}
-	public ArrayList<User> getUsers(String filter) {
+	public ArrayList<User> getUsers(String filter) throws SQLException {
 		String query = "SELECT * FROM " + currentTable + " WHERE name LIKE \"%" + filter +"%\"";
 		ResultSet rs = getResults(query);
 			
 		ArrayList<User> usersList = new ArrayList<User>();
 
-		try {
-			while(rs.next()){
-				User user = new User(rs.getInt("id"),rs.getString("name"),rs.getString("achievements"));
-				usersList.add(user);
-				return usersList;
-			}
+
+		while(rs.next()){
+			User user = new User(rs.getInt("id"),rs.getString("name"),rs.getString("achievements"));
+			usersList.add(user);
 		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return usersList;
+
+
 	}
 
 }
