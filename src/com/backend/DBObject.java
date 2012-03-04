@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 // Author: Samir Patel
-	
 
-public class DBObject  {
-	private final String account = "ccs108wawa3070"; 
-	private final String password = "duhijieb";          
-	private final String server = "mysql-user.stanford.edu";
-	private final String database = "c_cs108_wawa3070"; 
-	private Statement stmt;
+// this extends thread for future use... in case we want to protect against
+// concurrent DB updates... but this is not required.
+public class DBObject extends Thread {
+	private static final String account = "ccs108wawa3070"; 
+	private static final String password = "duhijieb";          
+	private static final String server = "mysql-user.stanford.edu";
+	private static final String database = "c_cs108_wawa3070"; 
+
 	/*
 	+----------------------------+
 	| Tables_in_c_cs108_wawa3070 |
@@ -33,25 +33,53 @@ public class DBObject  {
 	| products                   |
 	+----------------------------+
 	*/
+	
+	protected static String userTable = "Quiz_user";
 
-	public DBObject() {
-    	try {
+	private static Connection connection;
+	protected static Statement statement;
+	
+	public void run() {
+
+	}
+
+	/**
+	 * Initialized connection and 
+	 */
+	private void initConnection() {
+		try {
 			Class.forName("com.mysql.jdbc.Driver");
-	    	Connection con = DriverManager.getConnection( "jdbc:mysql://" + server, account ,password);
-	    	stmt = con.createStatement();
-	    	stmt.executeQuery("USE " + database);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+			if(connection == null)
+				connection = DriverManager.getConnection( "jdbc:mysql://" + server, account ,password);
+			statement = connection.createStatement();
+			statement.executeQuery("USE " + database);
+		}
+		catch (ClassNotFoundException e) {
+				e.printStackTrace();
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	//let me know if the interface changes by Sydney
-	public Statement getStatement(){
-		return stmt;
-		
+	protected String currentTable;
+	
+	public DBObject(String table) {
+		if(connection == null) initConnection();
+		currentTable = table;
 	}
 	
+	protected ResultSet getResults(String query) {
+		try {
+			statement.executeQuery(query);
+			ResultSet rs = statement.getResultSet();
+			return rs;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 
+		return null;
+	}
 }
+
