@@ -83,7 +83,8 @@ public class User extends DBObject {
 	public static User getUser(String name) {
 		return new User(name);
 	}
-	
+
+	/*
 	public User createUser(String name, String password) {
 		if(getUser(name).getId() != -1) return null;
 
@@ -116,6 +117,7 @@ public class User extends DBObject {
 		
 		return null;
 	}
+*/
 	
 	// taken from Cracker assignment
 	private static String hexToString(byte[] bytes) {
