@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.util.ArrayList;
 
 /**
  * 
@@ -53,5 +54,20 @@ public class MessageManager {
 		msg.messageType = rs.getString("messageTyps");
 		msg.timestamp = rs.getTime("timestamp");
 		return msg;
+	}
+	public ArrayList<Message> getUserMessages(int id) throws SQLException{
+		ResultSet rs = stmt.executeQuery("SELECT * FROM "+ TABLE + " WHERE toUser_id = " + Integer.toString(id));
+		ArrayList<Message> msgs = new ArrayList<Message>();
+		while(rs.next()){
+			Message msg = new Message();
+			msg.id = id;
+			msg.fromUser_id = rs.getInt("fromUser_id");
+			msg.toUser_id = rs.getInt("toUser_id");
+			msg.message = rs.getString("message");
+			msg.read = rs.getBoolean("read");
+			msg.messageType = rs.getString("messageTyps");
+			msg.timestamp = rs.getTime("timestamp");
+		}
+		return msgs;
 	}
 }
