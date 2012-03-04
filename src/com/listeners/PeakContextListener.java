@@ -4,7 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
-import com.backend.MessageManager;
+import com.backend.*;
 
 /**
  * Application Lifecycle Listener implementation class ServletContextListener
@@ -24,9 +24,11 @@ public class PeakContextListener implements javax.servlet.ServletContextListener
      * @see PeakContextListener#contextInitialized(ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent event) {
-    	MessageManager manager = new MessageManager();
     	ServletContext context = event.getServletContext();
-    	context.setAttribute("messageManager", manager);
+    	MessageManager messageManager = new MessageManager();
+    	AnnouncementManager announcementManager = new AnnouncementManager();
+    	context.setAttribute("messageManager", messageManager);
+    	context.setAttribute("announcementManager", announcementManager);
     }
 
 	/**

@@ -6,14 +6,42 @@ import com.backend.DBObject;
 
 public class Announcement extends DBObject {
 
+	public enum Importance { 
+		LOW(""), MEDIUM("success"), HIGH("error");
+		
+		String text;
+		
+		private Importance(String text) {
+			this.text = text;
+		}
+		
+		public String toString() {
+			return text;
+		}
+	}
+	
     private int id;
     private String text;
+    private Importance importance;
     private Time timestamp;
-    public Announcement(int id, String text, Time timestamp){
+    
+	public Announcement(int id, String text, int importance, Time timestamp){	
     	this.id = id;
     	this.text = text;
+    	switch (importance) {
+	    	case 1:
+	        	this.importance = Importance.LOW;
+	    		break;
+	    	case 2:
+	    		this.importance = Importance.MEDIUM;
+	    		break;
+	    	case 3:
+	    		this.importance = Importance.HIGH;
+	    		break;
+    	}
     	this.timestamp = timestamp;
-    }
+	}
+	
     Announcement(){
     	super(DBObject.announcementTable);
     }
@@ -52,6 +80,10 @@ public class Announcement extends DBObject {
 	 */
 	public void setTimestamp(Time timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+    public Importance getImportance() {
+		return importance;
 	}
     
 }	
