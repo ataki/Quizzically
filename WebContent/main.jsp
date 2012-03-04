@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*, com.backend.MessageManager " %>
+    pageEncoding="ISO-8859-1" import="java.util.*, com.backend.*, com.models.* " %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%
-	User username = (User) request.getSession().getAttribute("User");
-	
+	User user = (User) request.getSession().getAttribute("user");
+	int userId = user.getUserId();
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -119,19 +119,19 @@
 							<tbody>
 								<tr>
 									<td>144</td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= username%>">Around the World</a></b></td>
+									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
 									<td>34</td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
 								<tr>
 									<td>144</td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= username%>">Around the World</a></b></td>
+									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
 									<td>34</td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
 								<tr>
 									<td>144</td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= username%>">Around the World</a></b></td>
+									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
 									<td>34</td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
@@ -154,32 +154,24 @@
 							<table width="800">
 								<thead>
 									<tr>
-										<th width="15%">Type</th>
-										<th width="30%">From</th>
-										<th width="15%">Message</th>
+										<th width="10%">Name</th>
+										<th width="35%">Message</th>
 										<th widht="15%">Time</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>Challenge</td>
-										<td class="hover-highlight"><a href="QuizServlet?<%=username%>">Around the World</a></b></td>
-										<td></td>
-										<td>Can you name all the capitals in the city?</td>
-									</tr>
-									<tr>
-										<td>144</td>
-										<td class="hover-highlight"><a href="QuizServlet?<%=username%>">Around the World</a></b></td>
-										<td>34</td>
-										<td>Can you name all the capitals in the city?</td>
-									</tr>
-									<tr>
-										<td>144</td>
-										<td class="hover-highlight"><a href="QuizServlet?<%=username%>">Around the World</a></b></td>
-										<td>34</td>
-										<td>Can you name all the capitals in the city?</td>
-									</tr>
-									
+									<% /*
+										ArrayList<Message> messageArray = manager.getUserMessages();
+										for (int i = 0; i < messageArray.size(); i++) {
+											Message message = messageArray.get(i);
+											if (message.isRead())
+												out.println("<tr>");
+											else
+												out.println("<tr class=\"unread\"");*/
+									%>
+									<% 
+										//} 
+									%>
 								</tbody>
 							</table>
 						
@@ -205,7 +197,7 @@
 								<tbody>
 									<tr>
 										<td>Challenge</td>
-										<td class="hover-highlight"><a href="QuizServlet?<%=username%>">Around the World</a></b></td>
+										<td class="hover-highlight"><a href="QuizServlet?<%=user%>">Around the World</a></b></td>
 										<td></td>
 										<td>Can you name all the capitals in the city?</td>
 									</tr>
@@ -251,32 +243,27 @@
 				<table width="800">
 							<thead>
 								<tr>
-									<th width="15%">Type</th>
 									<th width="30%">From</th>
-									<th width="15%">Message</th>
-									<th widht="15%">Time</th>
+									<th width="45%">Message</th>
+									<th width="15%">Time</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="hover-highlight">
-									<td>Challenge</td>
-									<td><a href="QuizServlet?<%= username%>">Around the World</a></b></td>
-									<td></td>
-									<td>Can you name all the capitals in the city?</td>
-								</tr>
-								<tr class="hover-highlight">
-									<td>144</td>
-									<td><a href="QuizServlet?<%= username%>">Around the World</a></b></td>
-									<td>34</td>
-									<td>Can you name all the capitals in the city?</td>
-								</tr>
-								<tr class="hover-highlight">
-									<td>144</td>
-									<td><a href="QuizServlet?<%= username%>">Around the World</a></b></td>
-									<td>34</td>
-									<td>Can you name all the capitals in the city?</td>
-								</tr>
-								
+							<% 
+								MessageManager manager = (MessageManager) request.getServletContext().getAttribute("messageManager");
+								ArrayList<Message> messageArray = manager.getUserMessages(userId);
+								for (int i = 0; i < messageArray.size(); i++) {
+									Message message = messageArray.get(i);
+							%>
+							
+							<tr>
+								<td class="hover-highlight"><a href="user.jsp?id=<%=message.getFromUserId()%>"><%=user.getName(message.getFromUserId())%></a></td>
+								<td><%=message.getMessage()%></td>
+								<td><%=message.getTimestamp()%></td>
+							</tr>
+							<% 
+								} 
+							%>
 							</tbody>
 				</table>
 						

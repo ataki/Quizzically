@@ -77,6 +77,7 @@ public class DBObject extends Thread {
 	}
 
 	public DBObject() {
+		if(connection == null) initConnection();
 	}
 	
 	protected ResultSet getResults(String query) {
