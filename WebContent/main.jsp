@@ -4,7 +4,7 @@
 
 <%
 	User user = (User) request.getSession().getAttribute("user");
-	int userId = user.getUserId();
+	int userId = user.getId();
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -261,7 +261,7 @@
 								<td><%=message.getMessage()%></td>
 								<td><%=message.getTimestamp()%></td>
 							</tr>
-							<% 
+							<%
 								} 
 							%>
 							</tbody>
