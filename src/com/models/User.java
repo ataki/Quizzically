@@ -195,7 +195,7 @@ public class User extends DBObject {
 		else return null;
 	}
 
-//	DB implemenation in User.java  getUsers(String userFilter);
+//	DB implementation in User.java  getUsers(String userFilter);
 /*
 	try {
 		stmt.executeQuery("SELECT * FROM "+ TABLE +" WHERE name LIKE \"%" + name +"%\"" );
