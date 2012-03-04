@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.backend.MessageManager;
 import com.google.gson.Gson;
+import com.models.Message;
 import com.models.Parcel;
 import com.models.Type;
 import com.models.Type_Type;
@@ -20,7 +21,7 @@ import com.models.Type_Type;
  * Sydney
  * Servlet implementation class MessageServlet 
  * It's task is to feed the front end the corresponding message content.
- *
+ * @@@not done yet
  */
 @WebServlet("/MessageServlet")
 public class MessageServlet extends HttpServlet {
@@ -52,10 +53,9 @@ public class MessageServlet extends HttpServlet {
 		if(actionType.endsWith("Show")){
 			
 			try {
-				MessageManager.Message msg	= mmg.getMessage(id);
-				Parcel.User parcel_message = new Parcel.User(Type.message, Type_Type.valueOf(msg.messageType), msg.message, msg.fromUser_id,null);
+				Message msg	= mmg.getMessage(id);
 				Gson converter = new Gson();
-				String result = converter.toJson(parcel_message);
+				String result = converter.toJson(msg);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(result);
@@ -64,15 +64,7 @@ public class MessageServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		if((actionType.endsWith("ShowAll"))){
-			try {
-				ArrayList<MessageManager.Message> msgList = mmg.getUserMessages(id);
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+
 	}
 
 }

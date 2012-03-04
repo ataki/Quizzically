@@ -8,48 +8,117 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class User extends DBObject {
-	
+
+	public static int INVALID_USER = -1;
 	private int id;
 	private String name;
 	private String password;
 	private int salt;
 	private boolean access;
 	private String achievements;
+	
+	private void setValues(int id, String name, String achievements) {
+		this.id = id;
+		this.name = name;
+		this.achievements = achievements;		
+	}
 
 	public User() {
 		super(DBObject.userTable);
 		id = 2;
 		name = "";
 		achievements = "";
+		setValues(-1, "", "");
 	}
-	
+
+	public User(int id) {
+		super(DBObject.userTable);
+		id = -1;
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT id, name, achievements FROM " + userTable + " ");
+	    query.append("WHERE id = \"" + Integer.toString(id) + "\";");
+		
+		ResultSet rs = getResults(query.toString());
+		try {
+			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
+			else setValues(-1, "", "");			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public User(int id, String name, String achievements) {
 		super(DBObject.userTable);
-		this.id = id;
-		this.name = name;
-		this.achievements = achievements;
+		setValues(id, name, achievements);
+	}
+
+	public User(String name) {
+		super(DBObject.userTable);
+		id = -1;
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT id, name, achievements FROM " + userTable + " ");
+		query.append("WHERE name = \"" + name + "\";");
+		
+		System.out.println(query.toString());
+		ResultSet rs = getResults(query.toString());
+		try {
+			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
+			else setValues(-1, "", "");
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public int getUserId() { return id; }
+	public User(String name, String password) {
+		createUser(name, password);
+	}
+	
+	public int getId() { return id; }
 	public String getUserName() { return name; }
 	public String getAchievements() { return achievements; }
-		
+
 	public int getId(String name) {
-		return 0;
+		return id;
 	}
+
+	public static User getUser(String name) {
+		return new User(name);
+	}
+
 	
-	public static boolean createUser(String user, String password) {
+	public User createUser(String name, String password) {
+		if(getUser(name).getId() != -1) return null;
+
 		Random random = new Random();
 		int salt = random.nextInt();
+		password = password + Integer.toString(salt);
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA");
-			System.out.println(hexToString(md.digest(password.getBytes())));
+			password = hexToString(md.digest(password.getBytes()));
+
+			StringBuilder query = new StringBuilder("INSERT INTO ");
+			query.append(userTable + "(");
+			query.append("name, password, salt, access, achievements) ");
+			query.append( " VALUES(");
+			query.append("\"" + name + "\", ");
+			query.append("\"" + password + "\", ");
+			query.append(salt + ", ");
+			query.append("\"0\", ");
+			query.append("\"" + "\"); ");
+
+			System.out.println(query.toString());
+			updateTable(query.toString());
+
+			return new User(name);
 		}
 		catch(NoSuchAlgorithmException e) { 
 			e.printStackTrace();
-		}		
-		return false;
+		}
+		
+		return null;
 	}
 	
 	// taken from Cracker assignment
