@@ -9,7 +9,6 @@ import java.util.ArrayList;
  *	handles db Quiz userTable <-> servlets 
  */
 public class UserManager {
-	private final String TABLE = "Quiz_user";
 
 	public UserManager(){
 	}
