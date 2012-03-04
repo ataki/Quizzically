@@ -6,8 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
-
-
 /**
  * 
  * @author Sydney
@@ -16,23 +14,17 @@ import java.util.ArrayList;
 public class UserManager {
 	private Statement stmt;
 	private final String TABLE = "Quiz_user";
-	public class User{
-		public int id;
-		public String name;
-		public String password;
-		public int salt;
-		public boolean access;
-		public String acchievements;
-	}
+
 	public UserManager(){
-		DBObject db = new DBObject();
-		stmt = db.getStatement();
+//		DBObject db = new DBObject();
+//		stmt = db.getStatement();
 	}
 	
-	public int getId(String name){
-		return 0;
-	}
 	public ArrayList<User> usersLookup(String name){
+
+		return null;
+//		DB implemenation in User.java  getUsers(String userFilter);
+/*
 		try {
 			stmt.executeQuery("SELECT * FROM "+ TABLE +" WHERE name LIKE \"%" + name +"%\"" );
 			ResultSet rs = stmt.getResultSet();
@@ -52,6 +44,6 @@ public class UserManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		*/
 	}
 }
