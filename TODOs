@@ -1,0 +1,31 @@
+- Finish search functionality on front-end
+- Add tests to communicate between front-end and backend,
+	relaying messages across the two, and running the whole
+	site.
+- Compile per-question statistics.
+- Finish backend communication initial setup
+- Finish recommendation system implementation
+- Finish and Test Quiz Creation and Taking progres
+
+- Test the UI functionality of the home page and
+	search features
+- Test the UI functionality of 
+
+
+Ideas:
+	Make a "News Feed" module that lives on the front-page
+		and notifies a user when he or she has had the chance
+		to do some work.
+	Qualtric-inspired : Allow users to create "anonymous"
+		quizzes and send to friends via email or Facebook;
+		only collect statistics of right/wrong per question,
+		and don't worry too much about which user it is.
+	Allow xml parsing of quiz information in addition to 
+		JSON parsing.	
+	Adding data visualization part ; allow users to view
+		statistics.
+
+--------------------------------------------------------
+If we can get most/all of the above done ,great!
+	
+
