@@ -6,7 +6,6 @@ CREATE TABLE `Quiz_quiz` (
     `author` varchar(100) NOT NULL,
     `timestamp` datetime NOT NULL,
     `category` longtext NOT NULL,
-    `tags` longtext NOT NULL,
     `randomness` bool NOT NULL,
     `rating` integer NOT NULL
 )
