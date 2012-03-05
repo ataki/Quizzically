@@ -68,7 +68,7 @@
 		<div class="row">
 			<div class="twelve columns">
 				<h3>
-					<%= user.name %>
+					<%= user.getUsername() %>
 				</h3>
 				
 				<h6>
@@ -77,7 +77,7 @@
 					<input type="hidden" name="type" value="friend" />
 					<input class="small green button" type="submit" value="Friend Request" />  
 					
-					<a href="mailto:<%= user.email  %>" style="margin-right:30px; margin-left:10px; ">Email:<%= user.email  %></a>
+					<a href="mailto:<%= user.getEmail() %>" style="margin-right:30px; margin-left:10px; ">Email:<%= user.email  %></a>
 					<a>Last Seen: 12 Feb 2012</a>
 					</form>
 				</h6>
@@ -97,15 +97,15 @@
 						id to whatever links necessitate them.
 						 -->				
 						
-						<h6><%= user.description %> </h6>
+						<h6><%= user.getDescription() %> </h6>
 						<blockquote>Tags:
 							<% for(Tag t : tags) { %> 
 								<a class="round tag" href="ResultServlet/<%= t.tag %>">#<%= t.tag %></a> 
 							<% } %> 
 						</blockquote>
 					</div>
-					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;"><%= user.numQuizzesTaken %><br/><br/><h6>Quizzes Taken</h6></a>
-					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3.4<br/><br/><h6><%=  %></h6></a>
+					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;"><%= user.getNumQuizzesTaken() %><br/><br/><h6>Quizzes Taken</h6></a>
+					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3.4<br/><br/><h6><%= u %></h6></a>
 					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6>Highest Score</h6></a>
 				</div>
 				<br/>
@@ -116,7 +116,7 @@
 				
 				<!-- RESULTS TABS -->
 				<dl class="contained tabs">
-				  <dd><a href="#past" class="active">Your Past</a></dd>
+				  <dd><a href="#past" class="active">Past Performance</a></dd>
 				  <dd><a href="#top">Best Ever</a></dd>
 				  <dd><a href="#last">Most Recent</a></dd>
 				  <dd><a href="#lastDay">Top Last Day</a></dd>

@@ -1,11 +1,11 @@
-package com.models;
+package com.backend;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.backend.DBObject;
+import com.models.Tag;
 
 public class TagManager extends DBObject {
 	

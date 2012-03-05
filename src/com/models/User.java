@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import com.backend.DBObject;
+import com.backend.TagManager;
 
 public class User extends DBObject {
 
