@@ -41,13 +41,13 @@ public class Quiz extends DBObject {
 	private boolean single_page;
 	private boolean immediate_feedback;
 	private boolean random;
-	private String quizUploadString = "INSERT INTO " + DBObject.quizTable +
-										" VALUE (null, ?,?,?,NOW(),?,?,0)";
+	private static String quizUploadString = "INSERT INTO " + DBObject.quizTable +
+											 " VALUE (null, ?,?,?,NOW(),?,?,0)";
 	/** A quick way of creating a quiz and syncing it immediately
 	 * with the database
 	 * @throws SQLException 
 	 */
-	public int quizUpload(String author, String name, String description, String category, String tags, boolean randomness) throws SQLException {
+	public static int quizUpload(String author, String name, String description, String category, String tags, boolean randomness) throws SQLException {
 		/*StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO " + DBObject.quizTable + " ");
 		query.append("VALUE (null,\"" + name + "\", \"" + description + "\", \"" + author + "\", NOW(),\"" + category +"\", "+randomness+ ",0)");

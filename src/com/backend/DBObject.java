@@ -203,7 +203,7 @@ public class DBObject {
 			numUpdated += results[i];
 		return numUpdated;
 	}
-	protected Connection getConnection(){
+	protected static Connection getConnection(){
 		return connection;
 	}
 	
