@@ -63,9 +63,6 @@ public class Quiz extends DBObject {
 			e.printStackTrace();
 			return -1;
 		}
-		System.out.println(prepStatement.toString());
-		
-		
 		prepStatement.executeUpdate();		 	
 		ResultSet rs = prepStatement.getGeneratedKeys();
 		if(rs.next())

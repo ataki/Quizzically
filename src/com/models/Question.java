@@ -3,12 +3,7 @@ package com.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import com.backend.DBObject;
 
@@ -66,15 +61,15 @@ public class Question extends DBObject{
 
 	}
 	private int id;
-	private ArrayList<String> texts;
-	private ArrayList<String> answers;
+	private List<String> texts;
+	private List<String> answers;
 	private String url;
 	private Type type;
 	private String DELIMITER = "#";
 	public Question(){
 		super();
 	}
-	public Question(int id, ArrayList<String>texts, ArrayList<String>answers,String url,String type) 
+	public Question(int id, List<String>texts, List<String>answers,String url,String type) 
 	{
 		this.id = id;
 		this.texts = texts;
@@ -87,16 +82,16 @@ public class Question extends DBObject{
 		}
 	}
 	
-	private String convertTextsToString(ArrayList<String> Texts){
+	private String convertTextsToString(List<String> Texts){
 		StringBuilder strBuilder = new StringBuilder();
 		for(String item:Texts){
 			strBuilder.append(item + DELIMITER);	
 		}
 		return strBuilder.toString();
 	}
-	private ArrayList<String> convertStringToTexts(String str){
+	private List<String> convertStringToTexts(String str){
 		StringTokenizer tokens = new StringTokenizer(str,DELIMITER);
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		while(tokens.hasMoreTokens()){
 			list.add(tokens.nextToken());
 		}
@@ -106,7 +101,7 @@ public class Question extends DBObject{
 	public void addQuestion(int quiz_id, Question q){
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO " + DBObject.questionTable + " ");
-		query.append("VALUE (null," + q.getType() + "," +convertTextsToString(q.getTexts())+"," + convertTextsToString(q.getAnswers()) +", " + quiz_id + "," + q.getUrl());
+		query.append("VALUE (null, \"" + q.getType() + "\", \"" +convertTextsToString(q.getTexts())+"\", \"" + convertTextsToString(q.getAnswers()) +"\", " + quiz_id + ", \"" + q.getUrl() + "\")");
 		updateTable(query.toString());	
 		
 	}
@@ -198,7 +193,7 @@ public class Question extends DBObject{
 	/**
 	 * @return the texts
 	 */
-	public ArrayList<String> getTexts() {
+	public List<String> getTexts() {
 		return texts;
 	}
 	/**
@@ -210,7 +205,7 @@ public class Question extends DBObject{
 	/**
 	 * @return the answers
 	 */
-	public ArrayList<String> getAnswers() {
+	public  List<String> getAnswers() {
 		return answers;
 	}
 	/**

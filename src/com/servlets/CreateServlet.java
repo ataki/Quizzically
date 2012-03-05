@@ -73,7 +73,9 @@ public class CreateServlet extends HttpServlet {
 			String questionType = request.getParameter("question-type-" + i);
 			List<String> texts = Arrays.asList(request.getParameterValues("question-" + i));
 			List<String> answers = Arrays.asList(request.getParameterValues("answer-" + i));
-			
+			String image = request.getParameter("image-" + i);
+			Question question = new Question(0, texts, answers, image, questionType);
+			question.addQuestion(quizId, question);
 			/*
 			if (questionType.equals("question-response")) {
 				
