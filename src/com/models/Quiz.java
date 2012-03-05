@@ -29,9 +29,17 @@ public class Quiz extends DBObject {
 	
 	/** A quick way of creating a quiz and syncing it immediately
 	 * with the database
+	 * @throws SQLException 
 	 */
-	public static void QuizUpload(List<Question>Q, List<Question.Answer>A) {
-		Quiz quiz = new Quiz();
+	public int QuizUpload(String author, String category, String tags, boolean randomness) throws SQLException {
+		StringBuilder query = new StringBuilder();
+		query.append("INSERT INTO " + DBObject.quizTable + " ");
+		query.append("VALUE (null," + author + ", NOW()," + category +", "+ randomness+ ",0");
+		updateTable(query.toString());
+		ResultSet rs = statement.getGeneratedKeys();
+		if(rs.next())
+			return rs.getInt(1);
+		return -1;
 		// TODO: PLEASE FILL THIS OUT 
 		// THIS IS TOP PRIORITY
 		// can use executeBatch for this 
@@ -58,6 +66,16 @@ public class Quiz extends DBObject {
 		this.rating = rating;
 		this.numRated = numRated;
 		// TODO Auto-generated constructor stub
+	}
+	public Quiz getQuiz(int id) throws SQLException{
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT * FROM " + DBObject.quizTable + " ");
+		query.append("WHERE id = "+ id);
+		ResultSet rs = getResults(query.toString());
+		if(rs.next())
+			return null;
+		else
+			return new Quiz(id,rs.getString("author"),rs.getTime("timestamp"),rs.getString("category"),rs.getString("tags"),rs.getBoolean("randomness"),rs.getInt("rating"),rs.getInt("numRated"));
 	}
 	/**
 	 * @return the id
