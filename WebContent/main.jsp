@@ -12,7 +12,18 @@
 	}
 	
 	User user = (User) request.getSession().getAttribute("user");
-	int userId = user.getId();
+	/* Get Annoucements */
+	AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
+	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
+	/* Get Best performance (highest scoring activities) */
+	List<Activity> activities;
+	/* Get friends activities */
+	
+	/* Get recently created quizzes */
+	
+	/* Get messages */
+	MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
+	List<Message> messageArray = messageManager.getUserMessages(userId);
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -95,9 +106,7 @@
 						<div>
 							<ul id="announcement-container" style="width:75%;">
 								
-								<% 
-									AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
-									ArrayList<Announcement> announcementArray = announcementManager.getAllAnnouncement();
+								<%
 									for (int i = 0; i < announcementArray.size(); i++) {
 										Announcement announcement = announcementArray.get(i);
 								%>
@@ -129,10 +138,12 @@
 							</thead>
 							<tbody>
 								<tr>
+								<% for(Activity a: activities) { %>
 									<td>144</td>
 									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
 									<td>34</td>
 									<td>Can you name all the capitals in the city?</td>
+								<% } %>
 								</tr>
 								<tr>
 									<td>144</td>
@@ -261,8 +272,6 @@
 							</thead>
 							<tbody>
 							<% 
-								MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
-								ArrayList<Message> messageArray = messageManager.getUserMessages(userId);
 								for (int i = 0; i < messageArray.size(); i++) {
 									Message message = messageArray.get(i);
 							%>
