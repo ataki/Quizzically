@@ -93,9 +93,9 @@ public class Quiz extends DBObject {
 		query.append("WHERE id = "+ id);
 		ResultSet rs = getResults(query.toString());
 		if(rs.next())
-			return null;
+			return new Quiz(id,rs.getString("author"),rs.getString("name"), rs.getString("description"), rs.getTime("timestamp"),rs.getString("category"),null,rs.getBoolean("randomness"),rs.getInt("rating"),0);
 		else
-			return new Quiz(id,rs.getString("author"),rs.getString("name"), rs.getString("description"), rs.getTime("timestamp"),rs.getString("category"),rs.getString("tags"),rs.getBoolean("randomness"),rs.getInt("rating"),rs.getInt("numRated"));
+			return null;
 	}
 	/**
 	 * @return the description

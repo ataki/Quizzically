@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.User;
-
-import com.models.Quiz;
+import com.models.*;
 
 /**
  * Servlet implementation class CreateServlet
@@ -56,7 +54,7 @@ public class CreateServlet extends HttpServlet {
 		Quiz quiz = new Quiz();
 		int quizId = -1;
 		try {
-			quizId = quiz.quizUpload(user.getName(), quizName, quizDescription, quizCategory, null, randomness);
+			quizId = quiz.quizUpload(user.getUserName(), quizName, quizDescription, quizCategory, null, randomness);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
