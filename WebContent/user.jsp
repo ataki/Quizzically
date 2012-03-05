@@ -17,7 +17,7 @@
 	List<Tag> tags =(List) user.tagManager.fetchTagsForUser(user.getId());
 	
 	/* Get recent activity  for this user*/
-	List<Activity> activities = user.getRecentActivity();
+	List<Activity> activities = activityManager.getRecent();
 	
 	/* Get quizzes created */
 	List<Quiz> quizzes = quizManager.getQuizzesForUser(user.getId());

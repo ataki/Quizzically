@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.models.Achievement;
+import com.models.Activity;
 public class AchievementManager extends DBObject {
 
 	/**
 	 * Retrieve lists of achievements using following filters:
-	 *  - get achievement for ceratin userid
+	 *  - get achievement for certain user_id
 	 *  - get achievement for username
 	 *  
 	 *  You should first initialize this manager on a per-session basis.
@@ -23,29 +24,36 @@ public class AchievementManager extends DBObject {
 	}
 
 	private String base = "select * from " + DBObject.achievementTable;
-	private String filter = " where ? = ?";
 					
-	public List<Achievement>getAchievement(int userid) {
-		if(! this.conPrepare(base + filter)) return null;
+	public List<Achievement> getByUserId(int userid) {
+		if(! this.conPrepare(base + filter + limit)) return null;
 		try {
 			prepStatement.setString(1, "user_id");
 			prepStatement.setInt(2, userid);
 			ResultSet r = prepStatement.executeQuery();
 			
-			List<Achievement> a = new ArrayList<Achievement>();
-			while(r.next()) {
-				a.add(new Achievement(userid, 
-									r.getString("award"),
-									r.getString("description"),
-									r.getString("url"),
-									r.getTimestamp("timestamp"))
-									);
-			}
-			return a;
+			return convertToList(r);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/* 
+	 * primary retrieval method; converts ResultSet to ordered
+	 * list of Achievements
+	 */
+	private List<Achievement>convertToList(ResultSet r) throws SQLException {
+		List<Achievement> result = new ArrayList<Achievement>();
+		while(r.next()) {
+			result.add(new Achievement(r.getInt("user_id"), 
+								r.getString("award"),
+								r.getString("description"),
+								r.getString("url"),
+								r.getTimestamp("timestamp"))
+								);
+		}
+		return result;
 	}
 	
 }

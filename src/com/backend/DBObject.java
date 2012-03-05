@@ -117,8 +117,10 @@ public class DBObject {
 	/* common preparedStatement segments */
 	protected String filter = " where ? = ?";
 	protected String limit = " limit 30 ";
-	protected String recent = " order by TIMESTAMP asc";
-	protected String today = " where TIMESTAMP > date_subtract(now(), INTERVAL 1 day)";
+	protected String recent = " order by TIMESTAMP asc ";
+	protected String today = " where datediff(now(),TIMESTAMP)=0 and TIMESTAMP <= now() ";
+	protected String sorted_asc = " order by ? asc ";
+	protected String sorted_desc = " order by ? desc ";
 	
 	/*
 	 * the main reason we have a wrapper for the 
@@ -171,7 +173,6 @@ public class DBObject {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 	

@@ -12,31 +12,35 @@
 	}
 	
 	/* Get the managers */
-	AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
-	QuizManager quizManager = (QuizManager) request.getServletContext().getAttribute("quizManager");
-	MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
+	ServletContext context = request.getServletContext();
+	AnnouncementManager announcementManager = (AnnouncementManager) context.getAttribute("announcementManager");
+	QuizManager quizManager = (QuizManager) context.getAttribute("quizManager");
+	MessageManager messageManager = (MessageManager) context.getAttribute("messageManager");
+	ActivityManager activityManager = (ActivityManager) context.getAttribute("activityManager");
+	FriendManager friendManager = (friendManager) context.getAttribute("friendManager");
+	AchievementManager achievementManager = (AchievementManager) context.getAttribute("achievementManager");
 	
 	User user = (User) request.getSession().getAttribute("user");
 	/* Get Annoucements */
 	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
 	
 	/* Get Best performance for this user (highest scoring activities) */
-	List<Activity> activities = user.getBestActivity();
+	List<Activity> activities = activityManager.getTopActivity();
 	
 	/* Get friends activities */
-	List<Activity> friendActivities = user.getFriendActivity();
+	List<Activity> friendActivities = friendManager.getFriendActivity();
 	
 	/* Get recently created quizzes for the whole site */
-	List<Quiz> recentQuizzes = quizManager.getRecentQuizzes();
+	List<Quiz> recentQuizzes = quizManager.getRecent();
 	
 	/* Get popular quizzes for whole site */
-	List<Quiz> popularQuizzes = quizManager.getPopularQuizzes();
+	List<Quiz> popularQuizzes = quizManager.getPopular();
 	
 	/* Get messages for this user */
 	List<Message> messageArray = messageManager.getUserMessages(user.getId());
 	
 	/* get achievements */
-	List<Achievement> achievements = user.getAchievements();
+	List<Achievement> achievements = achievementManager.getByUserId(user.getId());
 	
 %>
 

@@ -2,11 +2,15 @@ package com.models;
 
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 import com.backend.DBObject;
 import com.models.Question;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,16 +22,24 @@ public class Quiz extends DBObject {
 	
 	public static String delim = "##";
 	
-	private int id;
+	////////////// UNUSED ////////////////
 	private String author;
+	//////////////////////////////////////
+	
+	private int id;
+	private int creator_id;
+	private int points;
+	private int numRated;
+	private double rating;
+	
 	private String name;
 	private String description;
-	private Time timestamp;
+	private Date timestamp;
 	private String category;
 	private String tags;
-	private boolean randomness;
-	private int rating;
-	private int numRated;
+	private boolean single_page;
+	private boolean immediate_feedback;
+	private boolean random;
 	private String quizUploadString = "INSERT INTO " + DBObject.quizTable +
 										" VALUE (null, ?,?,?,NOW(),?,?,0)";
 	/** A quick way of creating a quiz and syncing it immediately
@@ -80,13 +92,58 @@ public class Quiz extends DBObject {
 		this.author = author;
 		this.name = name;
 		this.description = description;
-		this.timestamp = timestamp;
+		Date d = null;
+		try {
+			d = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(timestamp.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.setTimestamp(d);
 		this.tags = tags;
-		this.randomness = randomness;
+		this.random = randomness;
 		this.rating = rating;
 		this.numRated = numRated;
 		// TODO Auto-generated constructor stub
 	}
+	
+	/**
+	 * New Constructor for the revamped quiz model. Used by, among other things, the 
+	 * QuizManager class to get list of quizzes.
+	 * @param id
+	 * @param creator_id
+	 * @param name
+	 * @param description
+	 * @param single_page
+	 * @param immediate_feedback
+	 * @param random
+	 * @param points
+	 * @param rating
+	 * @param numRated
+	 * @param timestamp
+	 */
+	public Quiz(int id, int creator_id, String name,
+			String description, boolean single_page, boolean immediate_feedback,
+			boolean random, int points, double rating, int numRated,
+			Timestamp timestamp) {
+		this.id = id;
+		this.creator_id = creator_id;
+		this.name = name;
+		this.description = description;
+		this.single_page = single_page;
+		this.immediate_feedback = immediate_feedback;
+		this.random = random;
+		this.points = points;
+		this.rating = rating;
+		this.numRated = numRated;
+		Date d = null;
+		try {
+			d = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(timestamp.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.setTimestamp(d);
+	}
+
 	public Quiz getQuiz(int id) {
 		StringBuilder query = new StringBuilder();
 		try {
@@ -140,14 +197,14 @@ public class Quiz extends DBObject {
 	/**
 	 * @return the timestamp
 	 */
-	public Time getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 	/**
-	 * @param timestamp the timestamp to set
+	 * @param d the timestamp to set
 	 */
-	public void setTimestamp(Time timestamp) {
-		this.timestamp = timestamp;
+	public void setTimestamp(Date d) {
+		this.timestamp = d;
 	}
 	/**
 	 * @return the category
@@ -177,18 +234,18 @@ public class Quiz extends DBObject {
 	 * @return the randomness
 	 */
 	public boolean isRandomness() {
-		return randomness;
+		return random;
 	}
 	/**
 	 * @param randomness the randomness to set
 	 */
 	public void setRandomness(boolean randomness) {
-		this.randomness = randomness;
+		this.random = randomness;
 	}
 	/**
 	 * @return the rating
 	 */
-	public int getRating() {
+	public double getRating() {
 		return rating;
 	}
 	/**
