@@ -6,26 +6,19 @@
 <%
 	int userId = Integer.parseInt(request.getParameter("id"));
 	User user = (User)session.getAttribute("user");
-	/*
-	Past Performance
-				  <dd><a href="#top">Best Ever</a></dd>
-				  <dd><a href="#last">Most Recent</a></dd>
-				  <dd><a href="#lastDay">Top Last Day</a></dd>
-				  <dd><a href="#stats">Statistics</a></dd>
-	*/
+	
+	/* Set up managers */
+	QuizManager quizManager = (QuizManager) request.getServletContext().getAttribute("quizManager");
+	ActivityManager activityManager = (ActivityManager) request.getServletContext().getAttribute("activityManager");
+	
 	/* Get user tags */
-	List<Tag> tags = user.tagManager.fetchTagsForUser(user.getId());
+	List<Tag> tags =(List) user.tagManager.fetchTagsForUser(user.getId());
 	
-	/* Get recent performance */
+	/* Get recent activity  for this user*/
+	List<Activity> activities = user.getRecentActivity();
 	
-	/* Get best performances */
-	
-	/* Get past performance */
-	
-	/* Get top performance from the last day  */
-	
-	/* Get top performance from the last day  */
-	
+	/* Get quizzes created */
+	List<Quizzes> quizzes = quizManager.getQuizzesForUser(user.getId());
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -124,8 +117,8 @@
 						</blockquote>
 					</div>
 					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;"><%= user.getNumQuizzesTaken() %><br/><br/><h6>Quizzes Taken</h6></a>
-					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3.4<br/><br/><h6><%= u %></h6></a>
-					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6>Highest Score</h6></a>
+					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3<br/><br/><h6><%= user.getAchievements().size() %></h6></a>
+					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6><%= activityManager.getUserScores() %></h6></a>
 				</div>
 				<br/>
 				
@@ -135,57 +128,47 @@
 				
 				<!-- RESULTS TABS -->
 				<dl class="contained tabs">
-				  <dd><a href="#past" class="active">Past Performance</a></dd>
-				  <dd><a href="#top">Best Ever</a></dd>
-				  <dd><a href="#last">Most Recent</a></dd>
-				  <dd><a href="#lastDay">Top Last Day</a></dd>
-				  <dd><a href="#stats">Statistics</a></dd>
+				  <dd><a href="#past" class="active">Recent Activity</a></dd>
+				  <dd><a href="#top">Quizzes Created</a></dd>
 				</dl>
 				
 				<!-- RESULTS TAB CONTAINER -->
 				<ul class="nice tabs-content contained">
 			
-					<!-- YOUR OWN PAST RESULTS -->
+					<!-- YOUR RECENT ACTIVITY -->
 					<li id="pastTab">
 				  		<br/>
 						<table width="800" id="user-performance-table" class="tablesorter">
 									<thead>
 										<tr>
+											<th width="15%">Quiz</th>
 											<th width="15%">Score</th>
 											<th width="30%">Time Taken</th>
 											<th width="15%">Date</th>
 										</tr>
 									</thead>
 									<tbody>
+										<% for(Activity a : activities) { 
+											Quiz q = Quiz(a.getQuizID_id()); %>
 										<tr class="hover-highlight">
-												<td>231</td>
+												<td><%= a. %></td>
 												<td>4344 seconds</td>
 												<td>Feb 12 2012</td>
 										</tr>
-										<tr class="hover-highlight">
-												<td>232</td>
-												<td>4344 seconds</td>
-												<td>Feb 12 2012</td>
-										</tr>
-										<tr class="hover-highlight">
-												<td>234</td>
-												<td>4344 seconds</td>
-												<td>Feb 12 2012</td>
-										</tr>
-										
+										<% } %>
 									</tbody>
 						</table>
 				  	</li>
 				  	
-				  	<!-- USERS' BEST RESULTS -->
+				  	<!-- YOUR QUIZZES CREATED -->
 				  	<li id="topTab">
 						<br/>
 							<table width="800"  id="top-performance-table" class="tablesorter">
 										<thead>
 											<tr>
-												<th width="15%">Score</th>
-												<th width="15%">User</td>
-												<th width="30%">Time Taken</th>
+												<th width="15%">Quiz</th>
+												<th width="15%">Description</td>
+												<th width="30%">Time</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -197,73 +180,6 @@
 										</tbody>
 							</table>
 				  	</li>
-				  	
-				  	<!-- MOST RECENT REGARDLESS OF RESULTS -->
-					<li id="lastTab" >
-				  		<br/>
-						<table width="800" id="last-performance-table" class="tablesorter">
-									<thead>
-										<tr>
-											<th width="15%">Score</th>
-											<th width="30%">Time Taken</th>
-											<th width="15%">Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="hover-highlight">
-												<td>231</td>
-												<td>4344 seconds</td>
-												<td>Feb 12 2012</td>
-											</tr>
-										
-									</tbody>
-						</table>
-				  	</li>
-				  	
-				  	<!-- TOP LAST DAY RESULTS -->
-					<li id="lastDayTab" >
-				  		<br/>
-						<table width="800" id="top-last-day-performance-table" class="tablesorter">
-									<thead>
-										<tr>
-											<th width="15%">Score</th>
-											<th width="30%">Time Taken</th>
-											<th width="15%">Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="hover-highlight">
-												<td>222</td>
-												<td>35223 seconds</td>
-												<td>Mar 23 2012</td>
-											</tr>
-										
-									</tbody>
-						</table>
-				  	</li>
-				  	
-				  	<!-- TOP LAST DAY RESULTS -->
-					<li class="active" id="statsTab">
-				  		<br/>
-						<table width="800" class="tablesorter">
-									<thead>
-										<tr>
-											<th width="15%">Score</th>
-											<th width="30%">Time Taken</th>
-											<th width="15%">Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="hover-highlight">
-												<td>231</td>
-												<td>4344 seconds</td>
-												<td>Feb 12 2012</td>
-											</tr>
-										
-									</tbody>
-						</table>
-				  	</li>
-				  	
 				</ul>
 				
 			</div>

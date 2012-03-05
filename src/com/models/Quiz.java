@@ -87,15 +87,19 @@ public class Quiz extends DBObject {
 		this.numRated = numRated;
 		// TODO Auto-generated constructor stub
 	}
-	public Quiz getQuiz(int id) throws SQLException{
+	public Quiz getQuiz(int id) {
 		StringBuilder query = new StringBuilder();
+		try {
 		query.append("SELECT * FROM " + DBObject.quizTable + " ");
 		query.append("WHERE id = "+ id);
 		ResultSet rs = getResults(query.toString());
 		if(rs.next())
 			return new Quiz(id,rs.getString("author"),rs.getString("name"), rs.getString("description"), rs.getTime("timestamp"),rs.getString("category"),null,rs.getBoolean("randomness"),rs.getInt("rating"),0);
-		else
-			return null;
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	/**
 	 * @return the description

@@ -20,19 +20,19 @@
 	/* Get Annoucements */
 	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
 	
-	/* Get Best performance (highest scoring activities) */
-	List<Activity> activities = user.getActivity();
+	/* Get Best performance for this user (highest scoring activities) */
+	List<Activity> activities = user.getBestActivity();
 	
 	/* Get friends activities */
 	List<Activity> friendActivities = user.getFriendActivity();
 	
-	/* Get recently created quizzes */
-	List<Quiz> recentQuizzes = quizManager.getRecentlyCreated();
+	/* Get recently created quizzes for the whole site */
+	List<Quiz> recentQuizzes = quizManager.getRecentQuizzes();
 	
-	/* Get popular quizzes */
+	/* Get popular quizzes for whole site */
 	List<Quiz> popularQuizzes = quizManager.getPopularQuizzes();
 	
-	/* Get messages */
+	/* Get messages for this user */
 	List<Message> messageArray = messageManager.getUserMessages(user.getId());
 	
 	/* get achievements */
