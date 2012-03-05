@@ -111,7 +111,6 @@ $(document).ready(function() {
 	if($("#searchbar") != null) {
 		
 		// FetchRecommendationDataFromServer();
-		
 		$("#searchbar").focusin(function() {
 			var thisPtr = this;
 			$(window).unbind("keypress").bind("keypress", function(e) {
@@ -125,9 +124,7 @@ $(document).ready(function() {
 		$("#searchbar").focusout(function() {
 			$(window).unbind("keypress");
 		});
-		
 	}
-	
 });
 
 /* appends <span> suggestions </span> rows

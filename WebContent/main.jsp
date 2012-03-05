@@ -11,9 +11,13 @@
 		response.sendRedirect("/404.html");
 	}
 	
+	/* Get the managers */
+	AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
+	QuizManager quizManager = (QuizManager) request.getServletContext().getAttribute("quizManager");
+	MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
+	
 	User user = (User) request.getSession().getAttribute("user");
 	/* Get Annoucements */
-	AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
 	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
 	
 	/* Get Best performance (highest scoring activities) */
@@ -23,15 +27,17 @@
 	List<Activity> friendActivities = user.getFriendActivity();
 	
 	/* Get recently created quizzes */
-	QuizManager quizManager = (QuizManager) request.getServletContext().getAttribute("quizManager");
-	List<Quiz> quizzes = quizManager.getRecentlyCreated();
+	List<Quiz> recentQuizzes = quizManager.getRecentlyCreated();
+	
+	/* Get popular quizzes */
+	List<Quiz> popularQuizzes = quizManager.getPopularQuizzes();
 	
 	/* Get messages */
-	MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
 	List<Message> messageArray = messageManager.getUserMessages(user.getId());
 	
 	/* get achievements */
 	List<Achievement> achievements = user.getAchievements();
+	
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -138,41 +144,28 @@
 						<table width="800">
 							<thead>
 								<tr>
-									<th width="15%"># Users Taken</th>
+									<th width="15%">Rating</th>
 									<th width="30%">Name</th>
 									<th width="15%">Questions</th>
 									<th>Description</th>
 								</tr>
 							</thead>
 							<tbody>
+								<% for(Quiz q: popularQuizzes) { %>
 								<tr>
-								<% for(Activity a: activities) { %>
-									<td>144</td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
-									<td>34</td>
+									<td><%= q.getRating() %></td>
+									<td class="hover-highlight"><a href="QuizServlet?<%= q.getId() %>"><%= q.getId() %>/a></b></td>
+									<td><%= q.getQuestions().length() %></td>
 									<td>Can you name all the capitals in the city?</td>
+								</tr>
 								<% } %>
-								</tr>
-								<tr>
-									<td>144</td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
-									<td>34</td>
-									<td>Can you name all the capitals in the city?</td>
-								</tr>
-								<tr>
-									<td>144</td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= user%>">Around the World</a></b></td>
-									<td>34</td>
-									<td>Can you name all the capitals in the city?</td>
-								</tr>
-								
 							</tbody>
 						</table>
 			  
 			  </li>
 			  <!-- END POPULAR QUIZZES -->
 			  
-			  <!-- USER'S RECENTLY CREATED QUIZZES -->
+			  <!-- RECENTLY CREATED QUIZZES -->
 			  <li id="nice3Tab">
 			  
 				 <div class="row">
@@ -185,29 +178,26 @@
 								<thead>
 									<tr>
 										<th width="10%">Name</th>
-										<th width="35%">Message</th>
+										<th width="10%">Author</th>
+										<th width="65%">Description</th>
 										<th widht="15%">Time</th>
 									</tr>
 								</thead>
 								<tbody>
-									<% /*
-										ArrayList<Message> messageArray = manager.getUserMessages();
-										for (int i = 0; i < messageArray.size(); i++) {
-											Message message = messageArray.get(i);
-											if (message.isRead())
-												out.println("<tr>");
-											else
-												out.println("<tr class=\"unread\"");*/
-									%>
-									<% 
-										//} 
-									%>
+									<% for (Quiz q: recentQuizzes) { %>
+									<tr>
+										<td><%= q.getName() %></td>
+										<td><%= q.getAuthor() %></td>
+										<td><%= q.getDescription() %></td>
+										<td><%= q.getTimestamp() %></td>
+									</tr>
+									<% } %>
 								</tbody>
 							</table>
 						
 					</div>
 			  </li>
-			  <!-- END USER'S RECENTLY CREATED QUIZZES -->
+			  <!-- END RECENTLY CREATED QUIZZES -->
 			  
 			  
 			  <!-- USER'S RECENT ACTIVITY -->
@@ -218,13 +208,23 @@
 							<table width="800">
 								<thead>
 									<tr>
-										<th width="15%">Type</th>
-										<th width="30%">From</th>
-										<th width="15%">Message</th>
+										<th width="15%">Quiz Name</th>
+										<th width="15%">Name</th>
+										<th width="30%">Score</th>
 										<th widht="15%">Time</th>
 									</tr>
 								</thead>
 								<tbody>
+									<% for (Activity a: activities) { 
+										Quiz q = Quiz(a.getQuizID_id());
+									%>
+									<tr>
+										<td><%=  %></td>
+										<td><%= q.getName() %></td>
+										<td><%=  %></td>
+										<td><%= q.getTimestamp() %></td>
+									</tr>
+									<% } %>
 									<tr>
 										<td>Challenge</td>
 										<td class="hover-highlight"><a href="QuizServlet?<%=user%>">Around the World</a></b></td>
@@ -312,6 +312,7 @@
 									</tr>
 								</thead>
 								<tbody>
+									
 									<tr>
 										<td><img src="http://a.dryicons.com/images/icon_sets/luna_blue_icons/png/128x128/prize_winner.png" width="48" height="48" /></td>
 										<td>Fastest Solver</td>
