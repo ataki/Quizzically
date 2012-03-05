@@ -36,9 +36,9 @@ public class User extends DBObject {
 	private void setValues(int id, String name, String email, String achievements, int admin) {
 		this.id = id;
 		this.name = name;
-		this.email = email;
+		this.setEmail(email);
 		this.achievements = achievements;	
-		if(admin == 1) { this.admin = true; } else { this.admin = false; }
+		if(admin == 1) { this.setAdmin(true); } else { this.setAdmin(false); }
 		this.tagManager = new TagManager();
 	}
 
@@ -186,6 +186,38 @@ public class User extends DBObject {
 		ResultSet rs = statement.getResultSet();
 		if (rs.next()) return rs.getString("name");
 		else return null;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setNumQuizzesTaken(int numQuizzesTaken) {
+		this.numQuizzesTaken = numQuizzesTaken;
+	}
+
+	public int getNumQuizzesTaken() {
+		return numQuizzesTaken;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 }

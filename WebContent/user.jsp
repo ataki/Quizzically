@@ -6,7 +6,22 @@
 <%
 	int userId = Integer.parseInt(request.getParameter("id"));
 	User user = (User)session.getAttribute("user");
+	/*
+	Past Performance
+				  <dd><a href="#top">Best Ever</a></dd>
+				  <dd><a href="#last">Most Recent</a></dd>
+				  <dd><a href="#lastDay">Top Last Day</a></dd>
+				  <dd><a href="#stats">Statistics</a></dd>
+	*/
+	/* Get user tags */
 	List<Tag> tags = user.tagManager.fetchTagsForUser(user.getId());
+	
+	/* Get recent performance */
+	
+	/* Get best performances */
+	
+	/* Get past performance */
+	
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->

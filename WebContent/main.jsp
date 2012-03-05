@@ -209,28 +209,22 @@
 								<thead>
 									<tr>
 										<th width="15%">Quiz Name</th>
-										<th width="15%">Name</th>
 										<th width="30%">Score</th>
-										<th widht="15%">Time</th>
+										<th widht="15%">Time Elapsed</th>
+										<th widht="15%">Recorded</th>
 									</tr>
 								</thead>
 								<tbody>
 									<% for (Activity a: activities) { 
-										Quiz q = Quiz(a.getQuizID_id());
+										Quiz quiz = Quiz(a.getQuizID_id());
 									%>
 									<tr>
-										<td><%=  %></td>
-										<td><%= q.getName() %></td>
-										<td><%=  %></td>
-										<td><%= q.getTimestamp() %></td>
+										<td><%= quiz.getName() %></td>
+										<td><%= a.getScore() %></td>
+										<td><%= a.getTimeTaken() %></td>
+										<td><%= a.getTimestamp() %></td>
 									</tr>
 									<% } %>
-									<tr>
-										<td>Challenge</td>
-										<td class="hover-highlight"><a href="QuizServlet?<%=user%>">Around the World</a></b></td>
-										<td></td>
-										<td>Can you name all the capitals in the city?</td>
-									</tr>
 								</tbody>
 							</table>
 					</div>
@@ -312,20 +306,14 @@
 									</tr>
 								</thead>
 								<tbody>
-									
+									<% for (Achievement a: achievements) { %>
 									<tr>
-										<td><img src="http://a.dryicons.com/images/icon_sets/luna_blue_icons/png/128x128/prize_winner.png" width="48" height="48" /></td>
-										<td>Fastest Solver</td>
-										<td>You are the fastest at solving a quiz of <b>Medium</b> difficulty</td>
-										<td>Feb 3 2012</td>
+										<td><img src="<%= a.getUrl() %>" width="48" height="48" /></td>
+										<td><%= a.getAward() %></td>
+										<td><%= a.getDescription() %></td>
+										<td><%= a.getDate().toString() %></td>
 									</tr>
-									<tr>
-										<td><img src="http://a.dryicons.com/images/icon_sets/luna_blue_icons/png/128x128/prize_winner.png" width="48" height="48" /></td>
-										<td>Fastest Solver</td>
-										<td>You are the fastest at solving a quiz of <b>Medium</b> difficulty</td>
-										<td>Feb 3 2012</td>
-									</tr>
-									
+									<% } %>
 								</tbody>
 							</table>
 						
