@@ -5,11 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import com.backend.DBObject;
-import com.models.*;
 
 public class User extends DBObject {
 
@@ -19,7 +16,6 @@ public class User extends DBObject {
 	public String name;
 	public String description;
 	public int numQuizzesTaken;
-//	private boolean access;
 	private String achievements;
 	
 	
@@ -31,15 +27,12 @@ public class User extends DBObject {
 
 	public User() {
 		super(DBObject.userTable);
-		id = 2;
-		name = "";
-		achievements = "";
-		setValues(-1, "", "");
+		setValues(INVALID_USER, "", "");
 	}
 	
 	public User(int id) {
 		super(DBObject.userTable);
-		id = -1;
+		id = INVALID_USER;
 		StringBuilder query = new StringBuilder();
 		query.append("SELECT id, name, achievements FROM " + userTable + " ");
 	    query.append("WHERE id = \"" + Integer.toString(id) + "\";");
@@ -47,7 +40,7 @@ public class User extends DBObject {
 		ResultSet rs = getResults(query.toString());
 		try {
 			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
-			else setValues(-1, "", "");			
+			else setValues(INVALID_USER, "", "");
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -61,7 +54,7 @@ public class User extends DBObject {
 
 	public User(String name) {
 		super(DBObject.userTable);
-		id = -1;
+		id = INVALID_USER;
 		StringBuilder query = new StringBuilder();
 		query.append("SELECT id, name, achievements FROM " + userTable + " ");
 		query.append("WHERE name = \"" + name + "\";");
@@ -70,7 +63,7 @@ public class User extends DBObject {
 		ResultSet rs = getResults(query.toString());
 		try {
 			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
-			else setValues(-1, "", "");
+			else setValues(INVALID_USER, "", "");
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -90,7 +83,7 @@ public class User extends DBObject {
 	}
 	
 	public static User createUser(String name, String password) {
-		if(getUser(name).getId() != -1) return null;
+		if(getUser(name).getId() != INVALID_USER) return null;
 
 		Random random = new Random();
 		int salt = random.nextInt();
@@ -148,7 +141,7 @@ public class User extends DBObject {
 	
 	public static User authenticateUser(String name, String password) {
 		User user = new User(name);
-		if(user.getId() == -1) return null;
+		if(user.getId() == INVALID_USER) return null;
 
 		ArrayList<String> pwd = user.getPassword();
 		String passwd = pwd.get(0);
@@ -194,29 +187,6 @@ public class User extends DBObject {
 		if (rs.next()) return rs.getString("name");
 		else return null;
 	}
-
-//	DB implemenation in User.java  getUsers(String userFilter);
-/*
-	try {
-		stmt.executeQuery("SELECT * FROM "+ TABLE +" WHERE name LIKE \"%" + name +"%\"" );
-		ResultSet rs = stmt.getResultSet();
-		
-		ArrayList<User> usersList = new ArrayList<User>();
-		while(rs.next()){
-			User user = new User();
-			user.id = rs.getInt("id");
-			user.name = rs.getString("name");
-			user.password = rs.getString("password");
-			user.salt = rs.getInt("salt");
-			user.access = rs.getBoolean("access");
-			usersList.add(user);
-			return usersList;
-		}
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	*/
 
 }
  
