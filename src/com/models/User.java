@@ -12,10 +12,10 @@ public class User extends DBObject {
 
 	public static int INVALID_USER = -1;
 	private int id;
-	public String email;
-	public String name;
-	public String description;
-	public int numQuizzesTaken;
+	private String email;
+	private String name;
+	private String description;
+	private int numQuizzesTaken;
 	private String achievements;
 	public TagManager tagManager;
 	
