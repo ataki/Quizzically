@@ -194,7 +194,9 @@ public class DBObject {
 			numUpdated += results[i];
 		return numUpdated;
 	}
-	
+	protected Connection getConnection(){
+		return connection;
+	}
 	
 }
 

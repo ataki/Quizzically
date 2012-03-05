@@ -28,17 +28,34 @@ public class Quiz extends DBObject {
 	private boolean randomness;
 	private int rating;
 	private int numRated;
-	
+	private String quizUploadString = "INSERT INTO " + DBObject.quizTable +
+										" VALUE (null, ?,?,?,NOW(),?,?,0)";
 	/** A quick way of creating a quiz and syncing it immediately
 	 * with the database
 	 * @throws SQLException 
 	 */
-	public int QuizUpload(String author, String name, String description, String category, String tags, boolean randomness) throws SQLException {
-		StringBuilder query = new StringBuilder();
+	public int quizUpload(String author, String name, String description, String category, String tags, boolean randomness) throws SQLException {
+		/*StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO " + DBObject.quizTable + " ");
-		query.append("VALUE (null," + name + ", " + description + ", " + author + ", NOW()," + category +", "+ randomness+ ",0");
-		updateTable(query.toString());
-		ResultSet rs = statement.getGeneratedKeys();
+		query.append("VALUE (null,\"" + name + "\", \"" + description + "\", \"" + author + "\", NOW(),\"" + category +"\", "+randomness+ ",0)");
+		System.out.println(query.toString());*/
+		Connection con = getConnection();
+		prepStatement = con.prepareStatement(quizUploadString, Statement.RETURN_GENERATED_KEYS);
+		try {
+			prepStatement.setString(1, name);
+			prepStatement.setString(2, description);
+			prepStatement.setString(3, author);
+			prepStatement.setString(4, category);
+			prepStatement.setBoolean(5, randomness);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		System.out.println(prepStatement.toString());
+		
+		
+		prepStatement.executeUpdate();		 	
+		ResultSet rs = prepStatement.getGeneratedKeys();
 		if(rs.next())
 			return rs.getInt(1);
 		return -1;
@@ -225,7 +242,7 @@ public class Quiz extends DBObject {
 	
 	private String addRatingString = 
 		"update" + DBObject.quizTable + 
-		"set RATING = (RATING + ?) / (NUMRATED + 1) " + 
+		"set RATING = (RATING + ?) / (NUMRATED + 1), " + 
 		"	 NUMRATED  = NUMRATED + 1" +
 		"where ID = ?";
 	
