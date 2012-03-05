@@ -55,12 +55,14 @@
 		</div>
 		<!-- End Heading -->
 		
-		<div id="myModal" class="reveal-modal">
-			<h1>Are you sure you want to exit this quiz?</h1>
-			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
-			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
-			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
-				onclick="self.location='main.html'">Exit</a>
+		<!--  surround with check to see if friends; if not, don't create this div -->
+		<div id="create-Message-Modal" class="reveal-modal">
+			<h5>Send Friend Request</h5>
+			<form id="friend" action="MessageServlet" method="post">
+				<input type="hidden" name="friend" value="2353" />
+				<input type="hidden" name="type" value="friend" />
+				<input class="small green button" type="submit" value="Send!" />  
+			</form>
 			<a class="close-reveal-modal">&#215;</a>
 		</div>
 		
