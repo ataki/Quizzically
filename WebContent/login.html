@@ -62,6 +62,7 @@
 			<h5>Login</h5>
 			<div class="row" style="padding-top:0px">
 				<!-- Begin creation form-->
+				<form action="LoginServlet" method="post">				
 				<ul>
 				<li id="fo69li0" class="notranslate      ">
 				<label class="desc" id="title0" for="Field0" size="12">
@@ -73,7 +74,7 @@
 				</span>
 				<span>
 				<label for="Field1">Password</label>
-				<input style="margin-left:31px"  id="Field1" name="Field1" type="text" class="field text ln" value="" size="16" tabindex="2" onkeyup="handleInput(this);" onchange="handleInput(this);" />
+				<input style="margin-left:31px"  id="Field1" name="Field1" type="password" class="field text ln" value="" size="16" tabindex="2" onkeyup="handleInput(this);" onchange="handleInput(this);" />
 				
 				</span>
 				</li>
@@ -81,7 +82,7 @@
 				
 			<h6>New user? <a href="signup.html">Signup instead</a></h6><br/>
 				<input type="submit" value="Submit" class="blue button" />
-				
+				</form>
 		</div>
 		<div id="footer" class="row">
 			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.

@@ -1,4 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*, com.backend.*, com.models.* " %>
 <!DOCTYPE html>
+
+<%
+	int quizId = Integer.parseInt(request.getParameter("quizId"));
+	Quiz dummyQuiz = new Quiz();
+	Quiz quiz = dummyQuiz.getQuiz(quizId);
+%>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -55,27 +63,22 @@
 		</div>
 		<!-- End Heading -->
 		
-		<!--  surround with check to see if friends; if not, don't create this div -->
-		<div id="create-Message-Modal" class="reveal-modal">
-			<h5>Send Friend Request</h5>
-			<form id="friend" action="MessageServlet" method="post">
-				<input type="hidden" name="friend" value="2353" />
-				<input type="hidden" name="type" value="friend" />
-				<input class="small green button" type="submit" value="Send!" />  
-			</form>
+		<div id="myModal" class="reveal-modal">
+			<h1>Are you sure you want to exit this quiz?</h1>
+			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
+			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
+			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
+				onclick="self.location='main.html'">Exit</a>
 			<a class="close-reveal-modal">&#215;</a>
 		</div>
 		
 		
-		<div class="row">
+		<div class="row" style="min-width:1000px;">
 			<div class="twelve columns">
-				<h3>Quantum3023
-				<h6><a href="mailto:quantu323@gmail.com" style="margin-right:30px;">Email: quantum323@gmail.com</a>
-				<a>Last Seen: 12 Feb 2012</a></h6>
-				</h3>
+				<h3><%=quiz.getName()%></h3>
 				
 				<div class="row">
-					<div class="four columns" style="padding:20px;">
+					<div class="four columns" style="padding:20px; max-width:300px;">
 					
 						<!--
 						////////////////////////////////////////////////////////////////////
@@ -87,22 +90,36 @@
 						Make sure that the servlet takes care of this by appending the proper
 						id to whatever links necessitate them.
 						 -->				
+					
+						<h5>By <a href="UserServlet/94834" style="margin-right:15px;"><%=quiz.getAuthor()%></a>
+							<a href="QuizServlet/23423" title="action=view" class="radius button">Take!</a>
+						</h5>
+						<br/>
 						
-						<h6>Hi! My name is Quantum and this is a description of me.
-						I'm afraid I'm treribly busy these days andhave no time for a proper,
-						long introduction. so please email me ! </h6>
-						<blockquote>Tags: <a class="round tag" href="TagServlet/world">#world</a> 
-										<a class="round tag" href="TagServlet/geography">#georgraphy</a> 
-										<a class="round tag" href="TagServlet/news">#news</a> 
-										<a class="round tag" href="TagServlet/birds" >#birds</a> 
-						</blockquote>
+						<h6><%=quiz.getDescription()%></h6>
+						
+					<ul class='star-rating'>
+					  <li><a href='#' title='Rate this 1 star out of 5' class='one-star star-child'>1</a></li>
+					  <li><a href='#' title='Rate this 2 stars out of 5' class='two-stars star-child'>2</a></li>
+					  <li><a href='#' title='Rate this 3 stars out of 5'  class='three-stars star-child'>3</a></li>
+					  <li><a href='#' title='Rate this 4 stars out of 5' class='four-stars star-child'>4</a></li>
+					  <li><a href='#' title='Rate this 5 stars out of 5' class='five-stars star-child'>5</a></li>
+					</ul>
+						
+					<br/>
 					</div>
-					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;">432<br/><br/><h6>Quizzes Taken</h6></a>
-					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3.4<br/><br/><h6>Average Quiz Difficulty</h6></a>
-					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6>Highest Score</h6></a>
+					<a class="columns gray box bluehover-highlight" style="min-width:175px; min-height:85px; width:175px; height:85px; overflow:hidden">2430<br/><br/><h6>Taken</h6></a>
+					<a class="columns blue box hover-highlight" style="width:175px; height:85px; overflow:hidden">10<br/><br/><h6>Difficulty</h6></a>
+					<a class="columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left; overflow:hidden">67%<br/><br/><h6>Highest Score</h6></a>
 				</div>
 				<br/>
-				
+				<blockquote>Tags: <a class="round tag" href="TagServlet/world">#world</a> 
+								<a class="round tag" href="TagServlet/geography">#georgraphy</a> 
+								<a class="round tag" href="TagServlet/news">#news</a> 
+								<a class="round tag" href="TagServlet/colors" >#colors</a>
+								<a class="round tag" href="TagServlet/interest">#interest</a> 
+								<a class="round tag" href="TagServlet/birds" >#birds</a> 
+				</blockquote>
 				<hr/>
 				<br/>
 				<h5>Performance Comparison:</h5><br/>
