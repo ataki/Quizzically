@@ -38,13 +38,16 @@ $(document).ready(function() {
 			announcementContainer:"announcement-container",
 			recentActivityContainer:"recent-activity-container",
 			friendsActivityContainer:"friends-activity-container",
-			achievementsContainer:"achievements-container"
+			achievementsContainer:"achievements-container",
 			
+			createMessageModal:'create-Message-Modal'
 		});
 	}
 	/* If we don't detect windows.MACH, just abort*/
 	else return;
 
+	
+	
 	/* RETRIEVE DATA ----------------------
 	Use JSON to retrieve data from the server.
 	Perhaps will be needed at some point
@@ -111,26 +114,16 @@ $(document).ready(function() {
 		
 		$("#searchbar").focusin(function() {
 			var thisPtr = this;
-			Mach.searchIntervalID = setInterval(function() {
-				// first check our cache. If not there, go to
-				// backend and get first few recommendations
-				// if no recommendations set up, just get
-				// by alphabetical order.
-				var queryWord = $("#searchbar").val(),
-					result = isInCache(queryWord);
-				
-				if(!!(result == undefined)) {
-					appendToSuggestionsBox(result);
+			$(window).unbind("keypress").bind("keypress", function(e) {
+				if(e.keyCode == 13) {
+					var val = $(thisPtr).val();
+					$(this).trigger("submit");
 				}
-				
-				
-			}, 500);
+			});	
 		});
 		
 		$("#searchbar").focusout(function() {
-			if(Mach.searchIntervalID != null) {
-				clearInterval(Mach.searchIntervalID);
-			}
+			$(window).unbind("keypress");
 		});
 		
 	}

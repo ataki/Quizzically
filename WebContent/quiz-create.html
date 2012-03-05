@@ -92,6 +92,24 @@
 						possible values 			: {"Yes", "No"}
 						
 					-->
+					<h6>Category</h6>
+					<select name="quiz-category">
+						<option value="general">General</option>
+						<option value="science">Science and Technology</option>
+						<option value="trivia">Trivia</option>
+						<option value="social">Social</option>
+						<option value="educational">Educational</option>
+					</select><br/>
+					
+					<h6>Tags: Tags are keywords that identify your quiz, separated by commas.<br/>
+					Each tag begins with a hashmark (e.g. #myNiceTag1, #myNicetag2, )</h6>
+					<input type="text" name="quiz-tags" placeholder="#Tag1, #Tag2" /><br/>
+					<br/>
+					
+					<h6>Description: Give a nice description for your quiz, instructions, etc... </h6>
+					<textarea placeholder="Attention!" name="quiz-description" rows="3"></textarea>
+					<br/>
+					
 					<h6>Quiz Display</h6>
 					<select name="quiz-display">
 						<option value="one">One Page</option>
@@ -299,9 +317,9 @@
 				<div id="matching" style="display:none;">
 					<h6 class="add-match-text"><a>[+] Add Matching Pair</a></h6>
 					<br/>Elem
-					<input type="text" name="match-question-" placeholder="Your Question" size="25" />
+					<input type="text" name="question-" placeholder="Your Question" size="25" />
 					Matching Elem
-					<input type="text" name="match-answer-" placeholder="Your Answer" size="25" /><br/>
+					<input type="text" name="answer-" placeholder="Your Answer" size="25" /><br/>
 					<br/><input class="timed" type="checkbox" name="timed" placeholder="Allow" />Timed?<br />
 				</div>
 				

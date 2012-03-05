@@ -20,6 +20,8 @@ public class Quiz extends DBObject {
 	
 	private int id;
 	private String author;
+	private String name;
+	private String description;
 	private Time timestamp;
 	private String category;
 	private String tags;
@@ -31,18 +33,15 @@ public class Quiz extends DBObject {
 	 * with the database
 	 * @throws SQLException 
 	 */
-	public int QuizUpload(String author, String category, String tags, boolean randomness) throws SQLException {
+	public int QuizUpload(String author, String name, String description, String category, String tags, boolean randomness) throws SQLException {
 		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO " + DBObject.quizTable + " ");
-		query.append("VALUE (null," + author + ", NOW()," + category +", "+ randomness+ ",0");
+		query.append("VALUE (null," + name + ", " + description + ", " + author + ", NOW()," + category +", "+ randomness+ ",0");
 		updateTable(query.toString());
 		ResultSet rs = statement.getGeneratedKeys();
 		if(rs.next())
 			return rs.getInt(1);
 		return -1;
-		// TODO: PLEASE FILL THIS OUT 
-		// THIS IS TOP PRIORITY
-		// can use executeBatch for this 
 	}
 	
 	public Quiz() {
@@ -51,6 +50,8 @@ public class Quiz extends DBObject {
 	}
 	public Quiz(int id, 
 			String author, 
+			String name,
+			String description,
 			Time timestamp, 
 			String category, 
 			String tags, 
@@ -60,6 +61,8 @@ public class Quiz extends DBObject {
 		super(DBObject.quizTable);
 		this.id = id;
 		this.author = author;
+		this.name = name;
+		this.description = description;
 		this.timestamp = timestamp;
 		this.tags = tags;
 		this.randomness = randomness;
@@ -75,7 +78,19 @@ public class Quiz extends DBObject {
 		if(rs.next())
 			return null;
 		else
-			return new Quiz(id,rs.getString("author"),rs.getTime("timestamp"),rs.getString("category"),rs.getString("tags"),rs.getBoolean("randomness"),rs.getInt("rating"),rs.getInt("numRated"));
+			return new Quiz(id,rs.getString("author"),rs.getString("name"), rs.getString("description"), rs.getTime("timestamp"),rs.getString("category"),rs.getString("tags"),rs.getBoolean("randomness"),rs.getInt("rating"),rs.getInt("numRated"));
+	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 	/**
 	 * @return the id

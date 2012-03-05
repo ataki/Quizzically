@@ -14,6 +14,8 @@ public class Message extends DBObject {
 	private String messageType;
 	private Date timestamp;
 	
+	String []types = {"challenge", "text", "friend"};
+	
 	public Message(int id, int fromUserId, int toUserId, String message,
 			boolean read, String messageType, Date timestamp) {
 		super(DBObject.messageTable);
