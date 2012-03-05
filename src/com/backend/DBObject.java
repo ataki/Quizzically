@@ -114,6 +114,12 @@ public class DBObject {
 	 * Instead, just prepare it raw.
 	 */
 	
+	/* common preparedStatement segments */
+	protected String filter = " where ? = ?";
+	protected String limit = " limit 30 ";
+	protected String recent = " order by TIMESTAMP asc";
+	protected String today = " where TIMESTAMP > date_subtract(now(), INTERVAL 1 day)";
+	
 	/*
 	 * the main reason we have a wrapper for the 
 	 * PreparedStatement queries ; so that we can check 
