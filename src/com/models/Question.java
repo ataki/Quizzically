@@ -1,11 +1,19 @@
 package com.models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
-public class Question {
+import com.backend.DBObject;
+
+
+public class Question extends DBObject{
 	
 	
 	public enum Type{
@@ -57,29 +65,64 @@ public class Question {
 		
 
 	}
-	
-
-	
-	
-	
-	public List<String> texts;
-	public List<String> answers;
-	public String url;
-	public Date time;
-	public Type type;
-	
-	public Question(List<String>texts, List<String>answers, String url,
-							String type) 
+	private int id;
+	private ArrayList<String> texts;
+	private ArrayList<String> answers;
+	private String url;
+	private Type type;
+	private String DELIMITER = "#";
+	public Question(){
+		super();
+	}
+	public Question(int id, ArrayList<String>texts, ArrayList<String>answers,String url,String type) 
 	{
+		this.id = id;
 		this.texts = texts;
 		this.answers = answers;
 		this.url = url;
+
 		for(Type item: Type.values()){
 			if(type.equals(item.toString()))
 				this.type = item;
 		}
 	}
 	
+	private String convertTextsToString(ArrayList<String> Texts){
+		StringBuilder strBuilder = new StringBuilder();
+		for(String item:Texts){
+			strBuilder.append(item + DELIMITER);	
+		}
+		return strBuilder.toString();
+	}
+	private ArrayList<String> convertStringToTexts(String str){
+		StringTokenizer tokens = new StringTokenizer(str,DELIMITER);
+		ArrayList<String> list = new ArrayList<String>();
+		while(tokens.hasMoreTokens()){
+			list.add(tokens.nextToken());
+		}
+			
+		return list;
+	}
+	public void addQuestion(int quiz_id, Question q){
+		StringBuilder query = new StringBuilder();
+		query.append("INSERT INTO " + DBObject.questionTable + " ");
+		query.append("VALUE (null," + q.getType() + "," +convertTextsToString(q.getTexts())+"," + convertTextsToString(q.getAnswers()) +", " + quiz_id + "," + q.getUrl());
+		updateTable(query.toString());	
+		
+	}
+	public ArrayList<Question> getQuestions(int quiz_id) throws SQLException{
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT * FROM " + DBObject.questionTable + " ");
+		query.append("WHERE quiz_id = " + quiz_id);
+		ResultSet rs = getResults(query.toString());
+		ArrayList<Question> qList = new ArrayList<Question>();
+		while(rs.next()){
+			Question newQuestion = new Question(rs.getInt("id"),convertStringToTexts(rs.getString("question")), convertStringToTexts(rs.getString("answers")),rs.getString("url"),
+					rs.getString("type"));
+			qList.add(newQuestion);
+		}
+		return qList;
+	}
 	/*
 	 * depending on the question type, Answer's
 	 * index can mean either:
@@ -151,4 +194,54 @@ public class Question {
 	}
 	
 	*/
+
+	/**
+	 * @return the texts
+	 */
+	public ArrayList<String> getTexts() {
+		return texts;
+	}
+	/**
+	 * @param texts the texts to set
+	 */
+	public void setTexts(ArrayList<String> texts) {
+		this.texts = texts;
+	}
+	/**
+	 * @return the answers
+	 */
+	public ArrayList<String> getAnswers() {
+		return answers;
+	}
+	/**
+	 * @param answers the answers to set
+	 */
+	public void setAnswers(ArrayList<String> answers) {
+		this.answers = answers;
+	}
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return type;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(Type type) {
+			this.type = type;
+	}
 }
