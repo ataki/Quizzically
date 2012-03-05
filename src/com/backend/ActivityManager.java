@@ -20,11 +20,13 @@ public class ActivityManager extends DBObject {
 		/* empty initializer */
 	}
 	
-	private String base = "select * from " + DBObject.activityTable +
-					" where ? = ? ";	
+	private String base = "select * from " + DBObject.activityTable;
+	private String filter = " where ? = ?";
+	private String limit = " limit 30 ";
+	private String recent = " order by TIMESTAMP asc";
 	
 	public List<Activity>getbyUserId(int userid) {
-		if(!this.conPrepare(base)) return null;
+		if(!this.conPrepare(base + filter + limit)) return null;
 		List<Activity> result = null;
 		try {
 			prepStatement.setString(1, "user");
@@ -46,6 +48,30 @@ public class ActivityManager extends DBObject {
 			e.printStackTrace();
 			return null;
 		}
-		
+	}
+	
+	public List<Activity>getRecent() {
+		if(!this.conPrepare(base + limit)) return null;
+		List<Activity> result = null;
+		try {
+			prepStatement.setString(1, "user");
+			prepStatement.setInt(2, userid);
+			ResultSet r = this.getPrepared();
+			
+			result = new ArrayList<Activity>();
+			while(r.next()) {
+				result.add(new Activity(r.getInt("id"),
+										r.getInt("user_id"), 
+										r.getInt("quiz_id"),
+										r.getInt("score"),
+										r.getTimestamp("timestamp"),
+										r.getDouble("timeTaken")
+									   ));
+			}
+			return result;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
