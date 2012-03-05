@@ -197,21 +197,6 @@ public class Quiz extends DBObject {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-
-	/** Fetches user info from database */
-	private String fetchString = "select * from "  + DBObject.quizTable +
-								"where ID = ? " + "limit 1";
-	public boolean fetch() {
-		if(! conPrepare(fetchString)) return false;
-		try {
-			prepStatement.setInt(1, this.id);
-			return this.executePrepared();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return false;							
-	}
-	
 	
 	/**
 	 * Private Objects
@@ -244,11 +229,12 @@ public class Quiz extends DBObject {
 	 * Database Operations
 	 */
 	
+	/** add rating */
 	private String addRatingString = 
-		"update" + DBObject.quizTable + 
-		"set RATING = (RATING + ?) / (NUMRATED + 1), " + 
+		"update " + DBObject.quizTable + 
+		" set RATING = (RATING + ?) / (NUMRATED + 1), " + 
 		"	 NUMRATED  = NUMRATED + 1" +
-		"where ID = ?";
+		" where ID = ?";
 	
 	public boolean addRating(Rating r) {
 		if(!this.conPrepare(addRatingString)) return false;
@@ -262,10 +248,12 @@ public class Quiz extends DBObject {
 		return this.executePrepared();
 	}
 	
+	/** add categories */
 	private String addCategoriesString = 
 		"update" + DBObject.quizTable +
-		"set CATEGORY = concat(CATEGORY, ?) " +
-		"where ID = ?";
+		" set CATEGORY = concat(CATEGORY, ?) " +
+		" where ID = ?";
+	
 	public boolean addCategories(List<Category> categories) {
 		int quizId = categories.get(0).quizId;
 		StringBuilder all= new StringBuilder();

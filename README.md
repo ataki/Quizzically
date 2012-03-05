@@ -49,11 +49,11 @@ CS 108 Project Documentation
 	can get a list of quizzes they may like based on their past experience
 	with taking quizzes and their friends' taken quizzes.
 
-# Extra Pages:
+# Extra Pages and Functionality:
 	We added a couple of extra pages to make the website feel more complete.
 	These include:
 		Display of a user's page.
-		Display of a 
+		Error-checking and spam-checking done in jQuery.
 
 ---------------------
 | Essential Features |
@@ -81,17 +81,22 @@ CS 108 Project Documentation
 		pull the top scores associated with a quiz_id. 
 	
 	Friends:
-		We maintain a two-wauy friendship model.
+		We maintain a two-way friendship model; when a friend is first created, we
+		maintain a list of blocks that are 
 
 	Mail:
-		We support the three types of messages.
+		We support the three types of messages : challenge, note, and friend request.
 
 	Administration:
-		We keep an admin.jsp view. 
+		We keep an admin.jsp view that serves all functionalities required by the
+		assignment. 
 
 	Overall Web Look:
 		We designed our code with CSS3 and took pains to make the UI seem responsive,
 		utilizing jQuery and web conventions to do so.
+		We borrowed various components from online tutorials to make our GUI
+		more interactive, incorporating tabs, modal popups, notifications, labels,
+		textfields, tablesorter, buttons, etc... 
 	
 	Error-checking and Form Creation:
 		We do detailed error-checking for form creation in addition to page-level
@@ -99,16 +104,16 @@ CS 108 Project Documentation
 		a malicious user decides to try and manipuale the URL.
 		
 	Sessions:
-		All data is stored in a global session cookie that's visible to all servlets.
+		All data is stored in a session variable that's visible to all servlets.
 		Thus, we support multiple users by default.
 
 ----------------------------------------------
 | Plugins Used (as permitted by instructor): |
 ----------------------------------------------
-jQuery tablesorter - a plugin that sorts HTML tables according to an implicit ordering
+jQuery tablesorter - open-source plugin that sorts HTML tables according to an implicit ordering
 jQuery foundations - provides easy "tabbing" functionality on admin/main pages.
 jQuery growl - notification popup like Mac OSX growl.
-simple-json - Java Library for parsing JSON.
+Gson - Google open source library for parsing JSON to and from Java objects.
 
 
 ------------------

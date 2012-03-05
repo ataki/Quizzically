@@ -8,8 +8,10 @@
 	User user = (User)session.getAttribute("user");
 	
 	/* Set up managers */
-	QuizManager quizManager = (QuizManager) request.getServletContext().getAttribute("quizManager");
-	ActivityManager activityManager = (ActivityManager) request.getServletContext().getAttribute("activityManager");
+	ServletContext context = request.getServletContext();
+	QuizManager quizManager = (QuizManager) context.getAttribute("quizManager");
+	ActivityManager activityManager = (ActivityManager) context.getAttribute("activityManager");
+	AchievementManager achievementManager = (AchievementManager) context.getAttribute("achievementManager");
 	
 	/* Get user tags */
 	List<Tag> tags =(List) user.tagManager.fetchTagsForUser(user.getId());
@@ -18,7 +20,7 @@
 	List<Activity> activities = user.getRecentActivity();
 	
 	/* Get quizzes created */
-	List<Quizzes> quizzes = quizManager.getQuizzesForUser(user.getId());
+	List<Quiz> quizzes = quizManager.getQuizzesForUser(user.getId());
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -117,7 +119,7 @@
 						</blockquote>
 					</div>
 					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;"><%= user.getNumQuizzesTaken() %><br/><br/><h6>Quizzes Taken</h6></a>
-					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3<br/><br/><h6><%= user.getAchievements().size() %></h6></a>
+					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3<br/><br/><h6><%= achievementManager.getForUser(user.getId()).size() %></h6></a>
 					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6><%= activityManager.getUserScores() %></h6></a>
 				</div>
 				<br/>
@@ -149,11 +151,11 @@
 									</thead>
 									<tbody>
 										<% for(Activity a : activities) { 
-											Quiz q = Quiz(a.getQuizID_id()); %>
+											Quiz q = quizManager.getQuiz(a.getQuizID_id()); %>
 										<tr class="hover-highlight">
-												<td><%= a. %></td>
-												<td>4344 seconds</td>
-												<td>Feb 12 2012</td>
+												<td><%= q.getName() %></td>
+												<td><%= a.getTimeTaken() %> seconds</td>
+												<td><%= a.getTimestamp().toString() %></td>
 										</tr>
 										<% } %>
 									</tbody>
@@ -172,11 +174,13 @@
 											</tr>
 										</thead>
 										<tbody>
+											<% for(Quiz q : quizzes) {  %>
 											<tr class="hover-highlight">
-												<td>1000</td>
-												<td><a href="UserServlet?">quantum3023</a></b></td>
-												<td>3000 seconds</td>
+													<td><%= q.getName() %></td>
+													<td><%= q.getDescription() %> seconds</td>
+													<td><%= q.getTimestamp().toString() %></td>
 											</tr>
+											<% } %>
 										</tbody>
 							</table>
 				  	</li>
@@ -185,7 +189,7 @@
 			</div>
 		</div>
 		<div id="footer" class="row">
-			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
+			Stanford University Winter 2012. Built using Zurb Foundations and JQuery.
 		</div>
 		
 	</div>

@@ -1,15 +1,30 @@
 package com.models;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * List of user's achievements.
+ * To add one of the preformatted achievements:
+ * 	
+ * 		Achievement myNewA = Achievement.AMATEUR_AUTHOR(34); // loads new Ach. for user_id 34
+ * 		myNewA.upload(); 
+ * 		myNewA = null; // free this newly created object
+ * 
+ * @author jimzheng
+ *
+ */
+
 public class Achievement {
+	private int user_id;
 	private String description;
 	private String award;
 	private String url;
-	private Date date;
+	private Date timestamp;
+	private int id;
 	
 	// urls that point o images of prizes for a certain level of award
 	public static String DEFAULT_URL= "http://a.dryicons.com/images/icon_sets/luna_blue_icons/png/128x128/prize_winner.png";
@@ -19,30 +34,45 @@ public class Achievement {
 	public static String LVL4_URL = "";
 	
 	/* the required awards */
-	public static Achievement AMATEUR_AUTHOR() {
-		return new Achievement("You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
+	public static Achievement AMATEUR_AUTHOR(int userid) {
+		return new Achievement(userid, "You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
 	}
-	public static Achievement PROLIFIC_AUTHOR() {
-		return new Achievement("You've created 5 quizzes!", "Amateur Author", DEFAULT_URL, new Date());
+	public static Achievement PROLIFIC_AUTHOR(int userid) {
+		return new Achievement(userid, "You've created 5 quizzes!", "Amateur Author", DEFAULT_URL, new Date());
 	}
-	public static Achievement PRODIGIOUS_AUTHOR() {
-		return new Achievement("You've created 10 quizzes!", "Amateur Author", DEFAULT_URL, new Date());
+	public static Achievement PRODIGIOUS_AUTHOR(int userid) {
+		return new Achievement(userid, "You've created 10 quizzes!", "Amateur Author", DEFAULT_URL, new Date());
 	}
-	public static Achievement QUIZ_MACHINE() {
-		return new Achievement("You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
+	public static Achievement QUIZ_MACHINE(int userid) {
+		return new Achievement(userid, "You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
 	}
-	public static Achievement I_AM_THE_GREATEST() {
-		return new Achievement("You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
+	public static Achievement I_AM_THE_GREATEST(int userid) {
+		return new Achievement(userid, "You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
 	}
-	public static Achievement PRACTICE_MAKES_PERFECT() {
-		return new Achievement("You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
+	public static Achievement PRACTICE_MAKES_PERFECT(int userid) {
+		return new Achievement(userid, "You've created a quiz!", "Amateur Author", DEFAULT_URL, new Date());
 	}
 	
-	public Achievement(String description, String award, String url, Date date) {
+	public Achievement(int user_id, String description, String award, String url, Date date) {
+		this.user_id = user_id;
 		this.setDescription(description);
 		this.setAward(award);
 		this.setUrl(url);
-		this.setDate(date);
+		this.setTimestamp(date);
+	}
+
+	public Achievement(int user_id, String description, String award, String url, Timestamp timestamp) {
+		this.user_id = user_id;
+		this.setDescription(description);
+		this.setAward(award);
+		this.setUrl(url);
+		Date d = null;
+		try {
+			d = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(timestamp.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.setTimestamp(d);
 	}
 	
 	public Achievement(String description, String award, String url, String date) {
@@ -55,7 +85,11 @@ public class Achievement {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		this.setDate(sdf);
+		this.setTimestamp(sdf);
+	}
+	
+	public void add() {
+		
 	}
 
 	public void setDescription(String description) {
@@ -82,11 +116,17 @@ public class Achievement {
 		return url;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setTimestamp(Date date) {
+		this.timestamp = date;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getId() {
+		return id;
 	}
 }
