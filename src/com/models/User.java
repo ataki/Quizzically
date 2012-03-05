@@ -86,7 +86,7 @@ public class User extends DBObject {
 		return new User(name);
 	}
 	
-	public static User createUser(String name, String password) {
+	public static User createUser(String name, String email, String password) {
 		if(getUser(name).getId() != INVALID_USER) return null;
 
 		Random random = new Random();
@@ -99,9 +99,10 @@ public class User extends DBObject {
 
 			StringBuilder query = new StringBuilder("INSERT INTO ");
 			query.append(userTable + "(");
-			query.append("name, password, salt, access, achievements, admin) ");
+			query.append("name, email, password, salt, access, achievements, admin) ");
 			query.append( " VALUES(");
 			query.append("\"" + name + "\", ");
+			query.append("\"" + email + "\", ");
 			query.append("\"" + password + "\", ");
 			query.append(salt + ", ");
 			query.append("\"0\", ");
