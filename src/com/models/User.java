@@ -17,12 +17,13 @@ public class User extends DBObject {
 	public String description;
 	public int numQuizzesTaken;
 	private String achievements;
-	
+	public TagManager tagManager;
 	
 	private void setValues(int id, String name, String achievements) {
 		this.id = id;
 		this.name = name;
-		this.achievements = achievements;		
+		this.achievements = achievements;	
+		this.tagManager = new TagManager();
 	}
 
 	public User() {
