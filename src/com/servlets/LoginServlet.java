@@ -44,10 +44,10 @@ public class LoginServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		if(user != null) {
-			System.out.println("User already logged in!");
-//			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
-//			request.setAttribute("special", "29dd2f9f8d9312235caab2629e28ad45");
-//			rd.forward(request, response);
+//			System.out.println("User already logged in!");
+			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
+			request.setAttribute("special", "29dd2f9f8d9312235caab2629e28ad45");
+			rd.forward(request, response);
 		}
 
 		String usr = (String) request.getParameter("Field0");
