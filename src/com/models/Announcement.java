@@ -15,6 +15,7 @@ public class Announcement extends DBObject {
 			this.text = text;
 		}
 		
+		@Override
 		public String toString() {
 			return text;
 		}

@@ -36,6 +36,7 @@ public class CreateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String quizName = request.getParameter("quiz-name");
 		String quizType = request.getParameter("quiz-display");
 		boolean immediateCorrection = request.getParameter("immediate-correction").equals("yes") ? true : false;
 		boolean inOrder = request.getParameter("order").equals("yes") ? true : false;
@@ -48,7 +49,7 @@ public class CreateServlet extends HttpServlet {
 	}
 
 	private void parseQuestion(HttpServletRequest request, HttpServletResponse response) {
-		int numOfQuestions = 0;
+		int numOfQuestions = Integer.parseInt(request.getParameter("num-questions"));
 		for (int  i = 1; i <= numOfQuestions; i++) {
 			String questionType = request.getParameter("question-type-" + i);
 			if (questionType.equals("question-response")) {
@@ -72,7 +73,6 @@ public class CreateServlet extends HttpServlet {
 			else { //graded-questions
 				
 			}
-			
 		}
 	}
 }

@@ -24,6 +24,7 @@ public class UserSessionListener implements HttpSessionListener {
      * @see HttpSessionListener#sessionCreated(HttpSessionEvent)
      */
     public void sessionCreated(HttpSessionEvent event) {
+    	// The follwing two lines are for testing purpose
         User user = new User();
         event.getSession().setAttribute("user", user);
     }

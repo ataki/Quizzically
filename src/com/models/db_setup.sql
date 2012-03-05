@@ -33,7 +33,8 @@ CREATE TABLE `Quiz_user` (
 `password` longtext NOT NULL,
 `salt` integer NOT NULL,
 `access` bool NOT NULL,
-`achievements` longtext NOT NULL
+`achievements` longtext NOT NULL,
+`admin` bool NOT NULL
 );
 
 CREATE TABLE `Quiz_friendship` (
