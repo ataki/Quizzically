@@ -15,15 +15,23 @@
 	/* Get Annoucements */
 	AnnouncementManager announcementManager = (AnnouncementManager) request.getServletContext().getAttribute("announcementManager");
 	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
+	
 	/* Get Best performance (highest scoring activities) */
-	List<Activity> activities;
+	List<Activity> activities = user.getActivity();
+	
 	/* Get friends activities */
+	List<Activity> friendActivities = user.getFriendActivity();
 	
 	/* Get recently created quizzes */
+	QuizManager quizManager = (QuizManager) request.getServletContext().getAttribute("quizManager");
+	List<Quiz> quizzes = quizManager.getRecentlyCreated();
 	
 	/* Get messages */
 	MessageManager messageManager = (MessageManager) request.getServletContext().getAttribute("messageManager");
-	List<Message> messageArray = messageManager.getUserMessages(userId);
+	List<Message> messageArray = messageManager.getUserMessages(user.getId());
+	
+	/* get achievements */
+	List<Achievement> achievements = user.getAchievements();
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
