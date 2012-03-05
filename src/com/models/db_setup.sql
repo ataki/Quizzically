@@ -30,6 +30,7 @@ CREATE TABLE `Quiz_category` (
 CREATE TABLE `Quiz_user` (
 `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
 `name` varchar(100) NOT NULL,
+`email` varchar(100) NOT NULL,
 `password` longtext NOT NULL,
 `salt` integer NOT NULL,
 `access` bool NOT NULL,
