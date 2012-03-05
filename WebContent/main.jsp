@@ -3,6 +3,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%
+	/* special error checking to see if request and session are valid */
+	if(request.getAttribute("special") == null) {	
+		response.sendRedirect("/404.html");		
+	}
+	if(!request.getAttribute("special").equals("29dd2f9f8d9312235caab2629e28ad45")) {
+		response.sendRedirect("/404.html");
+	}
+	
 	User user = (User) request.getSession().getAttribute("user");
 	int userId = user.getId();
 %>
