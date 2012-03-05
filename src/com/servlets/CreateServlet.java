@@ -56,7 +56,7 @@ public class CreateServlet extends HttpServlet {
 		Quiz quiz = new Quiz();
 		int quizId = -1;
 		try {
-			quizId = quiz.QuizUpload(user.getName(), quizName, quizDescription, quizCategory, null, randomness);
+			quizId = quiz.quizUpload(user.getName(), quizName, quizDescription, quizCategory, null, randomness);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

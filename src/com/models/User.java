@@ -7,22 +7,25 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import com.backend.DBObject;
+import com.backend.TagManager;
 
 public class User extends DBObject {
 
 	public static int INVALID_USER = -1;
 	private int id;
-	public String email;
-	public String name;
-	public String description;
-	public int numQuizzesTaken;
+	private String email;
+	private String name;
+	private String description;
+	private int numQuizzesTaken;
 	private String achievements;
-	
+	private boolean admin;
+	public TagManager tagManager;
 	
 	private void setValues(int id, String name, String achievements) {
 		this.id = id;
 		this.name = name;
-		this.achievements = achievements;		
+		this.achievements = achievements;	
+		this.tagManager = new TagManager();
 	}
 
 	public User() {
@@ -78,11 +81,12 @@ public class User extends DBObject {
 		return id;
 	}
 
-	public static User getUser(String name) {
+	// we should never return an unauthenticated User object...
+	private static User getUser(String name) {
 		return new User(name);
 	}
 	
-	public static User createUser(String name, String password) {
+	public static User createUser(String name, String email, String password) {
 		if(getUser(name).getId() != INVALID_USER) return null;
 
 		Random random = new Random();
@@ -95,13 +99,16 @@ public class User extends DBObject {
 
 			StringBuilder query = new StringBuilder("INSERT INTO ");
 			query.append(userTable + "(");
-			query.append("name, password, salt, access, achievements) ");
+			query.append("name, email, password, salt, access, achievements, admin) ");
 			query.append( " VALUES(");
 			query.append("\"" + name + "\", ");
+			query.append("\"" + email + "\", ");
 			query.append("\"" + password + "\", ");
 			query.append(salt + ", ");
 			query.append("\"0\", ");
-			query.append("\"" + "\"); ");
+			query.append("\"" + "\", ");
+			query.append("0");
+			query.append(");");
 
 //			System.out.println(query.toString());
 			statement.executeUpdate(query.toString());

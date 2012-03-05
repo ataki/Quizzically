@@ -9,7 +9,7 @@ public class UserTest {
 
 	@Test
 	public void test() {
-		User newUser = User.createUser("test", "blah");
+		User newUser = User.createUser("test", "test@test.com", "blah");
 		System.out.println(User.authenticateUser("test", "passwor"));
 		System.out.println(User.authenticateUser("test", "password"));
 		System.out.println(User.authenticateUser("test", "blah"));

@@ -1,30 +1,14 @@
+
 BEGIN;
-CREATE TABLE `Quiz_quiz` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	`name` varchar(100) NOT NULL,
-	`description` longtext NOT NULL,
-    `author` varchar(100) NOT NULL,
-    `timestamp` datetime NOT NULL,
-    `category` longtext NOT NULL,
-    `randomness` bool NOT NULL,
-    `rating` integer NOT NULL
-)
-;
-
-CTRATE TABLE `Quiz_tags` (
-)
-;
-
-
 CREATE TABLE `Quiz_question` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `questionType` varchar(100) NOT NULL,
-    `question` varchar(100) NOT NULL,
-    `answers` longtext NOT NULL,
-    `quiz_id` integer NOT NULL,
-    `url` longtext NOT NULL
-)
-;
+`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+`questionType` varchar(100) NOT NULL,
+`question` varchar(100) NOT NULL,
+`answers` longtext NOT NULL,
+`quiz_id` integer NOT NULL,
+`url` longtext NOT NULL
+);
+
 ALTER TABLE `Quiz_question` ADD CONSTRAINT `quiz_id_refs_id_a6c8dcfc` FOREIGN KEY (`quiz_id`) REFERENCES `Quiz_quiz` (`id`);
 CREATE TABLE `Quiz_category` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -32,14 +16,17 @@ CREATE TABLE `Quiz_category` (
 )
 ;
 CREATE TABLE `Quiz_user` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `name` varchar(100) NOT NULL,
-    `password` longtext NOT NULL,
-    `salt` integer NOT NULL,
-    `access` bool NOT NULL,
-    `achievements` longtext NOT NULL
-)
-;
+	`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	`name` varchar(100) NOT NULL,
+	`email` varchar(100) NOT NULL,
+	`password` longtext NOT NULL,
+	`salt` integer NOT NULL,
+	`access` bool NOT NULL,
+	`achievements` longtext NOT NULL,
+	`admin` bool NOT NULL
+);
+
+
 CREATE TABLE `Quiz_friendship` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `user1_id` integer NOT NULL,

@@ -1,4 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*, com.backend.*, com.models.* " %>
+    
 <!DOCTYPE html>
+
+<%
+	int userId = Integer.parseInt(request.getParameter("id"));
+	User user = (User)session.getAttribute("user");
+%>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -55,24 +63,21 @@
 		</div>
 		<!-- End Heading -->
 		
-		<!--  surround with check to see if friends; if not, don't create this div -->
-		<div id="create-Message-Modal" class="reveal-modal">
-			<h5>Send Friend Request</h5>
-			<form id="friend" action="MessageServlet" method="post">
-				<input type="hidden" name="friend" value="2353" />
-				<input type="hidden" name="type" value="friend" />
-				<input class="small green button" type="submit" value="Send!" />  
-			</form>
+		<div id="myModal" class="reveal-modal">
+			<h1>Are you sure you want to exit this quiz?</h1>
+			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
+			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
+			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
+				onclick="self.location='main.html'">Exit</a>
 			<a class="close-reveal-modal">&#215;</a>
 		</div>
 		
 		
 		<div class="row">
 			<div class="twelve columns">
-				<h3>Quantum3023
-				<h6><a href="mailto:quantu323@gmail.com" style="margin-right:30px;">Email: quantum323@gmail.com</a>
+				<h3><%= request.getParameter("id") %></h3>
+				<h6><a href="mailto:<%= user.email %>" style="margin-right:30px;"><%= user.email %></a>
 				<a>Last Seen: 12 Feb 2012</a></h6>
-				</h3>
 				
 				<div class="row">
 					<div class="four columns" style="padding:20px;">
@@ -88,9 +93,8 @@
 						id to whatever links necessitate them.
 						 -->				
 						
-						<h6>Hi! My name is Quantum and this is a description of me.
-						I'm afraid I'm treribly busy these days andhave no time for a proper,
-						long introduction. so please email me ! </h6>
+						<h6><%= user.description %> </h6>
+						
 						<blockquote>Tags: <a class="round tag" href="TagServlet/world">#world</a> 
 										<a class="round tag" href="TagServlet/geography">#georgraphy</a> 
 										<a class="round tag" href="TagServlet/news">#news</a> 

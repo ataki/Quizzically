@@ -6,6 +6,7 @@
 <%
 	int userId = Integer.parseInt(request.getParameter("id"));
 	User user = (User)session.getAttribute("user");
+	List<Tag> tags = user.tagManager.fetchTagsForUser(user.getId());
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -63,21 +64,24 @@
 		</div>
 		<!-- End Heading -->
 		
-		<div id="myModal" class="reveal-modal">
-			<h1>Are you sure you want to exit this quiz?</h1>
-			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
-			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
-			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
-				onclick="self.location='main.html'">Exit</a>
-			<a class="close-reveal-modal">&#215;</a>
-		</div>
-		
 		
 		<div class="row">
 			<div class="twelve columns">
-				<h3><%= request.getParameter("id") %></h3>
-				<h6><a href="mailto:<%= user.email %>" style="margin-right:30px;"><%= user.email %></a>
-				<a>Last Seen: 12 Feb 2012</a></h6>
+				<h3>
+					<%= user.getUsername() %>
+				</h3>
+				
+				<h6>
+					<form id="friend" action="MessageServlet" method="post">
+					<input type="hidden" name="friend" value="<%= user.getId() %>" />
+					<input type="hidden" name="type" value="friend" />
+					<input class="small green button" type="submit" value="Friend Request" />  
+					
+					<a href="mailto:<%= user.getEmail() %>" style="margin-right:30px; margin-left:10px; ">Email:<%= user.email  %></a>
+					<a>Last Seen: 12 Feb 2012</a>
+					</form>
+				</h6>
+				
 				
 				<div class="row">
 					<div class="four columns" style="padding:20px;">
@@ -93,16 +97,15 @@
 						id to whatever links necessitate them.
 						 -->				
 						
-						<h6><%= user.description %> </h6>
-						
-						<blockquote>Tags: <a class="round tag" href="TagServlet/world">#world</a> 
-										<a class="round tag" href="TagServlet/geography">#georgraphy</a> 
-										<a class="round tag" href="TagServlet/news">#news</a> 
-										<a class="round tag" href="TagServlet/birds" >#birds</a> 
+						<h6><%= user.getDescription() %> </h6>
+						<blockquote>Tags:
+							<% for(Tag t : tags) { %> 
+								<a class="round tag" href="ResultServlet/<%= t.tag %>">#<%= t.tag %></a> 
+							<% } %> 
 						</blockquote>
 					</div>
-					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;">432<br/><br/><h6>Quizzes Taken</h6></a>
-					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3.4<br/><br/><h6>Average Quiz Difficulty</h6></a>
+					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;"><%= user.getNumQuizzesTaken() %><br/><br/><h6>Quizzes Taken</h6></a>
+					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3.4<br/><br/><h6><%= u %></h6></a>
 					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6>Highest Score</h6></a>
 				</div>
 				<br/>
@@ -113,7 +116,7 @@
 				
 				<!-- RESULTS TABS -->
 				<dl class="contained tabs">
-				  <dd><a href="#past" class="active">Your Past</a></dd>
+				  <dd><a href="#past" class="active">Past Performance</a></dd>
 				  <dd><a href="#top">Best Ever</a></dd>
 				  <dd><a href="#last">Most Recent</a></dd>
 				  <dd><a href="#lastDay">Top Last Day</a></dd>
