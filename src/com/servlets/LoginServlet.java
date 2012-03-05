@@ -44,7 +44,6 @@ public class LoginServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		if(user != null) {
-//			System.out.println("User already logged in!");
 			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
 			request.setAttribute("special", "29dd2f9f8d9312235caab2629e28ad45");
 			rd.forward(request, response);
@@ -56,12 +55,15 @@ public class LoginServlet extends HttpServlet {
 		user = User.authenticateUser(usr, pwd);
 
 		if(user == null || user.getId() == User.INVALID_USER) {
-			System.out.println("User not valid!");
+			RequestDispatcher rd = request.getRequestDispatcher("/login.html");
+			rd.forward(request, response);
 		}
 		else {
-			System.out.println("Logging in " + user.getUserName() + "!");
+			session.setAttribute("user", user);
+			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
+			request.setAttribute("special", "29dd2f9f8d9312235caab2629e28ad45");
+			rd.forward(request, response);
 		}
-
 	}
 
 }

@@ -22,6 +22,10 @@
 	
 	/* Get past performance */
 	
+	/* Get top performance from the last day  */
+	
+	/* Get top performance from the last day  */
+	
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->

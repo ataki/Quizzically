@@ -49,6 +49,59 @@ CS 108 Project Documentation
 	can get a list of quizzes they may like based on their past experience
 	with taking quizzes and their friends' taken quizzes.
 
+# Extra Pages:
+	We added a couple of extra pages to make the website feel more complete.
+	These include:
+		Display of a user's page.
+		Display of a 
+
+---------------------
+| Essential Features |
+---------------------
+	Question Types:
+		Implemented question-response, fill-in-the-blank, multiple choice, 
+				(EXTENSIONS):
+				picture-response, multi-answer questions, multiple choice/multiple answer,
+				matching, auto-generated, timed and graded.
+
+	Quiz Options:
+		Implemented one/multiple pages, randomized order, immediate corrections,
+		practice quizzes.
+
+	Scoring:
+		For each question, we keep track of the # of possible points a user can earn.
+		We aggregate these and find the total, then add up the total points the user
+		received and add them to the database.
+	
+		When we finish recording everything, we place the information about the quiz
+		into an "Activity" object that tracks the user's scores, when the user finished
+		the quiz, and how long it took.
+		
+		When we need to query for top scores, we do a select call to the database and
+		pull the top scores associated with a quiz_id. 
+	
+	Friends:
+		We maintain a two-wauy friendship model.
+
+	Mail:
+		We support the three types of messages.
+
+	Administration:
+		We keep an admin.jsp view. 
+
+	Overall Web Look:
+		We designed our code with CSS3 and took pains to make the UI seem responsive,
+		utilizing jQuery and web conventions to do so.
+	
+	Error-checking and Form Creation:
+		We do detailed error-checking for form creation in addition to page-level
+		checking to make sure the user never gets redirected to a bad url unless
+		a malicious user decides to try and manipuale the URL.
+		
+	Sessions:
+		All data is stored in a global session cookie that's visible to all servlets.
+		Thus, we support multiple users by default.
+
 ----------------------------------------------
 | Plugins Used (as permitted by instructor): |
 ----------------------------------------------
