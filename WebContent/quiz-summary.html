@@ -55,12 +55,15 @@
 		</div>
 		<!-- End Heading -->
 		
-		<div id="myModal" class="reveal-modal">
-			<h1>Are you sure you want to exit this quiz?</h1>
-			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
-			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
-			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
-				onclick="self.location='main.html'">Exit</a>
+		<div id="create-Message-Modal" class="reveal-modal">
+			<h5>Send Challenge</h5>
+			<form id="challenge" action="MessageServlet" method="get">
+				<h6>Send to friend:</h6>
+				<input type="text" name="friend" placeholder="Name" />
+				<input type="hidden" name="id" value="14234" /><!--  Make sure to replace value here with quizid -->
+				<input type="hidden" name="type" value="challenge" />
+				<input class="small green button" type="submit" value="Send!" />  
+			</form>
 			<a class="close-reveal-modal">&#215;</a>
 		</div>
 		
@@ -84,8 +87,9 @@
 						id to whatever links necessitate them.
 						 -->				
 					
-						<h5>By <a href="UserServlet/94834" style="margin-right:15px;">quantum2030</a>
-							<a href="QuizServlet/23423" title="action=view" class="radius button">Take!</a>
+						<h5>By <a href="UserServlet/94834" style="margin-right:15px;">quantum2030</a><br/><br/>
+							<a href="QuizServlet/23423" title="action=view" class="radius small button">Take!</a>
+							<a class="radius small red button" data-reveal-id="create-Message-Modal" data-animation="none">Send Challenge</a>
 						</h5>
 						<br/>
 						
