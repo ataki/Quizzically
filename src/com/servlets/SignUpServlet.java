@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.models.User;
 
@@ -37,6 +38,8 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+
 		String usr = (String) request.getParameter("Field0");
 		String email = (String) request.getParameter("Field1");
 		String pwd1 = (String) request.getParameter("Field2");
@@ -54,7 +57,10 @@ public class SignUpServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 		else {
-			System.out.println("User " + user.getUserName() + " created!");
+			session.setAttribute("user", user);
+			RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
+			request.setAttribute("special", "29dd2f9f8d9312235caab2629e28ad45");
+			rd.forward(request, response);
 		}
 	}
 

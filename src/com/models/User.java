@@ -160,7 +160,7 @@ public class User extends DBObject {
 		catch(NoSuchAlgorithmException e) { 
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 	
@@ -189,6 +189,7 @@ public class User extends DBObject {
 	}
 
 	public void setAdmin(boolean admin) {
+		// need to update database
 		this.admin = admin;
 	}
 
@@ -197,6 +198,7 @@ public class User extends DBObject {
 	}
 
 	public void setNumQuizzesTaken(int numQuizzesTaken) {
+		// need to update database
 		this.numQuizzesTaken = numQuizzesTaken;
 	}
 
@@ -205,6 +207,7 @@ public class User extends DBObject {
 	}
 
 	public void setEmail(String email) {
+		// need to update database
 		this.email = email;
 	}
 
@@ -213,6 +216,7 @@ public class User extends DBObject {
 	}
 
 	public void setDescription(String description) {
+		// need to update database
 		this.description = description;
 	}
 
