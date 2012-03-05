@@ -25,10 +25,23 @@ public class PeakContextListener implements javax.servlet.ServletContextListener
      */
     public void contextInitialized(ServletContextEvent event) {
     	ServletContext context = event.getServletContext();
-    	MessageManager messageManager = new MessageManager();
+    	
+    	// Initialize all managers
     	AnnouncementManager announcementManager = new AnnouncementManager();
-    	context.setAttribute("messageManager", messageManager);
+    	QuizManager quizManager = new QuizManager();
+    	MessageManager messageManager = new MessageManager();
+    	ActivityManager activityManager = new ActivityManager();
+    	//FriendManager friendManager = new FriendManager();
+    	AchievementManager achievementManager = new AchievementManager();
+    	
+    	// Store managers into ServletContext
     	context.setAttribute("announcementManager", announcementManager);
+    	context.setAttribute("quizManager", quizManager);
+    	context.setAttribute("messageManager", messageManager);
+    	context.setAttribute("activityManager", activityManager);
+    	//context.setAttribute("friendManager", friendManager);
+    	context.setAttribute("achievementManager", achievementManager);
+
     }
 
 	/**

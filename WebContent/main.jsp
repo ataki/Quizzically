@@ -159,7 +159,7 @@
 								<tr>
 									<td><%= q.getRating() %></td>
 									<td class="hover-highlight"><a href="QuizServlet?<%= q.getId() %>"><%= q.getId() %>/a></b></td>
-									<td><%= q.getQuestions().length() %></td>
+									<td><%= q.getQuestions().size() %></td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
 								<% } %>

@@ -79,5 +79,31 @@ public class QuizManager extends DBObject {
 	
 	//later when user wants to look at the quizzes belong to certain category, the getQuizes(category) should go here
 
+	public List<Quiz> getRecent() {
+		if(! this.conPrepare(base + recent + limit)) return null;
+		try {
+			ResultSet r = prepStatement.executeQuery();
+			return convertToList(r);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public List<Quiz> getPopular() {
+		// TODO : FINISH THIS FUNCTION, BUT HOW
+		if(! this.conPrepare(base + filter + limit)) return null;
+		try {
+			//prepStatement.setString(1, "quiz_id");
+			//prepStatement.setInt(2, quizid);
+			ResultSet r = prepStatement.executeQuery();
+			
+			return convertToList(r);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 }

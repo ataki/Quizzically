@@ -65,7 +65,9 @@ public class Question extends DBObject{
 	private List<String> answers;
 	private String url;
 	private Type type;
-	private String DELIMITER = "#";
+	
+	private static String DELIMITER = "#";
+	
 	public Question(){
 		super();
 	}
@@ -82,14 +84,14 @@ public class Question extends DBObject{
 		}
 	}
 	
-	private String convertTextsToString(List<String> Texts){
+	public static String convertTextsToString(List<String> Texts){
 		StringBuilder strBuilder = new StringBuilder();
 		for(String item:Texts){
 			strBuilder.append(item + DELIMITER);	
 		}
 		return strBuilder.toString();
 	}
-	private List<String> convertStringToTexts(String str){
+	public static List<String> convertStringToTexts(String str){
 		StringTokenizer tokens = new StringTokenizer(str,DELIMITER);
 		List<String> list = new ArrayList<String>();
 		while(tokens.hasMoreTokens()){
@@ -113,7 +115,7 @@ public class Question extends DBObject{
 		ArrayList<Question> qList = new ArrayList<Question>();
 		while(rs.next()){
 			Question newQuestion = new Question(rs.getInt("id"),convertStringToTexts(rs.getString("question")), convertStringToTexts(rs.getString("answers")),rs.getString("url"),
-					rs.getString("type"));
+					rs.getString("questionType"));
 			qList.add(newQuestion);
 		}
 		return qList;
