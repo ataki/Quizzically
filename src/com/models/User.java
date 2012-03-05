@@ -20,59 +20,56 @@ public class User extends DBObject {
 	private String achievements;
 	private boolean admin;
 	public TagManager tagManager;
-	
-	private void setValues(int id, String name, String achievements) {
+
+	public static String userDBSelect = "SELECT id, name, email, achievements, admin FROM " + userTable + " ";
+
+	private void parseResults(ResultSet rs) {
+		try {
+			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+			else setValues(INVALID_USER, "", "", "", 0);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void setValues(int id, String name, String email, String achievements, int admin) {
 		this.id = id;
 		this.name = name;
+		this.email = email;
 		this.achievements = achievements;	
+		if(admin == 1) { this.admin = true; } else { this.admin = false; }
 		this.tagManager = new TagManager();
 	}
 
 	public User() {
 		super(DBObject.userTable);
-		setValues(INVALID_USER, "", "");
+		setValues(INVALID_USER, "", "", "", 0);
+	}
+
+	public User(ResultSet rs) {
+		super(DBObject.userTable);
+		parseResults(rs);
 	}
 	
 	public User(int id) {
 		super(DBObject.userTable);
 		id = INVALID_USER;
 		StringBuilder query = new StringBuilder();
-		query.append("SELECT id, name, achievements FROM " + userTable + " ");
-	    query.append("WHERE id = \"" + Integer.toString(id) + "\";");
-		
+		query.append(userDBSelect + "WHERE id = \"" + Integer.toString(id) + "\";");
 		ResultSet rs = getResults(query.toString());
-		try {
-			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
-			else setValues(INVALID_USER, "", "");
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public User(int id, String name, String achievements) {
-		super(DBObject.userTable);
-		setValues(id, name, achievements);
+		parseResults(rs);
 	}
 
 	public User(String name) {
 		super(DBObject.userTable);
 		id = INVALID_USER;
 		StringBuilder query = new StringBuilder();
-		query.append("SELECT id, name, achievements FROM " + userTable + " ");
-		query.append("WHERE name = \"" + name + "\";");
-		
-//		System.out.println(query.toString());
+		query.append(userDBSelect + "WHERE name = \"" + name + "\";");
 		ResultSet rs = getResults(query.toString());
-		try {
-			if(rs.next()) setValues(rs.getInt(1), rs.getString(2), rs.getString(3));
-			else setValues(INVALID_USER, "", "");
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
+		parseResults(rs);
 	}
-	
+
 	public int getId() { return id; }
 	public String getUserName() { return name; }
 	public String getAchievements() { return achievements; }
@@ -110,7 +107,6 @@ public class User extends DBObject {
 			query.append("0");
 			query.append(");");
 
-//			System.out.println(query.toString());
 			statement.executeUpdate(query.toString());
 
 			return new User(name);
@@ -130,7 +126,6 @@ public class User extends DBObject {
 		query.append("SELECT password, salt FROM " + userTable + " ");
 		query.append("WHERE name = \"" + name + "\";");
 		
-//		System.out.println(query.toString());
 		ResultSet rs = getResults(query.toString());
 		try {
 			ArrayList<String> pwd = new ArrayList<String>();
@@ -154,15 +149,12 @@ public class User extends DBObject {
 		String passwd = pwd.get(0);
 		String salt = pwd.get(1);
 		
-//		System.out.println("Password = " + passwd + " Salt = " + salt);
-
 		password = password + salt;
 
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA");
 			password = hexToString(md.digest(password.getBytes()));
-//			System.out.println("Input password: " + password);
 			if(password.equals(passwd)) return user;
 		}
 		catch(NoSuchAlgorithmException e) { 
@@ -188,12 +180,12 @@ public class User extends DBObject {
 		return buff.toString();
 	}	
 	
-	public String getName(int id) throws SQLException {
-		String query = "SELECT name FROM " + currentTable + " WHERE id = " + id;
-		ResultSet rs = super.getResults(query);
+	public static String getName(int id) throws SQLException {
+		String query = "SELECT name FROM " + User.userTable + " WHERE id = " + id;
+		statement.executeQuery(query);
+		ResultSet rs = statement.getResultSet();
 		if (rs.next()) return rs.getString("name");
 		else return null;
 	}
 
 }
- 
