@@ -3,7 +3,9 @@ package com.backend;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.models.Quiz;
 import com.models.User;
 
 
@@ -17,8 +19,67 @@ public class UserManager extends DBObject {
 	public UserManager(){
 		super();
 	}
-
-	public ArrayList<User> getUsers(String filter) throws SQLException {
+	
+	private String base = "select (id, username, email, admin) from " + DBObject.userTable;
+	/**
+	 * Takes ResultSet and converts it into an 
+	 * @param r
+	 * @return
+	 */
+	public List<User> convertToList(ResultSet r) {
+		List<User> result = new ArrayList<User>();
+		try {
+			while(r.next()) {
+				result.add(new User()
+				
+				);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**** Friendship ****/
+	private String friend_complex_query = 
+			base + 
+			"WHERE id IN " + 
+			"((SELECT user1_id from Quiz_friendship WHERE friendType = 3 AND user2_id = ?) " +
+			"UNION" +
+			"(SELECT user2_id from Quiz_friendship WHERE friendType = 3 AND user1_id = ?))";
+	/**
+	 * Gets friends by specified userid
+	 * 
+	 * query:
+	 * SELECT (id, username, email, admin) FROM Quiz_user WHERE id IN 
+	 * 	((SELECT user1_id from Quiz_friendship WHERE friendType = 3 AND user2_id = ?) UNION
+	 *   (SELECT user2_id from Quiz_friendship WHERE friendType = 3 AND user1_id = ?))
+	 * 
+	 * The giant subquery finds all id's whose friendships have been confirmed,
+	 * and the first select query simply then goes through finding user information
+	 * based on that set of user_id's.
+	 * 
+	 * @param userid
+	 * @return
+	 */
+	public List<User> getFriends(int userid) {
+		if(! this.conPrepare(friend_complex_query)) return null;
+		try {
+			prepStatement.setInt(1, userid);
+			prepStatement.setInt(2, userid);
+			ResultSet r = prepStatement.executeQuery(); 
+			return convertToList(r);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets a subset of users whose names match that filter
+	 */
+	public List<User> getSimilarUsers(String filter) throws SQLException {
 		String query = User.userDBSelect + " FROM " + currentTable + " WHERE name LIKE \"%" + filter +"%\"";
 		ResultSet rs = getResults(query);
 			

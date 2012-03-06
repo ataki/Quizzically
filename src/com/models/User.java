@@ -20,6 +20,7 @@ public class User extends DBObject {
 	private String achievements;
 	private boolean admin;
 	public TagManager tagManager;
+	private boolean minimal = false;
 
 	public static String userDBSelect = "SELECT id, name, email, achievements, admin FROM " + userTable + " ";
 
@@ -68,6 +69,19 @@ public class User extends DBObject {
 		query.append(userDBSelect + "WHERE name = \"" + name + "\";");
 		ResultSet rs = getResults(query.toString());
 		parseResults(rs);
+	}
+	
+	/**
+	 * the abbreviated, really short constructor. 
+	 * Sets ONLY THESE 4 FIELDS, DON'T GO ACCESSING/
+	 * MODIFYING OTHERS
+	 */
+	public User(int id, String username, String email, boolean admin) {
+		this.id = id;
+		this.name = username;
+		this.email = email;
+		this.admin = admin;
+		this.minimal = true;
 	}
 
 	public int getId() { return id; }

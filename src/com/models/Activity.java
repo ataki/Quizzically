@@ -9,12 +9,27 @@ import java.util.Date;
 import com.backend.DBObject;
 
 public class Activity extends DBObject {
+	
+	/* if id is invalid, means that this was not 
+	 * a retrieved object.
+	 */
+	public static final int INVALID = -1;
+	
 	private int id;
 	private int user_id;
 	private int quiz_id;
 	private int score;
 	private Date timestamp;
 	private double timeTaken;
+	
+	/** some generic pre-defined activities */
+	public static Activity TOOK_QUIZ(int user_id, int quiz_id, int score, double timeTaken) {
+		return new Activity(Activity.INVALID, user_id, quiz_id, score, null, timeTaken);
+	}
+	public static Activity CREATED_QUIZ(int user_id, int quiz_id, int score, double timeTaken) {
+		return new Activity(Activity.INVALID, user_id, quiz_id, Activity.INVALID, null, Activity.INVALID);
+	}
+	
 	public Activity(int id, int user_id, int quiz_id, int score, Date timestamp,double timeTaken){
 		this.setId(id);
 		this.setUser_id(user_id);

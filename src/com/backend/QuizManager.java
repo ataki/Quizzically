@@ -20,43 +20,11 @@ public class QuizManager extends DBObject {
 		super();
 	}
 	
-	private String base = "select * from " + DBObject.quizTable;
-
-	public List<Quiz> getByUserId(int userid) {
-		if(! this.conPrepare(base + filter + limit)) return null;
-		try {
-			prepStatement.setString(1, "user_id");
-			prepStatement.setInt(2, userid);
-			ResultSet r = prepStatement.executeQuery();
-			
-			return convertToList(r);
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public List<Quiz> getByCategory(String category) {
-		// TODO : FINISH THIS FUNCTION
-		// FIRST GET A LIST OF QUIZ ID'S, THEN 
-		// GET THE QUIZ FROM THIS
-		
-		if(! this.conPrepare(base + filter + limit)) return null;
-		try {
-			prepStatement.setString(1, "quiz_id");
-			prepStatement.setInt(2, quizid);
-			ResultSet r = prepStatement.executeQuery();
-			
-			return convertToList(r);
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/*
-	 * convert ResultSet >> List
+	/** base defines the basic select query to use for this Manager.
+	 * convertToList must convert based on the same columns
+	 * that base contains to convert ResultSet to List
 	 */
+	private String base = "select * from " + DBObject.quizTable;
 	private List<Quiz>convertToList(ResultSet r) throws SQLException {
 		List<Quiz> result = new ArrayList<Quiz>();
 		while(r.next()) {
@@ -76,12 +44,80 @@ public class QuizManager extends DBObject {
 		return result;
 	}
 	
+	/** NOT TESTED
+	 * gets list of quizzes based on a specified userid. 
+	 */
+	public List<Quiz> getByUserId(int userid) {
+		if(! this.conPrepare(base + filter + limit)) return null;
+		try {
+			// where user_id = userid
+			prepStatement.setString(1, "user_id");
+			prepStatement.setInt(2, userid);
+			ResultSet r = prepStatement.executeQuery();
+			return convertToList(r);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	//later when user wants to look at the quizzes belong to certain category, the getQuizes(category) should go here
-
+	/** NOT TESTED
+	 * Gets a list of quizzes whose names are partial
+	 * matches with the queryString
+	 */
+	public List<Quiz> getSimilarQuizzes(String queryString) {
+		if(! this.conPrepare(base + like + limit)) return null;
+		try {
+			// "where name LIKE queryString"
+			prepStatement.setString(1, "name");
+			prepStatement.setString(2, queryString);
+			ResultSet r = prepStatement.executeQuery(); 
+			return convertToList(r);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	public String category_subquery = 
+		" ( select quiz_id from " + DBObject.categoryTable + filter + " ) ";
+	/** NOT TESTED
+	 * Does a predicate subquery to find all quizzes that 
+	 * have a certain category. Uses the fact that categories
+	 * have a quiz_id field.
+	 * 
+	 * query should be:
+	 * select (id, name, description, rating) from Quiz_quiz 
+	 * 		where id in (select quiz_id from Quiz_category WHERE name='science') limit 30
+	 */
+	public List<Quiz> getByCategory(String category) {
+		
+		if(! this.conPrepare(base + predicate_sub + category_subquery + limit)) return null;
+		try {
+			// see above query
+			prepStatement.setString(1, "id");
+			prepStatement.setString(2, "name");
+			prepStatement.setString(3, category);
+			System.out.println(prepStatement.toString());
+			ResultSet r = prepStatement.executeQuery();
+			return convertToList(r);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/** NOT TESTED
+	 * gets most recently created quizzes 
+     * to do so, does order-by-desc query on timestamp*/
 	public List<Quiz> getRecent() {
 		if(! this.conPrepare(base + recent + limit)) return null;
 		try {
+			// getRecent doesn't require any parameter substitution
+			// "recent" clause orders by TIMESTAMP so make sure that
+			// that field name exists for Quiz object; if not this 
+			// won't work
 			ResultSet r = prepStatement.executeQuery();
 			return convertToList(r);
 		} catch(SQLException e) {
@@ -90,20 +126,22 @@ public class QuizManager extends DBObject {
 		return null;
 	}
 	
+	/** NOT TESTED
+	 * gets most popular by top rating.
+	 * 
+	 * query: "select * from Quiz_quiz order by RATING desc limit 30"
+	 */
 	public List<Quiz> getPopular() {
-		// TODO : FINISH THIS FUNCTION, BUT HOW
-		if(! this.conPrepare(base + filter + limit)) return null;
+		
+		if(! this.conPrepare(base + sorted_desc + limit)) return null;
 		try {
-			//prepStatement.setString(1, "quiz_id");
-			//prepStatement.setInt(2, quizid);
+			// see above query
+			prepStatement.setString(1, "rating");
 			ResultSet r = prepStatement.executeQuery();
-			
 			return convertToList(r);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
 }

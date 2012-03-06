@@ -117,10 +117,12 @@ public class DBObject {
 	/* common preparedStatement segments */
 	protected String filter = " where ? = ?";
 	protected String limit = " limit 30 ";
-	protected String recent = " order by TIMESTAMP asc ";
+	protected String recent = " order by TIMESTAMP desc ";
+	protected String like = " where ? like ? ";
 	protected String today = " where datediff(now(),TIMESTAMP)=0 and TIMESTAMP <= now() ";
 	protected String sorted_asc = " order by ? asc ";
 	protected String sorted_desc = " order by ? desc ";
+	protected String predicate_sub = " where ? in ";
 	
 	/*
 	 * the main reason we have a wrapper for the 
