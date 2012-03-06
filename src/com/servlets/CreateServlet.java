@@ -50,20 +50,9 @@ public class CreateServlet extends HttpServlet {
 		boolean immediateCorrection = request.getParameter("immediate-correction").equals("yes") ? true : false;
 		boolean randomness = request.getParameter("order").equals("yes") ? false : true;
 		// Push the quiz data into database (quiz name?), numQuestions? category? remove question?
-		
-		Quiz quiz = new Quiz();
-		int quizId = -1;
-		try {
-			quizId = quiz.quizUpload(user.getUserName(), quizName, quizDescription, quizCategory, null, randomness);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if (quizId != -1)
-			parseQuestion(request, quizId);
-
-		RequestDispatcher dispatch = request.getRequestDispatcher("quiz-summary.jsp?quizId=" + quizId);
+		Quiz quiz = Quiz.insert(user.getUserName(), quizName, quizDescription, quizCategory, null, randomness);
+		parseQuestion(request, quiz.getId());
+		RequestDispatcher dispatch = request.getRequestDispatcher("quiz-summary.jsp?quizId=" + quiz.getId());
 		dispatch.forward(request, response);
 	}
 
@@ -74,8 +63,7 @@ public class CreateServlet extends HttpServlet {
 			List<String> texts = Arrays.asList(request.getParameterValues("question-" + i));
 			List<String> answers = Arrays.asList(request.getParameterValues("answer-" + i));
 			String image = request.getParameter("image-" + i);
-			Question question = new Question(0, texts, answers, image, questionType);
-			question.addQuestion(quizId, question);
+			Question q = Question.insert(questionType, texts, answers, quizId, "");
 			/*
 			if (questionType.equals("question-response")) {
 				

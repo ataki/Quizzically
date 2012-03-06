@@ -46,30 +46,30 @@ public class Quiz extends DBObject {
 											 " VALUE (null, ?,?,?,NOW(),?,?,0)";
 	/** A quick way of creating a quiz and syncing it immediately
 	 * with the database
-	 * @throws SQLException 
 	 */
-	public static int quizUpload(String author, String name, String description, String category, String tags, boolean randomness) throws SQLException {
+	public static Quiz insert(String author, String name, String description, String category, String tags, boolean randomness) {
 		/*StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO " + DBObject.quizTable + " ");
 		query.append("VALUE (null,\"" + name + "\", \"" + description + "\", \"" + author + "\", NOW(),\"" + category +"\", "+randomness+ ",0)");
 		System.out.println(query.toString());*/
 		Connection con = getConnection();
-		prepStatement = con.prepareStatement(quizUploadString, Statement.RETURN_GENERATED_KEYS);
 		try {
+			prepStatement = con.prepareStatement(quizUploadString, Statement.RETURN_GENERATED_KEYS);
 			prepStatement.setString(1, name);
 			prepStatement.setString(2, description);
 			prepStatement.setString(3, author);
 			prepStatement.setString(4, category);
 			prepStatement.setBoolean(5, randomness);
+			prepStatement.executeUpdate();		 	
+			ResultSet rs = prepStatement.getGeneratedKeys();
+			if (rs.next())
+				return new Quiz(rs.getInt(1));
+			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
-		prepStatement.executeUpdate();		 	
-		ResultSet rs = prepStatement.getGeneratedKeys();
-		if(rs.next())
-			return rs.getInt(1);
-		return -1;
+		
 	}
 	
 	/** fetches quiz information from database based on given id
@@ -78,7 +78,7 @@ public class Quiz extends DBObject {
 	 */
 	public static Quiz fetch(int id) {
 		Quiz q = new Quiz(id);
-		if(q.done) return q;
+		if (q.done) return q;
 		return null;
 	}
 	

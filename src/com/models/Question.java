@@ -1,8 +1,12 @@
 package com.models;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.backend.DBObject;
@@ -65,12 +69,34 @@ public class Question extends DBObject{
 	private List<String> answers;
 	private String url;
 	private Type type;
+	private boolean done = false;
 	
 	private static String DELIMITER = "#";
+	private static String uploadString = "INSERT INTO " + DBObject.questionTable + " VALUE (null, ?, ?, ?, ?, ?)";
 	
-	public Question(){
-		super();
+	// Constructors
+	public Question(int id)
+	{
+		StringBuilder query = new StringBuilder();
+		try {
+		query.append("SELECT * FROM " + DBObject.questionTable + " ");
+		query.append("WHERE id = "+ id);
+		ResultSet rs = getResults(query.toString());
+		if (rs.next())
+			this.id = id;
+			this.texts = convertStringToTexts(rs.getString("question"));
+			this.answers = convertStringToTexts(rs.getString("answers"));
+			this.url = rs.getString("url");
+			for (Type item: Type.values()){
+				if (type.equals(item.toString()))
+					this.type = item;
+			}
+			this.done = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
+	
 	public Question(int id, List<String>texts, List<String>answers,String url,String type) 
 	{
 		this.id = id;
@@ -84,6 +110,20 @@ public class Question extends DBObject{
 		}
 	}
 	
+	public Question(int id, String texts, String answers, String url, String type) 
+	{
+		this.id = id;
+		this.texts = convertStringToTexts(texts);
+		this.answers = convertStringToTexts(answers);
+		this.url = url;
+
+		for(Type item: Type.values()){
+			if(type.equals(item.toString()))
+				this.type = item;
+		}
+	}
+	
+	// Utility functions
 	public static String convertTextsToString(List<String> Texts){
 		StringBuilder strBuilder = new StringBuilder();
 		for(String item:Texts){
@@ -91,6 +131,7 @@ public class Question extends DBObject{
 		}
 		return strBuilder.toString();
 	}
+	
 	public static List<String> convertStringToTexts(String str){
 		StringTokenizer tokens = new StringTokenizer(str,DELIMITER);
 		List<String> list = new ArrayList<String>();
@@ -100,13 +141,41 @@ public class Question extends DBObject{
 			
 		return list;
 	}
-	public void addQuestion(int quiz_id, Question q){
-		StringBuilder query = new StringBuilder();
-		query.append("INSERT INTO " + DBObject.questionTable + " ");
-		query.append("VALUE (null, \"" + q.getType() + "\", \"" +convertTextsToString(q.getTexts())+"\", \"" + convertTextsToString(q.getAnswers()) +"\", " + quiz_id + ", \"" + q.getUrl() + "\")");
-		updateTable(query.toString());	
+	
+	// Not tested
+	public static Question insert(String type, List<String> texts, List<String> answers, int quizId, String url) {
+		Connection con = getConnection();
+		try {
+			prepStatement = con.prepareStatement(uploadString, Statement.RETURN_GENERATED_KEYS);
+			prepStatement.setString(1, type);
+			prepStatement.setString(2, convertTextsToString(texts));
+			prepStatement.setString(3, convertTextsToString(answers));
+			prepStatement.setInt(4, quizId);
+			prepStatement.setString(5, url);
+			prepStatement.executeUpdate();		 	
+			ResultSet rs = prepStatement.getGeneratedKeys();
+			if (rs.next())
+				return new Question(rs.getInt(1));
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 		
 	}
+	
+	
+	/** fetches quiz information from database based on given id
+	 * @param id
+	 * @return
+	 */
+	public static Question fetch(int id) {
+		Question q = new Question(id);
+		if (q.done) return q;
+		return null;
+	}
+	
+	
 	public ArrayList<Question> getQuestions(int quiz_id) throws SQLException{
 		StringBuilder query = new StringBuilder();
 		query.append("SELECT * FROM " + DBObject.questionTable + " ");
