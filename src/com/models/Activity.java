@@ -21,6 +21,7 @@ public class Activity extends DBObject {
 	private int score;
 	private Date timestamp;
 	private double timeTaken;
+	private String username = null;
 	
 	/** some generic pre-defined activities */
 	public static Activity TOOK_QUIZ(int user_id, int quiz_id, int score, double timeTaken) {
@@ -37,6 +38,16 @@ public class Activity extends DBObject {
 		this.setScore(score);
 		this.setTimestamp(timestamp);
 		this.setTimeTaken(timeTaken);
+	}
+	
+	public Activity(int id, int user_id, int quiz_id, int score, Date timestamp,double timeTaken, String username){
+		this.setId(id);
+		this.setUser_id(user_id);
+		this.setQuiz_id(quiz_id);
+		this.setScore(score);
+		this.setTimestamp(timestamp);
+		this.setTimeTaken(timeTaken);
+		this.setUsername(username);
 	}
 	
 	public Activity(int id, int user_id, int quiz_id, int score, Timestamp timestamp, double timeTaken){
@@ -105,6 +116,12 @@ public class Activity extends DBObject {
 
 	public int getQuiz_id() {
 		return quiz_id;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUsername() {
+		return username;
 	}
 	
 }

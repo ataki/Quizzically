@@ -30,7 +30,11 @@ public class TagManager extends DBObject {
 			r = prepStatement.executeQuery();
 			result = new ArrayList<Tag>();
 			while (r.next()) {
-					result.add(new Tag(r.getInt("userid"), r.getString("tag")));
+					result.add(new Tag(r.getInt("id"),
+									r.getInt("quiz_id"),
+									r.getInt("user_id"), 
+									r.getString("tag")
+									));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -48,7 +52,11 @@ public class TagManager extends DBObject {
 			r = prepStatement.executeQuery();
 			result = new ArrayList<Tag>();
 			while (r.next()) {
-				result.add(new Tag(r.getInt("quizid"), r.getString("tag")));
+				result.add(new Tag(r.getInt("id"),
+						r.getInt("quiz_id"),
+						r.getInt("user_id"), 
+						r.getString("tag")
+						));
 		     }
 		} catch (SQLException e) {
 			e.printStackTrace();

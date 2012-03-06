@@ -22,7 +22,8 @@ public class UserManager extends DBObject {
 	
 	private String base = "select (id, username, email, admin) from " + DBObject.userTable;
 	/**
-	 * Takes ResultSet and converts it into an 
+	 * Takes ResultSet and converts it into List of minimalist
+	 * users. These columns must match the base select query columns.
 	 * @param r
 	 * @return
 	 */
@@ -30,12 +31,14 @@ public class UserManager extends DBObject {
 		List<User> result = new ArrayList<User>();
 		try {
 			while(r.next()) {
-				result.add(new User()
-				
-				);
+				result.add(new User(
+					r.getInt("id"),
+					r.getString("username"),
+					r.getString("email"),
+					r.getBoolean("admin")
+				));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result;
@@ -48,7 +51,7 @@ public class UserManager extends DBObject {
 			"((SELECT user1_id from Quiz_friendship WHERE friendType = 3 AND user2_id = ?) " +
 			"UNION" +
 			"(SELECT user2_id from Quiz_friendship WHERE friendType = 3 AND user1_id = ?))";
-	/**
+	/**TODO: NOT TESTED
 	 * Gets friends by specified userid
 	 * 
 	 * query:
@@ -78,6 +81,7 @@ public class UserManager extends DBObject {
 	
 	/**
 	 * Gets a subset of users whose names match that filter
+	 * Doesn't use the queryset pattern as above
 	 */
 	public List<User> getSimilarUsers(String filter) throws SQLException {
 		String query = User.userDBSelect + " FROM " + currentTable + " WHERE name LIKE \"%" + filter +"%\"";

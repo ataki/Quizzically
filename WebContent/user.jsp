@@ -20,7 +20,7 @@
 	List<Activity> activities = activityManager.getRecent();
 	
 	/* Get quizzes created */
-	List<Quiz> quizzes = quizManager.getQuizzesForUser(user.getId());
+	List<Quiz> quizzes = quizManager.getByUserId(user.getId());
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -82,7 +82,7 @@
 		<div class="row">
 			<div class="twelve columns">
 				<h3>
-					<%= user.getUsername() %>
+					<%= user.getName() %>
 				</h3>
 				
 				<h6>
@@ -91,7 +91,7 @@
 					<input type="hidden" name="type" value="friend" />
 					<input class="small green button" type="submit" value="Friend Request" />  
 					
-					<a href="mailto:<%= user.getEmail() %>" style="margin-right:30px; margin-left:10px; ">Email:<%= user.email  %></a>
+					<a href="mailto:<%= user.getEmail() %>" style="margin-right:30px; margin-left:10px; ">Email:<%= user.getEmail()  %></a>
 					<a>Last Seen: 12 Feb 2012</a>
 					</form>
 				</h6>
@@ -119,8 +119,8 @@
 						</blockquote>
 					</div>
 					<a class="four columns gray box bluehover-highlight" style="width:175px; height:85px;"><%= user.getNumQuizzesTaken() %><br/><br/><h6>Quizzes Taken</h6></a>
-					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;">3<br/><br/><h6><%= achievementManager.getForUser(user.getId()).size() %></h6></a>
-					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">100%<br/><br/><h6><%= activityManager.getUserScores() %></h6></a>
+					<a class="four columns blue box hover-highlight" style="width:175px; height:85px;"><%= achievementManager.getByUserId(user.getId()).size() %><br/><br/><h6>Achievements Earned</h6></a>
+					<a class="four columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left;">73%<br/><br/><h6><%= activityManager.getAverageScoreUser(user.getId()) %></h6></a>
 				</div>
 				<br/>
 				
@@ -151,7 +151,7 @@
 									</thead>
 									<tbody>
 										<% for(Activity a : activities) { 
-											Quiz q = quizManager.getQuiz(a.getQuizID_id()); %>
+											Quiz q = Quiz.fetch(a.getQuiz_id()); %>
 										<tr class="hover-highlight">
 												<td><%= q.getName() %></td>
 												<td><%= a.getTimeTaken() %> seconds</td>

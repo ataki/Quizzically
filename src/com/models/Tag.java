@@ -36,9 +36,11 @@ import com.backend.DBObject;
  */
 public class Tag {
 	public int id; // could be user or quiz
+	public int quiz_id;
+	public int user_id;
 	public String tag;
 	
-	public Tag(int id, String tag) {
+	public Tag(int id, int quiz_id, int user_id, String tag) {
 		this.id = id;
 		this.tag = tag;
 	}

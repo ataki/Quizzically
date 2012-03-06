@@ -17,8 +17,8 @@
 	QuizManager quizManager = (QuizManager) context.getAttribute("quizManager");
 	MessageManager messageManager = (MessageManager) context.getAttribute("messageManager");
 	ActivityManager activityManager = (ActivityManager) context.getAttribute("activityManager");
-	FriendManager friendManager = (friendManager) context.getAttribute("friendManager");
 	AchievementManager achievementManager = (AchievementManager) context.getAttribute("achievementManager");
+	UserManager userManager = (UserManager) context.getAttribute("userManager");
 	
 	User user = (User) request.getSession().getAttribute("user");
 	/* Get Annoucements */
@@ -28,7 +28,7 @@
 	List<Activity> activities = activityManager.getTopActivity();
 	
 	/* Get friends activities */
-	List<Activity> friendActivities = friendManager.getFriendActivity();
+	List<Activity> friendActivities = activityManager.getRecentFriendActivity(user.getId(), userManager.getFriends(user.getId()));
 	
 	/* Get recently created quizzes for the whole site */
 	List<Quiz> recentQuizzes = quizManager.getRecent();
@@ -220,7 +220,7 @@
 								</thead>
 								<tbody>
 									<% for (Activity a: activities) { 
-										Quiz quiz = Quiz(a.getQuizID_id());
+										Quiz quiz = Quiz.fetch(a.getQuiz_id());
 									%>
 									<tr>
 										<td><%= quiz.getName() %></td>
@@ -315,7 +315,7 @@
 										<td><img src="<%= a.getUrl() %>" width="48" height="48" /></td>
 										<td><%= a.getAward() %></td>
 										<td><%= a.getDescription() %></td>
-										<td><%= a.getDate().toString() %></td>
+										<td><%= a.getTimestamp().toString() %></td>
 									</tr>
 									<% } %>
 								</tbody>

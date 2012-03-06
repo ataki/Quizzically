@@ -228,6 +228,10 @@ public class User extends DBObject {
 	public String getEmail() {
 		return email;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
 	public void setDescription(String description) {
 		// need to update database

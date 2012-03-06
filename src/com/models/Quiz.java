@@ -41,6 +41,7 @@ public class Quiz extends DBObject {
 	private boolean single_page;
 	private boolean immediate_feedback;
 	private boolean random;
+	private boolean done = false;
 	private static String quizUploadString = "INSERT INTO " + DBObject.quizTable +
 											 " VALUE (null, ?,?,?,NOW(),?,?,0)";
 	/** A quick way of creating a quiz and syncing it immediately
@@ -71,10 +72,28 @@ public class Quiz extends DBObject {
 		return -1;
 	}
 	
+	/** fetches quiz information from database based on given id
+	 * @param id
+	 * @return
+	 */
+	public static Quiz fetch(int id) {
+		Quiz q = new Quiz(id);
+		if(q.done) return q;
+		return null;
+	}
+	
+	/**
+	 * Empty class constructor; if we want to populate fields later
+	 * rather than sooner
+	 */
 	public Quiz() {
 		super(DBObject.quizTable);
 		// TODO Auto-generated constructor stub
 	}
+	
+	/**
+	 * Expected class constructor; set all fields
+	 */
 	public Quiz(int id, 
 			String author, 
 			String name,
@@ -141,20 +160,41 @@ public class Quiz extends DBObject {
 		}
 		this.setTimestamp(d);
 	}
-
-	public Quiz getQuiz(int id) {
+	
+	/**
+	 * single id Quiz constructor; the main function backing Quiz.fetch()
+	 * @param id
+	 */
+	public Quiz(int id) {
 		StringBuilder query = new StringBuilder();
 		try {
 		query.append("SELECT * FROM " + DBObject.quizTable + " ");
 		query.append("WHERE id = "+ id);
 		ResultSet rs = getResults(query.toString());
 		if(rs.next())
-			return new Quiz(id,rs.getString("author"),rs.getString("name"), rs.getString("description"), rs.getTime("timestamp"),rs.getString("category"),null,rs.getBoolean("randomness"),rs.getInt("rating"),0);
-		
+			this.id=id;
+			this.author =rs.getString("author");
+			this.name = rs.getString("name");
+			this.description = rs.getString("description");
+			Date d = null;
+			try {
+				d = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(rs.getTimestamp("timestamp").toString());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			this.timestamp = d;
+			this.category= rs.getString("category");
+			this.random=rs.getBoolean("randomness");
+			this.rating=rs.getInt("rating");
+			this.points= rs.getInt("points");
+			this.single_page = rs.getBoolean("single_page");
+			this.immediate_feedback = rs.getBoolean("immediate_feedback");
+			this.numRated = rs.getInt("numRated");
+			this.done = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return;
 	}
 	
 	public List<Question> getQuestions() {
@@ -291,18 +331,36 @@ public class Quiz extends DBObject {
 		}
 	}
 	
-	public class Category {
-		public String category;
-		public int quizId;
-		public Category(String category, int quizId) {
-			this.category = category;
-			this.quizId = quizId;
-		}
-	}
 	
-	/**
+	/** TODO: NOT TESTED any of below functions
 	 * Database Operations
 	 */
+	
+	/** add tags */
+	private String addTagString = 
+		"insert into" + DBObject.tagTable +
+		" values(?, ?, ?) ";
+	/**
+	 * adds a tag and returns whether this database call affected
+	 * more than 0 rows
+	 * @param tags
+	 * @return whether DB call affected more than 0 rows
+	 */
+	public boolean addTag(List<Tag> tags) {
+		StringBuilder query;
+		int index1 = new StringBuilder(addCategoriesString).indexOf("?");
+		int index2 = new StringBuilder(addCategoriesString).indexOf("?", index1 + 1);
+		int index3 = new StringBuilder(addCategoriesString).lastIndexOf("?");
+		List<String> queries = new ArrayList<String>();
+		for(Tag t : tags) {
+			query= new StringBuilder(addCategoriesString);
+			query.replace(index1, index1, "" + t.quiz_id);
+			query.replace(index2, index2, "" + t.user_id);
+			query.replace(index3, index3, t.tag);
+			queries.add(query.toString());
+		}
+		return (this.executeBatch(queries) > 0);
+	}
 	
 	/** add rating */
 	private String addRatingString = 
@@ -325,27 +383,25 @@ public class Quiz extends DBObject {
 	
 	/** add categories */
 	private String addCategoriesString = 
-		"update" + DBObject.quizTable +
-		" set CATEGORY = concat(CATEGORY, ?) " +
-		" where ID = ?";
-	
+		"insert into" + DBObject.categoryTable +
+		" values(?, ?) ";
+	/**
+	 * 
+	 * @param categories
+	 * @return whether DB call affected more than 0 rows
+	 */
 	public boolean addCategories(List<Category> categories) {
-		int quizId = categories.get(0).quizId;
-		StringBuilder all= new StringBuilder();
-		for(Category cat : categories) {
-			all.append(cat.category);
-			all.append(Quiz.delim);
+		StringBuilder query;
+		int index1 = new StringBuilder(addCategoriesString).indexOf("?");
+		int index2 = new StringBuilder(addCategoriesString).lastIndexOf("?");
+		List<String> queries = new ArrayList<String>();
+		for(Category c : categories) {
+			query= new StringBuilder(addCategoriesString);
+			query.replace(index1, index1, c.name);
+			query.replace(index2, index2, "" + c.quiz_id);
+			queries.add(query.toString());
 		}
 		
-		if(!this.conPrepare(addCategoriesString)) return false;
-		try {
-			prepStatement.setString(1, all.toString());
-			prepStatement.setInt(2, quizId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		return this.executePrepared();
+		return (this.executeBatch(queries) > 0);
 	}
-
 }
