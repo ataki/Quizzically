@@ -69,10 +69,13 @@ public class Question extends DBObject{
 	private List<String> answers;
 	private String url;
 	private Type type;
+	private int quizId;
 	private boolean done = false;
 	
 	private static String DELIMITER = "#";
-	private static String uploadString = "INSERT INTO " + DBObject.questionTable + " VALUE (null, ?, ?, ?, ?, ?)";
+	private static String insertString = "INSERT INTO " + DBObject.questionTable + " VALUE (null, ?, ?, ?, ?, ?)";
+	private static String updateString = "UPDATE " + DBObject.quizTable + " SET questionType=?, question=?, answers=?, quiz_id=?, url=?";
+	private static String deleteString = "DELETE FROM " + DBObject.quizTable;
 	
 	// Constructors
 	public Question(int id)
@@ -87,6 +90,7 @@ public class Question extends DBObject{
 			this.texts = convertStringToTexts(rs.getString("question"));
 			this.answers = convertStringToTexts(rs.getString("answers"));
 			this.url = rs.getString("url");
+			this.quizId = rs.getInt("quiz_id");
 			for (Type item: Type.values()){
 				if (type.equals(item.toString()))
 					this.type = item;
@@ -97,12 +101,13 @@ public class Question extends DBObject{
 		}
 	}
 	
-	public Question(int id, List<String>texts, List<String>answers,String url,String type) 
+	public Question(int id, List<String>texts, List<String>answers,String url,String type, int quizId) 
 	{
 		this.id = id;
 		this.texts = texts;
 		this.answers = answers;
 		this.url = url;
+		this.quizId = quizId;
 
 		for(Type item: Type.values()){
 			if(type.equals(item.toString()))
@@ -110,12 +115,13 @@ public class Question extends DBObject{
 		}
 	}
 	
-	public Question(int id, String texts, String answers, String url, String type) 
+	public Question(int id, String texts, String answers, String url, String type, int quizId) 
 	{
 		this.id = id;
 		this.texts = convertStringToTexts(texts);
 		this.answers = convertStringToTexts(answers);
 		this.url = url;
+		this.quizId = quizId;
 
 		for(Type item: Type.values()){
 			if(type.equals(item.toString()))
@@ -146,7 +152,7 @@ public class Question extends DBObject{
 	public static Question insert(String type, List<String> texts, List<String> answers, int quizId, String url) {
 		Connection con = getConnection();
 		try {
-			prepStatement = con.prepareStatement(uploadString, Statement.RETURN_GENERATED_KEYS);
+			prepStatement = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
 			prepStatement.setString(1, type);
 			prepStatement.setString(2, convertTextsToString(texts));
 			prepStatement.setString(3, convertTextsToString(answers));
@@ -175,20 +181,37 @@ public class Question extends DBObject{
 		return null;
 	}
 	
-	
-	public ArrayList<Question> getQuestions(int quiz_id) throws SQLException{
-		StringBuilder query = new StringBuilder();
-		query.append("SELECT * FROM " + DBObject.questionTable + " ");
-		query.append("WHERE quiz_id = " + quiz_id);
-		ResultSet rs = getResults(query.toString());
-		ArrayList<Question> qList = new ArrayList<Question>();
-		while(rs.next()){
-			Question newQuestion = new Question(rs.getInt("id"),convertStringToTexts(rs.getString("question")), convertStringToTexts(rs.getString("answers")),rs.getString("url"),
-					rs.getString("questionType"));
-			qList.add(newQuestion);
+	// DB related methods, NOT TESTED YET
+	boolean sync() {
+		if (!conPrepare(updateString + filter)) return false;
+		try {
+			prepStatement.setString(1, type.toString());
+			prepStatement.setString(2, convertTextsToString(texts));
+			prepStatement.setString(3, convertTextsToString(answers));
+			prepStatement.setInt(4, quizId);
+			prepStatement.setString(5, url);
+			prepStatement.setInt(6, id);
+			return (prepStatement.executeUpdate() != 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
-		return qList;
-	}
+	};
+	
+	boolean delete() {
+		if (!conPrepare(deleteString + filter)) return false;
+		try {
+			prepStatement.setInt(1, id);
+			return (prepStatement.executeUpdate() != 0);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	};
+	
+	
 	/*
 	 * depending on the question type, Answer's
 	 * index can mean either:

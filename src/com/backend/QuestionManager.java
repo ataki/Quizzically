@@ -21,7 +21,7 @@ public class QuestionManager extends DBObject {
 	private List<Question> convertToList(ResultSet rs) throws SQLException {
 		List<Question> result = new ArrayList<Question>();
 		while (rs.next()) {
-			result.add(new Question(rs.getInt("id"), rs.getString("question"), rs.getString("answers"), rs.getString("url"), rs.getString("questionType")));
+			result.add(new Question(rs.getInt("id"), rs.getString("question"), rs.getString("answers"), rs.getString("url"), rs.getString("questionType"), rs.getInt("quiz_id")));
 		}
 		return result;
 	}

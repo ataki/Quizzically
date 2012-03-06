@@ -29,6 +29,7 @@ public class PeakContextListener implements javax.servlet.ServletContextListener
     	// Initialize all managers
     	AnnouncementManager announcementManager = new AnnouncementManager();
     	QuizManager quizManager = new QuizManager();
+    	QuestionManager questionManager = new QuestionManager();
     	MessageManager messageManager = new MessageManager();
     	ActivityManager activityManager = new ActivityManager();
     	//FriendManager friendManager = new FriendManager();
@@ -37,6 +38,7 @@ public class PeakContextListener implements javax.servlet.ServletContextListener
     	// Store managers into ServletContext
     	context.setAttribute("announcementManager", announcementManager);
     	context.setAttribute("quizManager", quizManager);
+    	context.setAttribute("questionManager", questionManager);
     	context.setAttribute("messageManager", messageManager);
     	context.setAttribute("activityManager", activityManager);
     	//context.setAttribute("friendManager", friendManager);

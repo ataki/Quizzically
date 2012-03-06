@@ -197,25 +197,6 @@ public class Quiz extends DBObject {
 		return;
 	}
 	
-	public List<Question> getQuestions() {
-		StringBuilder query = new StringBuilder();
-		query.append("SELECT * FROM " + DBObject.questionTable + " ");
-		query.append("WHERE quiz_id = " + id);
-		List<Question> questions = new ArrayList<Question>();
-		ResultSet rs = getResults(query.toString());
-		try {
-			while (rs.next()) {
-				List<String> texts = Question.convertStringToTexts(rs.getString("question"));
-				List<String> answers = Question.convertStringToTexts(rs.getString("answers"));
-				Question q = new Question(rs.getInt("id"), texts, answers ,rs.getString("url"), rs.getString("questionType"));
-			}
-		} catch (SQLException e) {
-			return null;
-		}
-		return questions;
-	}
-	
-	
 	/**
 	 * @return the description
 	 */
