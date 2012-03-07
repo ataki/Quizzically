@@ -10,6 +10,8 @@ import com.models.*;
 public class QuestionManager extends DBObject {
 	
 	private String base = "select * from " + DBObject.questionTable;
+	private String quizid_filter = " WHERE quiz_id = ?";
+	
 	
 	private boolean debug;
 	public QuestionManager() {
@@ -28,7 +30,7 @@ public class QuestionManager extends DBObject {
 
 	// NOT TESTED YET
 	public List<Question> getbyQuizId(int quizId) {
-		if(!this.conPrepare(base + filter + limit)) return null;
+		if(!this.conPrepare(base + quizid_filter + limit)) return null;
 		try {
 			// filter requires a param name and a value
 			prepStatement.setString(1, "quiz_id");

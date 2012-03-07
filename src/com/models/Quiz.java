@@ -42,8 +42,8 @@ public class Quiz extends DBObject {
 	private boolean immediate_feedback;
 	private boolean random;
 	private boolean done = false;
-	private static String quizUploadString = "INSERT INTO " + DBObject.quizTable +
-											 " VALUE (null, ?,?,?,NOW(),?,?,0)";
+	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?,?,?,NOW(),?,?,0)";
+	
 	/** A quick way of creating a quiz and syncing it immediately
 	 * with the database
 	 */
@@ -54,7 +54,7 @@ public class Quiz extends DBObject {
 		System.out.println(query.toString());*/
 		Connection con = getConnection();
 		try {
-			prepStatement = con.prepareStatement(quizUploadString, Statement.RETURN_GENERATED_KEYS);
+			prepStatement = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
 			prepStatement.setString(1, name);
 			prepStatement.setString(2, description);
 			prepStatement.setString(3, author);

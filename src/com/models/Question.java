@@ -74,8 +74,8 @@ public class Question extends DBObject{
 	
 	private static String DELIMITER = "#";
 	private static String insertString = "INSERT INTO " + DBObject.questionTable + " VALUE (null, ?, ?, ?, ?, ?)";
-	private static String updateString = "UPDATE " + DBObject.quizTable + " SET questionType=?, question=?, answers=?, quiz_id=?, url=?";
-	private static String deleteString = "DELETE FROM " + DBObject.quizTable;
+	private static String updateString = "UPDATE " + DBObject.questionTable + " SET questionType = ?, question = ?, answers = ?, quiz_id = ?, url = ?";
+	private static String deleteString = "DELETE FROM " + DBObject.questionTable;
 	
 	// Constructors
 	public Question(int id)
@@ -91,13 +91,16 @@ public class Question extends DBObject{
 			this.answers = convertStringToTexts(rs.getString("answers"));
 			this.url = rs.getString("url");
 			this.quizId = rs.getInt("quiz_id");
+			
+			String type = rs.getString("questionType");
 			for (Type item: Type.values()){
 				if (type.equals(item.toString()))
 					this.type = item;
 			}
+			
 			this.done = true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			// Ignore
 		}
 	}
 	
@@ -148,10 +151,13 @@ public class Question extends DBObject{
 		return list;
 	}
 	
-	// Not tested
+	/**
+	 * Create a question and insert it to the database.
+	 */
 	public static Question insert(String type, List<String> texts, List<String> answers, int quizId, String url) {
 		Connection con = getConnection();
 		try {
+			System.out.println(con);
 			prepStatement = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
 			prepStatement.setString(1, type);
 			prepStatement.setString(2, convertTextsToString(texts));
@@ -182,8 +188,8 @@ public class Question extends DBObject{
 	}
 	
 	// DB related methods, NOT TESTED YET
-	boolean sync() {
-		if (!conPrepare(updateString + filter)) return false;
+	public boolean sync() {
+		if (!conPrepare(updateString + id_filter)) return false;
 		try {
 			prepStatement.setString(1, type.toString());
 			prepStatement.setString(2, convertTextsToString(texts));
@@ -199,8 +205,8 @@ public class Question extends DBObject{
 		}
 	};
 	
-	boolean delete() {
-		if (!conPrepare(deleteString + filter)) return false;
+	public boolean delete() {
+		if (!conPrepare(deleteString + id_filter)) return false;
 		try {
 			prepStatement.setInt(1, id);
 			return (prepStatement.executeUpdate() != 0);
@@ -287,13 +293,20 @@ public class Question extends DBObject{
 	/**
 	 * @return the texts
 	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * @return the texts
+	 */
 	public List<String> getTexts() {
 		return texts;
 	}
 	/**
 	 * @param texts the texts to set
 	 */
-	public void setTexts(ArrayList<String> texts) {
+	public void setTexts(List<String> texts) {
 		this.texts = texts;
 	}
 	/**
@@ -305,7 +318,7 @@ public class Question extends DBObject{
 	/**
 	 * @param answers the answers to set
 	 */
-	public void setAnswers(ArrayList<String> answers) {
+	public void setAnswers(List<String> answers) {
 		this.answers = answers;
 	}
 	/**

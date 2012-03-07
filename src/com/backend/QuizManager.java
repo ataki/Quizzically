@@ -25,6 +25,14 @@ public class QuizManager extends DBObject {
 	 * that base contains to convert ResultSet to List
 	 */
 	private String base = "select * from " + DBObject.quizTable;
+	
+	private String predicate_sub = " WHERE id IN ";
+	
+	private String user_id_filter = " WHERE user_id = ?";
+	private String name_filter = " WHERE name LIKE ?";
+	
+	
+	
 	private List<Quiz>convertToList(ResultSet r) throws SQLException {
 		List<Quiz> result = new ArrayList<Quiz>();
 		while(r.next()) {
@@ -48,11 +56,10 @@ public class QuizManager extends DBObject {
 	 * gets list of quizzes based on a specified userid. 
 	 */
 	public List<Quiz> getByUserId(int userid) {
-		if(! this.conPrepare(base + filter + limit)) return null;
+		if(! this.conPrepare(base + user_id_filter + limit)) return null;
 		try {
 			// where user_id = userid
-			prepStatement.setString(1, "user_id");
-			prepStatement.setInt(2, userid);
+			prepStatement.setInt(1, userid);
 			ResultSet r = prepStatement.executeQuery();
 			return convertToList(r);
 		} catch(SQLException e) {
@@ -66,11 +73,10 @@ public class QuizManager extends DBObject {
 	 * matches with the queryString
 	 */
 	public List<Quiz> getSimilarQuizzes(String queryString) {
-		if(! this.conPrepare(base + like + limit)) return null;
+		if(! this.conPrepare(base + name_filter + limit)) return null;
 		try {
 			// "where name LIKE queryString"
-			prepStatement.setString(1, "name");
-			prepStatement.setString(2, queryString);
+			prepStatement.setString(1, queryString);
 			ResultSet r = prepStatement.executeQuery(); 
 			return convertToList(r);
 		} catch(SQLException e) {
@@ -81,7 +87,7 @@ public class QuizManager extends DBObject {
 	
 	
 	public String category_subquery = 
-		" ( select quiz_id from " + DBObject.categoryTable + filter + " ) ";
+		" ( select quiz_id from " + DBObject.categoryTable + name_filter + " ) ";
 	/** NOT TESTED
 	 * Does a predicate subquery to find all quizzes that 
 	 * have a certain category. Uses the fact that categories
@@ -96,9 +102,7 @@ public class QuizManager extends DBObject {
 		if(! this.conPrepare(base + predicate_sub + category_subquery + limit)) return null;
 		try {
 			// see above query
-			prepStatement.setString(1, "id");
-			prepStatement.setString(2, "name");
-			prepStatement.setString(3, category);
+			prepStatement.setString(1, category);
 			System.out.println(prepStatement.toString());
 			ResultSet r = prepStatement.executeQuery();
 			return convertToList(r);
