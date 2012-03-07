@@ -4,8 +4,7 @@
 
 <%
 	int quizId = Integer.parseInt(request.getParameter("quizId"));
-	Quiz dummyQuiz = new Quiz();
-	Quiz quiz = dummyQuiz.getQuiz(quizId);
+	Quiz quiz = Quiz.fetch(quizId);
 	System.out.println(quizId);
 
 	System.out.println(quiz);
@@ -94,7 +93,7 @@
 						id to whatever links necessitate them.
 						 -->				
 					
-						<h5>By <a href="UserServlet/94834" style="margin-right:15px;"><%=quiz.getAuthor()%></a>
+						<h5>By <a href="UserServlet/94834" style="margin-right:15px;"><%=quiz.getCreator_id() //TODO: Need to create a UserLite%></a>
 							<a href="QuizServlet/23423" title="action=view" class="radius button">Take!</a>
 						</h5>
 						<br/>

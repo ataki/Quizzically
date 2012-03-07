@@ -29,7 +29,7 @@ public class QuestionManager extends DBObject {
 	}
 
 	// NOT TESTED YET
-	public List<Question> getbyQuizId(int quizId) {
+	public List<Question> getByQuizId(int quizId) {
 		if(!this.conPrepare(base + quizid_filter + limit)) return null;
 		try {
 			// filter requires a param name and a value

@@ -15,6 +15,7 @@
 	ServletContext context = request.getServletContext();
 	AnnouncementManager announcementManager = (AnnouncementManager) context.getAttribute("announcementManager");
 	QuizManager quizManager = (QuizManager) context.getAttribute("quizManager");
+	QuestionManager questionManager = (QuestionManager) context.getAttribute("questionManager");
 	MessageManager messageManager = (MessageManager) context.getAttribute("messageManager");
 	ActivityManager activityManager = (ActivityManager) context.getAttribute("activityManager");
 	AchievementManager achievementManager = (AchievementManager) context.getAttribute("achievementManager");
@@ -170,7 +171,7 @@
 											<%= q.getId() %>
 										</a>
 									</td>
-									<td><%= q.getQuestions().size() %></td>
+									<td><%= questionManager.getByQuizId(q.getId()).size() %></td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
 								<% } %>
@@ -207,7 +208,7 @@
 									<% for (Quiz q: recentQuizzes) { %>
 									<tr>
 										<td><%= q.getName() %></td>
-										<td><%= q.getAuthor() %></td>
+										<td><%= q.getCreator_id() // need to create a UserLite %></td>
 										<td><%= q.getDescription() %></td>
 										<td><%= q.getTimestamp() %></td>
 									</tr>
