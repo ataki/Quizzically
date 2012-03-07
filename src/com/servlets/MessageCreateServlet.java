@@ -55,23 +55,15 @@ public class MessageCreateServlet extends HttpServlet {
 		User fromUser = (User)request.getSession().getAttribute("User");
 		String actionType = (String)request.getAttribute("ActionType");
 		if(actionType.equals(COMPOSETO)){
-			String toUser = (String)request.getAttribute("ToUser");
+			User toUser = (User)request.getAttribute("ToUser");
 			//go through user table to dynamically feedback to the front end
-			UserManager userMg = new UserManager();
-			ArrayList<User> toUsers;
-			try {
-				toUsers = userMg.getUsers(toUser);
-				Gson converter = new Gson();
-				//convert into Parcel form
-					
-				String result = converter.toJson(toUsers);
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(result);	
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Gson converter = new Gson();
+			//convert into Parcel form
+				
+			String result = converter.toJson(toUser);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(result);
 	
 			
 		}else{
