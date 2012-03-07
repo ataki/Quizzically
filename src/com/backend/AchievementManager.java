@@ -26,12 +26,11 @@ public class AchievementManager extends DBObject {
 	private String base = "select * from " + DBObject.achievementTable;
 					
 	public List<Achievement> getByUserId(int userid) {
+		String filter = " where user_id = ? ";
 		if(! this.conPrepare(base + filter + limit)) return null;
 		try {
-			prepStatement.setString(1, "user_id");
-			prepStatement.setInt(2, userid);
+			prepStatement.setInt(1, userid);
 			ResultSet r = prepStatement.executeQuery();
-			
 			return convertToList(r);
 		} catch(SQLException e) {
 			e.printStackTrace();

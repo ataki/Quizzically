@@ -3,7 +3,7 @@
 <%
 	/* Get results from our session 
 	*/
-	Quiz.Result res = session.getAttribute("results");
+	Quiz.Result res = (Quiz.Result) session.getAttribute("results");
 	if(res == null) {
 		response.sendRedirect("/404.html");	
 	}
@@ -56,24 +56,10 @@
 					<p>Powered by Team Mach-One, cs108, Stanford University</p>
 				</div>
 				
-				<div class="six columns">
-					<p style="padding-top:80px; padding-left:180px;">
-						<a href="/LogoutServlet" class="nice radius blue button" data-reveal-id="myModal" data-animation="none">Exit Quiz</a>
-					</p>
-				</div>
 			</div>
 		<hr />
 		</div>
 		<!-- End Heading -->
-		
-		<div id="myModal" class="reveal-modal">
-			<h1>Are you sure you want to exit this quiz?</h1>
-			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
-			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
-			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
-				onclick="self.location='main.html'">Exit</a>
-			<a class="close-reveal-modal">&#215;</a>
-		</div>
 		
 		<div class="row">
 			<div class="twelve columns">
@@ -133,7 +119,7 @@
 									<tbody>
 										<tr class="hover-highlight">
 												<td>233</td>
-												<td><a href="UserServlet?">FreeBSD</a></b></td>
+												<td><a href="UserServlet?">FreeBSD</a></td>
 												<td>2424 seconds</td>
 										</tr>
 										
@@ -148,14 +134,14 @@
 										<thead>
 											<tr>
 												<th width="15%">Score</th>
-												<th width="15%">User</td>
+												<th width="15%">User</th>
 												<th width="30%">Time Taken</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr class="hover-highlight">
 												<td>1000</td>
-												<td><a href="UserServlet?">quantum3023</a></b></td>
+												<td><a href="UserServlet?">quantum3023</a></td>
 												<td>3000 seconds</td>
 											</tr>
 										</tbody>

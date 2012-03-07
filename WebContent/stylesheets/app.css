@@ -21,6 +21,7 @@
 :: Quiz - Pertaining to quiz creation/taking/reporting
 :: Star-rating - CSS for star rating service
 :: Reveal - inspired by the Reveal Modal from Zurb Foundations
+:: Quiz-Page - Nice isolated page for taking a quiz
 
 */
 
@@ -780,7 +781,6 @@
 	</div>
 	
 	*/
-	
 
 /* -----------------------------------------
    Shared Styles
@@ -871,7 +871,7 @@
 		
 	#footer {
 		position:relative;
-		margin-top:50%;
+		color:#cccccc;
 		padding:15px 20px 15px 10px;
 	}
 	
@@ -996,4 +996,84 @@
 		border-color:#0593dc;
 		border-width:1px;
 	}
+	/* Shared styles */
+    .centered {
+    	margin-right:50%;
+    	margin-left:50%;
+    }    
+    
+    /* quiz container like paper, with a black sidebar */
+    #quiz-container{
+    	padding:30px 40px 10px;
+    	border-right: 50px solid #111;
+    }
+    #sidebar {
+    	right:-75px;
+    	top:-30px;
+    	height:300px;
+    	float:right;
+    	position:absolute;
+    }
+    #sidebar img {
+    	padding-bottom:35px;
+    	width:20px;
+    }
+	#sidebar img:hover {
+		opacity:0.5;
+	}
+	.drop-shadow {
+	    position:relative;
+	    width:40%;    
+	    padding:1em; 
+	    margin:2em 10px 4em; 
+	    background:#fff;
+	    -webkit-box-shadow:0 5px 15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.2) inset;
+	       -moz-box-shadow:0 5px 15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.2) inset;
+	            box-shadow:0 5px 15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 0, 0, 0.2) inset;
+	}
+	
+	.drop-shadow:before,
+	.drop-shadow:after {
+	    content:""; 
+	    z-index:-2;
+	}
+	
+	.drop-shadow p {
+	    font-size:16px;
+	    font-weight:bold;
+	}
+	
+	/* Curled corners */
 
+     .curled {
+         border:1px solid #efefef; 
+         -moz-border-radius:0 0 120px 120px / 0 0 6px 6px;    
+              border-radius:0 0 120px 120px / 0 0 6px 6px;
+     }
+   
+     .curled:before,
+     .curled:after {
+         bottom:12px;
+         left:10px;
+         width:50%;
+         height:55%;
+         max-width:200px;
+         -webkit-box-shadow:0 8px 12px rgba(0, 0, 0, 0.5); 
+            -moz-box-shadow:0 8px 12px rgba(0, 0, 0, 0.5); 
+                 box-shadow:0 8px 12px rgba(0, 0, 0, 0.5); 
+         -webkit-transform:skew(-8deg) rotate(-3deg);
+            -moz-transform:skew(-8deg) rotate(-3deg);
+             -ms-transform:skew(-8deg) rotate(-3deg);
+              -o-transform:skew(-8deg) rotate(-3deg);
+                 transform:skew(-8deg) rotate(-3deg);
+     } 
+   
+     .curled:after { 
+         right:10px; 
+         left:auto;
+         -webkit-transform:skew(8deg) rotate(3deg); 
+            -moz-transform:skew(8deg) rotate(3deg);     
+             -ms-transform:skew(8deg) rotate(3deg);     
+              -o-transform:skew(8deg) rotate(3deg); 
+                 transform:skew(8deg) rotate(3deg);
+     }

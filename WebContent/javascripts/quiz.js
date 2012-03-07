@@ -143,7 +143,7 @@ $(document).ready(function() {
 	/* TABLE SORTING ------------------ 
 	--------------------------------- */
 	for(var i = 0; i < Mach.tableSorterIDs.length; i++) {
-		if($('#' + Mach.tableSorterIDs[i]) != null) {
+		if($('#' + Mach.tableSorterIDs[i]).length != 0) {
 			$('#' + Mach.tableSorterIDs[i]).tablesorter(); 
 		}
 	}
