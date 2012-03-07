@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 
+import com.Config;
+
 // Author: Samir Patel
 
 public class DBObject {
@@ -52,6 +54,8 @@ public class DBObject {
 	protected static Statement statement;
 	protected static PreparedStatement prepStatement;
 	
+	protected boolean debug;
+	
 	/**
 	 * Initialized connection and statement
 	 */
@@ -69,6 +73,9 @@ public class DBObject {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		// turn off debuggging if not running
+		debug = Config.debug;
 	}
 
 	protected String currentTable;
@@ -107,11 +114,6 @@ public class DBObject {
 	/** @author Jim Zheng
 	 * Updated to include batch queries
 	 * and prepared statements
-	 * 
-	 * Don't use conPrepare if you have 
-	 * a query that requires questio marks
-	 * as this will detect it as incomplete. 
-	 * Instead, just prepare it raw.
 	 */
 	
 	/* common preparedStatement segments */
@@ -131,10 +133,11 @@ public class DBObject {
 		return (preparedQuery.indexOf('?') != -1);
 	}
 	
-	/* Call first to initialize */
+	/** 
+	 * call this wrapper to try and prepare the query.
+	 * @return True on success
+	 */
 	protected boolean conPrepare(String preparedQuery) {
-		if(! checkPreparedQuery(preparedQuery))
-			return false;
 		try {
 			prepStatement = connection.prepareStatement(preparedQuery);
 		} catch (SQLException e) {
@@ -144,7 +147,9 @@ public class DBObject {
 		return true;
 	}
 
-	/* update */
+	/** calls executeUpdate() on a prepStatement;
+	 * @return True on success
+	 */
 	protected boolean updateTablePrepared() {
 		try {
 			prepStatement.executeUpdate();
@@ -155,7 +160,9 @@ public class DBObject {
 		return true;
 	}
 	
-	/* execute */
+	/** calls execute() on the prepared statement
+	 * @return True on success
+	 */
 	protected boolean executePrepared() {
 		try {
 			prepStatement.execute();
@@ -166,6 +173,11 @@ public class DBObject {
 		return true;
 	}
 	
+	/**
+	 * executes the prepared statement
+	 * and tries to receive a query
+	 * @return ResultSet on success, null on failure
+	 */
 	protected ResultSet getPrepared() {
 		try {
 			return prepStatement.executeQuery();

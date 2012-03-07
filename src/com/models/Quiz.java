@@ -21,6 +21,9 @@ import java.util.List;
  */
 public class Quiz extends DBObject {
 	
+	// delimiter for Quiz questions 
+	// visible here so we can use it while loading
+	// information into the database
 	public static String delim = "##";
 	
 	////////////// UNUSED ////////////////
@@ -32,7 +35,6 @@ public class Quiz extends DBObject {
 	private int points;
 	private int numRated;
 	private double rating;
-	
 	private String name;
 	private String description;
 	private Date timestamp;
@@ -69,7 +71,6 @@ public class Quiz extends DBObject {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
 	
 	/** fetches quiz information from database based on given id
@@ -313,7 +314,8 @@ public class Quiz extends DBObject {
 	}
 	
 	
-	/** TODO: NOT TESTED any of below functions
+	/** TODO: NOT TESTED 
+	 * any of below functions
 	 * Database Operations
 	 */
 	

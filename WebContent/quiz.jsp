@@ -12,9 +12,8 @@
 	Question question = quiz.nextQuestion(curQuestionNum);
 	if(question == null) {
 		// no more questions ! 
-		// we've finished, so redirect to jsp
-		String redirectURL = "/quiz-results.jsp";
-	    response.sendRedirect(redirectURL);
+		// redirect to results page
+	    response.sendRedirect("/quiz-results.jsp");
 	}
 %>    
     

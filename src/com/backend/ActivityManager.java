@@ -21,7 +21,6 @@ public class ActivityManager extends DBObject {
 	 */
 	public ActivityManager() {
 		/* empty initializer */
-		debug = false;
 	}
 	
 	private String base = "select * from " + DBObject.activityTable;
@@ -51,12 +50,11 @@ public class ActivityManager extends DBObject {
 	 * specific - gets Activity for this user
 	 */
 	public List<Activity>getbyUserId(int userid) {
+		String filter = " where user_id = ? ";
 		if(!this.conPrepare(base + filter + limit)) return null;
 		try {
-			// filter requires a param name and a value
-			prepStatement.setString(1, "user");
-			prepStatement.setInt(2, userid);
-			
+			// where user_id = userid
+			prepStatement.setInt(1, userid);
 			if(debug) System.out.println(prepStatement.toString());
 			ResultSet r = this.getPrepared();
 			
@@ -143,6 +141,9 @@ public class ActivityManager extends DBObject {
 		return null;
 	}
 	
+	/**
+	 * Average score query: uses SQL to calculate "averages"
+	 */
 	private String averageScore = "select AVG(score) from " + DBObject.activityTable;
 	
 	/**
@@ -151,11 +152,11 @@ public class ActivityManager extends DBObject {
 	 * @return
 	 */
 	public double getAverageScoreUser(int userid) {
+		String filter = " where user_id = ? ";
 		if(! this.conPrepare(averageScore + filter)) return 0;
 		try {
 			// where user_id = userid
-			prepStatement.setString(1, "user_id");
-			prepStatement.setInt(2, userid);
+			prepStatement.setInt(1, userid);
 			ResultSet r = prepStatement.executeQuery();
 			return r.getDouble("AVG(score");
 		} catch(SQLException e) {
@@ -169,13 +170,13 @@ public class ActivityManager extends DBObject {
 	 * @return
 	 */
 	public double getAverageScoreQuiz(int quizid) {
+		String filter = " where quiz_id = ? ";
 		if(! this.conPrepare(averageScore + filter)) return 0;
 		try {
-			// where user_id = userid
-			prepStatement.setString(1, "quiz_id");
-			prepStatement.setInt(2, quizid);
+			// where quiz_id = quizid;
+			prepStatement.setInt(1, quizid);
 			ResultSet r = prepStatement.executeQuery();
-			return r.getDouble("AVG(score");
+			return r.getDouble("AVG(score)");
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -206,14 +207,13 @@ public class ActivityManager extends DBObject {
 	 * @return
 	 */
 	public List<Activity>getTopActivity(int userid) {
+		String filter = " where user_id = ? ";
 		if(!this.conPrepare(base + filter + sorted_desc + limit)) return null;
 		try {
 			// set the filter of user_id to useid
-			prepStatement.setString(1, "user_id");
-			prepStatement.setInt(2, userid);
-			
-			// find top scores
-			prepStatement.setString(3, "SCORE");
+			prepStatement.setInt(1, userid);
+			// order_by query needs score
+			prepStatement.setString(2, "SCORE");
 			if(debug) System.out.println(prepStatement.toString());
 			ResultSet r = this.getPrepared();
 			return convertToList(r);
