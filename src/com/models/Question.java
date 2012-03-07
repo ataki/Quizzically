@@ -187,7 +187,9 @@ public class Question extends DBObject{
 		return null;
 	}
 	
-	// DB related methods, NOT TESTED YET
+	/** Updates the row that represents the object from the database.
+	 * @return A boolean to indicates if the request is successful.
+	 */
 	public boolean sync() {
 		if (!conPrepare(updateString + id_filter)) return false;
 		try {
@@ -199,20 +201,19 @@ public class Question extends DBObject{
 			prepStatement.setInt(6, id);
 			return (prepStatement.executeUpdate() != 0);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
 		}
 	};
 	
+	/** Deletes the row that represents the object from the database.
+	 * @return A boolean to indicates if the request is successful.
+	 */
 	public boolean delete() {
 		if (!conPrepare(deleteString + id_filter)) return false;
 		try {
 			prepStatement.setInt(1, id);
 			return (prepStatement.executeUpdate() != 0);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
 		}
 	};

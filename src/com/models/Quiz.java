@@ -26,10 +26,6 @@ public class Quiz extends DBObject {
 	// information into the database
 	public static String delim = "##";
 	
-	////////////// UNUSED ////////////////
-	private String author;
-	//////////////////////////////////////
-	
 	private int id;
 	private int creator_id;
 	private int points;
@@ -44,24 +40,33 @@ public class Quiz extends DBObject {
 	private boolean immediate_feedback;
 	private boolean random;
 	private boolean done = false;
-	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?,?,?,NOW(),?,?,0)";
+	
+	// DB Column: id, creator_id, name, description, single_page, immediate_feedback, random, points, rating, numRated, timestamp, category_id
+	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), ?)";
+	private static String updateString = "UPDATE " + DBObject.quizTable + " SET name = ?, description = ?, single_page = ?, immediate_feedback = ?, random = ?";
+	private static String deleteString = "DELETE FROM " + DBObject.quizTable;
 	
 	/** A quick way of creating a quiz and syncing it immediately
 	 * with the database
 	 */
-	public static Quiz insert(String author, String name, String description, String category, String tags, boolean randomness) {
-		/*StringBuilder query = new StringBuilder();
-		query.append("INSERT INTO " + DBObject.quizTable + " ");
-		query.append("VALUE (null,\"" + name + "\", \"" + description + "\", \"" + author + "\", NOW(),\"" + category +"\", "+randomness+ ",0)");
-		System.out.println(query.toString());*/
+	public static Quiz insert(int creator_id,
+							  String name, 
+							  String description, 
+							  int category_id, 
+							  boolean random, 
+							  boolean immediate_feedback, 
+							  boolean single_page,
+							  int points) {
 		Connection con = getConnection();
 		try {
 			prepStatement = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
-			prepStatement.setString(1, name);
-			prepStatement.setString(2, description);
-			prepStatement.setString(3, author);
-			prepStatement.setString(4, category);
-			prepStatement.setBoolean(5, randomness);
+			prepStatement.setInt(1, creator_id);
+			prepStatement.setString(2, name);
+			prepStatement.setString(3, description);
+			prepStatement.setBoolean(4, single_page);
+			prepStatement.setBoolean(5, immediate_feedback);
+			prepStatement.setInt(6, points);
+			prepStatement.setInt(7, category_id);
 			prepStatement.executeUpdate();		 	
 			ResultSet rs = prepStatement.getGeneratedKeys();
 			if (rs.next())
@@ -83,6 +88,37 @@ public class Quiz extends DBObject {
 		return null;
 	}
 	
+	
+	/** Updates the row that represents the object from the database.
+	 * @return A boolean to indicates if the request is successful.
+	 */
+	public boolean sync() {
+		if (!conPrepare(updateString + id_filter)) return false;
+		try {
+			prepStatement.setString(1, name);
+			prepStatement.setString(2, description);
+			prepStatement.setBoolean(3, single_page);
+			prepStatement.setBoolean(4, immediate_feedback);
+			prepStatement.setBoolean(5, random);
+			return (prepStatement.executeUpdate() != 0);
+		} catch (SQLException e) {
+			return false;
+		}
+	};
+	
+	/** Deletes the row that represents the object from the database.
+	 * @return A boolean to indicates if the request is successful.
+	 */
+	public boolean delete() {
+		if (!conPrepare(deleteString + id_filter)) return false;
+		try {
+			prepStatement.setInt(1, id);
+			return (prepStatement.executeUpdate() != 0);
+		} catch (SQLException e) {
+			return false;
+		}
+	};
+	
 	/**
 	 * Empty class constructor; if we want to populate fields later
 	 * rather than sooner
@@ -96,7 +132,7 @@ public class Quiz extends DBObject {
 	 * Expected class constructor; set all fields
 	 */
 	public Quiz(int id, 
-			String author, 
+			int creator_id, 
 			String name,
 			String description,
 			Time timestamp, 
@@ -107,7 +143,7 @@ public class Quiz extends DBObject {
 			int numRated) {
 		super(DBObject.quizTable);
 		this.id = id;
-		this.author = author;
+		this.creator_id = creator_id;
 		this.name = name;
 		this.description = description;
 		Date d = null;
@@ -174,7 +210,7 @@ public class Quiz extends DBObject {
 		ResultSet rs = getResults(query.toString());
 		if(rs.next())
 			this.id=id;
-			this.author =rs.getString("author");
+			this.creator_id =rs.getInt("creator_id");
 			this.name = rs.getString("name");
 			this.description = rs.getString("description");
 			Date d = null;
@@ -223,16 +259,10 @@ public class Quiz extends DBObject {
 		this.id = id;
 	}
 	/**
-	 * @return the author
+	 * @return the creator_id
 	 */
-	public String getAuthor() {
-		return author;
-	}
-	/**
-	 * @param author the author to set
-	 */
-	public void setAuthor(String author) {
-		this.author = author;
+	public int getCreator_id() {
+		return creator_id;
 	}
 	/**
 	 * @return the timestamp
