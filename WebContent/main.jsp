@@ -83,7 +83,7 @@
 				<div class="six columns">
 					<div><img src="images/quizzically-logo-small.png" /></div>
 					<p>Powered by Team Mach-One, cs108, Stanford University</p>
-					<Form>
+					<Form action="ResultServlet" method="get">
 						<input class="round" id="searchbar" type="search" size="50" name="searchbar" placeholder="Search for friends, quizzes, and more" />
 					</Form> 
 				</div>
@@ -99,23 +99,30 @@
 		</div>
 		<!-- End Heading -->
 		
-		<!-- TABS: SHOULD NOT HAVE TO CHANGE -->
+	
 		<div class="row">
-			<div>
-			<dl class="contained tabs">
-			  <dd><a href="#nice1" class="active">Home</a></dd>
-			  <dd><a href="#nice2">Popular</a></dd>
-			  <dd><a href="#nice3">Create</a></dd>
-			  <dd><a href="#nice4">Activity</a></dd>
-			  <dd><a href="#nice5">Friends</a></dd>
-			  <dd><a href="#nice6">Messages</a></dd>
-			  <dd><a href="#nice7">Achievements</a></dd>
-			</dl>
+			<div class="twelve columns">
+			<!-- TABS: SHOULD NOT HAVE TO CHANGE -->
+			<div class="two columns" style="height:100%; border: solid 0 #ddd; border-width: 0px 1px 0px 0px;">
+				<dl class="nice vertical tabs">
+				  <dd><a href="#nice0" class="active">Home</a></dd>
+				  <dd><a href="#nice1">Announcements</a></dd>
+				  <dd><a href="#nice2">Popular</a></dd>
+				  <dd><a href="#nice3">Create</a></dd>
+				  <dd><a href="#nice4">Activity</a></dd>
+				  <dd><a href="#nice5">Friends</a></dd>
+				  <dd><a href="#nice6">Messages</a></dd>
+				  <dd><a href="#nice7">Achievements</a></dd>
+				</dl>
 			</div>
 			
+			<div class="ten columns content" style="">
 			<!-- TAB CONTENT: MODIFY AS NEEDED --->
 			<ul class="nice tabs-content contained">
-			
+			  <!-- Home -->
+			  <li class="active" id="nice0Tab">
+			  	<h5>Home</h5>
+			  </li>
 			  <!-- ANNOUNCEMENTS -->
 			  <li class="active" id="nice1Tab">
 			  	<div class="row">
@@ -158,7 +165,11 @@
 								<% for(Quiz q: popularQuizzes) { %>
 								<tr>
 									<td><%= q.getRating() %></td>
-									<td class="hover-highlight"><a href="QuizServlet?<%= q.getId() %>"><%= q.getId() %>/a></b></td>
+									<td class="hover-highlight">
+										<a href="QuizServlet?<%= q.getId() %>">
+											<%= q.getId() %>
+										</a>
+									</td>
 									<td><%= q.getQuestions().size() %></td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
@@ -173,7 +184,12 @@
 			  <li id="nice3Tab">
 			  
 				 <div class="row">
-					<h5><a href="quiz-create.html"><div class="small button">Create a brand new quiz</div></a>
+					<h5>
+						<a href="quiz-create.html">
+							<div class="small button">
+								Create a brand new quiz
+							</div>
+						</a>
 					</h5>
 					<br/>
 						<div class="title">Recently Created</div>
@@ -184,7 +200,7 @@
 										<th width="10%">Name</th>
 										<th width="10%">Author</th>
 										<th width="65%">Description</th>
-										<th widht="15%">Time</th>
+										<th width="15%">Time</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -214,8 +230,8 @@
 									<tr>
 										<th width="15%">Quiz Name</th>
 										<th width="30%">Score</th>
-										<th widht="15%">Time Elapsed</th>
-										<th widht="15%">Recorded</th>
+										<th width="15%">Time Elapsed</th>
+										<th width="15%">Recorded</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -282,7 +298,7 @@
 									Message message = messageArray.get(i);
 							%>
 								<tr>
-									<td class="hover-highlight"><a href="user.jsp?id=<%=message.getFromUserId()%>"><%=user.getName(message.getFromUserId())%></a></td>
+									<td class="hover-highlight"><a href="user.jsp?id=<%=message.getFromUserId()%>"><%=user.getUserName() %></a></td>
 									<td><%=message.getMessage()%></td>
 									<td><%=message.getTimestamp()%></td>
 								</tr>
@@ -306,7 +322,7 @@
 										<th width="15%"></th>
 										<th width="20%">Award</th>
 										<th width="40%">Description</th>
-										<th widht="15%">Date</th>
+										<th width="15%">Date</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -325,13 +341,15 @@
 			  </li>
 			 <!-- END ACHIEVEMENTS -->
 			</ul>  <!-- END OF TAB CONTENT -->
+			</div> <!--  close row --> 
+			</div>
 		</div>
 
 		<div id="footer" class="row">
 			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
-
-	</div>
-	<!-- container -->
+		</div>
+		
+	</div> <!-- close container -->
 
 
 

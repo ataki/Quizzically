@@ -55,31 +55,37 @@
 		</div>
 		<!-- End Heading -->
 		
-		<!-- TABS: SHOULD NOT HAVE TO CHANGE -->
+	
 		<div class="row">
-			<div>
-			<dl class="contained tabs">
-			  <dd><a href="#nice1" class="active">Home</a></dd>
-			  <dd><a href="#nice2">Popular</a></dd>
-			  <dd><a href="#nice3">Create</a></dd>
-			  <dd><a href="#nice4">Activity</a></dd>
-			  <dd><a href="#nice5">Friends</a></dd>
-			  <dd><a href="#nice6">Messages</a></dd>
-			  <dd><a href="#nice7">Achievements</a></dd>
-			</dl>
+			<div class="twelve columns">
+			<!-- TABS: SHOULD NOT HAVE TO CHANGE -->
+			<div class="two columns" style="height:100%; border: solid 0 #ddd; border-width: 0px 1px 0px 0px;">
+				<dl class="nice vertical tabs">
+				  <dd><a href="#nice0" class="active">Home</a></dd>
+				  <dd><a href="#nice1">Announcements</a></dd>
+				  <dd><a href="#nice2">Popular</a></dd>
+				  <dd><a href="#nice3">Create</a></dd>
+				  <dd><a href="#nice4">Activity</a></dd>
+				  <dd><a href="#nice5">Friends</a></dd>
+				  <dd><a href="#nice6">Messages</a></dd>
+				  <dd><a href="#nice7">Achievements</a></dd>
+				</dl>
 			</div>
 			
+			<div class="ten columns content" style="">
 			<!-- TAB CONTENT: MODIFY AS NEEDED --->
 			<ul class="nice tabs-content contained">
+			  <!-- Home -->
+			  <li class="active" id="nice0Tab">
+			  	<h5>Home</h5>
+			  </li>
 			
 			  <!-- ANNOUNCEMENTS -->
-			  <li class="active" id="nice1Tab">
+			  <li id="nice1Tab">
 			  	<div class="row">
-					<div class="twelve columns show-panel">
-						<h3>Annoucements</h3>
+						<h4 style="padding-bottom:20px;">Annoucements</h4>
 						<div>
-							<ul id="announcement-container" style="width:75%;">
-							
+							<ul id="announcement-container" style="width:75%;">	
 								<li class="announcement" id="333333"><div class="alert-box success">Here is an announcement. <br/><a href="" class="close">&times;</a>
 									Quiz changes are coming! We're happy to announce that we're bringing a social component to the whole site.
 									In addition, we're going to revamp our messaging and challenge system so that you can better 
@@ -92,7 +98,6 @@
 							</ul>
 						</div>
 					</div>
-				</div>
 			  </li>
 			  <!-- END ANNOUNCEMENTS -->
 			  
@@ -312,7 +317,9 @@
 			  </li>
 			 <!-- END ACHIEVEMENTS -->
 			</ul>  <!-- END OF TAB CONTENT -->
-		</div>
+			</div> <!-- end of six column container -->
+		</div> <!-- end of twelve column container -->
+	</div>
 		
 		
 		

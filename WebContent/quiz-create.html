@@ -45,37 +45,25 @@
 				</div>
 				
 				<div class="six columns">
-					<p style="padding-top:80px; padding-left:180px;">
-						<a href="/LogoutServlet" class="nice radius blue button" data-reveal-id="myModal" data-animation="none">Exit Quiz</a>
-					</p>
 				</div>
 			</div>
 		<hr />
 		</div>
 		<!-- End Heading -->
 		
-		<div id="myModal" class="reveal-modal">
-			<h1>Are you sure you want to exit this quiz?</h1>
-			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
-			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
-			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
-				onclick="self.location='main.html'">Exit</a>
-			<a class="close-reveal-modal">&#215;</a>
-		</div>
-		
 		<div class="row">
-			<h5>Create a quiz</h5>
+			<h4 style="color:#555;">Create a quiz</h4>
 			<div class="row" style="padding-top:30px">
 				<!-- Begin creation form-->
 			
 				<div class="twelve columns">
 					<form action="CreateServlet" method="post" id="create-container" name="create-editor" >
-					<label for="quiz-name">Quiz Name</label>
+					<label for="quiz-name">Quiz Name (required)</label>
 					<input id="quiz-name" name="quiz-name" type="text" placeholder=""/><br/><br/>	
 					<input id="num-questions" name="num-questions" type="hidden" value="1"/>
-					
+					<br/><br/>
 					<h5>Options</h5>
-					
+					Specify some options for your quiz.
 					<!--
 					Quiz Options:
 						////////////////////////////////////////////////////////
@@ -175,7 +163,8 @@
 					-->
 					
 					<!-- ///////////////////////////// Begin Creation Form ////////////////////////////////// -->
-					
+					<br/>
+					<h5>Questions Section</h5><br/><br/>
 					<div>
 						<div id="question-1">
 							<h6 class="label close-question" >Question 1 <a style="font-size:16px;">&times;</a></h6><br/>

@@ -82,7 +82,7 @@
 		<div class="row">
 			<div class="twelve columns">
 				<h3>
-					<%= user.getName() %>
+					<%= user.getUserName() %>
 				</h3>
 				
 				<h6>

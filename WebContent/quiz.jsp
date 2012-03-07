@@ -1,5 +1,25 @@
-<!DOCTYPE html>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*, com.backend.*, com.models.* " %>
+<%
+	/* Initial Page Setup 
+	* When taking the quiz, we find the current question.
+	* Depending on the question type, we print out
+	* a certain section of this JSP file that corresponds
+	* to the question type. 
+	*/
+	int curQuestionNum = (Integer) session.getAttribute("curQuestion");
+	Quiz quiz = (Quiz) session.getAttribute("quiz");
+	Question question = quiz.nextQuestion(curQuestionNum);
+	if(question == null) {
+		// no more questions ! 
+		// we've finished, so redirect to jsp
+		String redirectURL = "/quiz-results.jsp";
+	    response.sendRedirect(redirectURL);
+	}
+%>    
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -64,32 +84,83 @@
 		</div>
 		
 		<div class="row">
+		<!-- 
+			Main questions container; distinguish between 
+			types of questions
+		 -->
 			<div class="twelve columns">
+			
+			<% if (question.getType().equals(Question.Type.QuestionResponse)) { %>
+				 <!-- Question Response -->
 				<h6 class="undo-matching"><a>[-] Undo Matching</a></h6>
 				<div class="twelve column">
-				<!-- <span class="move-icon"></span> -->
+					<form id="question">
+					<!--  TODO  -->
+					<br/><br/>
+					<input type="submit" id="submit-button" class="blue button" value="Next&nbsp;&nbsp;&#187;" />
+					</form>
+				</div>
+			<% } %>
+			
+			<% if (question.getType().equals(Question.Type.FillInTheBlank)) { %>
+				 <!-- Fill-in-the-Blank -->
+				<h6 class="undo-matching"><a>[-] Undo Matching</a></h6>
+				<div class="twelve column">
+					<form id="question">
+					<!--  TODO  -->
+					<br/><br/>
+					<input type="submit" id="submit-button" class="blue button" value="Next&nbsp;&nbsp;&#187;" />
+					</form>
+				</div>
+			<% } %>
+			
+			<% if (question.getType().equals(Question.Type.MultiChoice)) { %>
+				 <!-- Multiple Choice -->
+				<h6 class="undo-matching"><a>[-] Undo Matching</a></h6>
+				<div class="twelve column">
+					<form id="question">
+					<!--  TODO  -->
+					<br/><br/>
+					<input type="submit" id="submit-button" class="blue button" value="Next&nbsp;&nbsp;&#187;" />
+					</form>
+				</div>
+			<% } %>
+			
+			<% if (question.getType().equals(Question.Type.Matching)) { %>
+				 
+				<!-- Matching : Draggable Container Div -->
+				 
+				<h6 class="undo-matching"><a>[-] Undo Matching</a></h6>
+				<div class="twelve column">
 					<form id="question">
 					<div class="draggable" id="matchquestions">
 						<h5 class="draggable-ignore questionBegin">Match these items:</h5>
-						<div class="question"><span class="name draggable-ignore">1</span><span class="info draggable-ignore">My goal is to eat well</span></div>
-						<div class="question"><span class="name draggable-ignore">2</span><span class="info draggable-ignore">My goal is to lose weight.</span></div>
-						<div class="question"><span class="name draggable-ignore">3</span><span class="info draggable-ignore">I plan to breathe calmly for the entire afternoon.</span></div>	
-						<div class="question"><span class="name draggable-ignore">4</span><span class="info draggable-ignore">You are at Stanford</span></div>
+						<!--
+							The matching questions. Drag these on top of 
+							answers to form a "match"  
+						 -->
+						<% for(int i =0; i < question.getTexts().size(); i++) { %>
+							<div class="question"><span class="name draggable-ignore"><%= i %></span><span class="info draggable-ignore"><%= question.getTexts().get(i) %></span></div>
+						<% } %>
+						
 						<br/><br/>
 						<h5 class="draggable-ignore answerBegin">... to these items:</h5>
-						<div class="answer"><span class="name draggable-ignore ">1</span><span class="info draggable-ignore">Match 1</span></div>
-						<div class="answer"><span class="name draggable-ignore ">2</span><span class="info draggable-ignore">Match 2</span></div>
-						<div class="answer"><span class="name draggable-ignore ">3</span><span class="info draggable-ignore">Match 3</span></div>	
-						<div class="answer"><span class="name draggable-ignore ">4</span><span class="info draggable-ignore">Match 4</span></div>
+						<!--
+							The matching answers. Cannot be dragged; 
+						 -->
+						<% for(int i = 0; i < question.getAnswers().size(); i++) { %>
+							<div class="answer"><span class="name draggable-ignore "><%=i %></span><span class="info draggable-ignore"><%= question.getAnswers().get(i) %></span></div>
+						<% } %>
+					
 					</div>
 					<br/><br/>
-					<input type="" id="submit-button" class="blue button" value="Next&nbsp;&nbsp;&#187;" />
+					<input type="submit" id="submit-button" class="blue button" value="Next&nbsp;&nbsp;&#187;" />
 					</form>
 				</div>
+			<% } %>
+			
 			</div>
 		</div>
-		
-		
 		
 		<div id="footer" class="row">
 			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
