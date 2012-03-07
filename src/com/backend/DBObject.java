@@ -115,14 +115,12 @@ public class DBObject {
 	 */
 	
 	/* common preparedStatement segments */
-	protected String filter = " where ? = ?";
-	protected String limit = " limit 30 ";
-	protected String recent = " order by TIMESTAMP desc ";
-	protected String like = " where ? like ? ";
-	protected String today = " where datediff(now(),TIMESTAMP)=0 and TIMESTAMP <= now() ";
-	protected String sorted_asc = " order by ? asc ";
-	protected String sorted_desc = " order by ? desc ";
-	protected String predicate_sub = " where ? in ";
+	protected String id_filter = " WHERE id = ?";
+	protected String limit = " LIMIT 30 ";
+	protected String recent = " ORDER BY TIMESTAMP DESC ";
+	protected String today = " WHERE datediff(now(),TIMESTAMP)=0 AND TIMESTAMP <= now() ";
+	protected String sorted_asc = " ORDER BY ? ASC ";
+	protected String sorted_desc = " ORDER BY ? DESC ";
 	
 	/*
 	 * the main reason we have a wrapper for the 
@@ -138,7 +136,7 @@ public class DBObject {
 		if(! checkPreparedQuery(preparedQuery))
 			return false;
 		try {
-			connection.prepareStatement(preparedQuery);
+			prepStatement = connection.prepareStatement(preparedQuery);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
