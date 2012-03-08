@@ -1004,12 +1004,13 @@
     
     /* quiz container like paper, with a black sidebar */
     #quiz-container{
-    	padding:30px 40px 10px;
+    	margin-left:34px;
+    	padding:30px 40px 20px;
     	border-right: 50px solid #111;
     }
     #sidebar {
-    	right:-75px;
-    	top:-30px;
+    	right:-34px;
+    	top:20px;
     	height:300px;
     	float:right;
     	position:absolute;

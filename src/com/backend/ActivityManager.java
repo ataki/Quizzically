@@ -23,6 +23,35 @@ public class ActivityManager extends DBObject {
 		/* empty initializer */
 	}
 	
+	private List<Integer> findQuestionMarkIndices(String str) {
+		List<Integer> indices = new ArrayList<Integer>();
+		int lastIndex = 0;
+		int last = 0;
+		while(true) {
+			int idx = insert.indexOf('?', last);
+			if(idx == -1) break;
+			indices.add(idx);
+			last = insert.indexOf('?', last);
+			lastIndex++;
+		}
+		return indices;
+	}
+	
+	public String insert = "insert into " + DBObject.activityTable + 
+							" (user_id, quiz_id, score, timeTaken) values (?, ?, ?)";
+	public boolean addActivities(List<Activity> activities) {
+		List<String>queries = new ArrayList<String>();
+		List<Integer> indices = findQuestionMarkIndices(insert);
+		StringBuilder s;
+		for(Activity a : activities) {
+			s = new StringBuilder(insert);
+			s.replace(indices.get(0), indices.get(0), "" + a.getUser_id());
+			s.replace(indices.get(1), indices.get(1), "" + a.getQuiz_id());
+			s.replace(indices.get(2), indices.get(2), "" + a.getScore());
+		}
+		return (this.executeBatch(queries) > 0);
+	}
+	
 	private String base = "select * from " + DBObject.activityTable;
 	/**TODO: NOT TESTED
 	 * primary retrieval method; converts ResultSet to ordered

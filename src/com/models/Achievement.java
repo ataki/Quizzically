@@ -1,10 +1,15 @@
 package com.models;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import com.backend.DBObject;
 
 /**
  * List of user's achievements.
@@ -18,7 +23,7 @@ import java.util.Locale;
  *
  */
 
-public class Achievement {
+public class Achievement extends DBObject {
 	private int user_id;
 	private String description;
 	private String award;
@@ -88,8 +93,43 @@ public class Achievement {
 		this.setTimestamp(sdf);
 	}
 	
-	public void add() {
-		
+	private String insert = "insert into " + DBObject.achievementTable + 
+		" (user_id, quiz_id, score, timeTaken) values (?, ?, ?)";
+	/**
+	 * inserts into current database
+	 * @return
+	 */
+	public boolean upload() {
+		if(! this.conPrepare(insert)) return false;
+		try {
+			prepStatement.setInt(1, this.user_id);
+			prepStatement.setString(2, this.award);
+			prepStatement.setString(3, this.description);
+			prepStatement.setString(4, this.url);
+			prepStatement.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * deletes something only if it exists
+	 */
+	private String delete = "delete from " + DBObject.achievementTable +
+						" where user_id = ?";
+	public void delete() {
+		if(this.id < 1) return; 
+		if(! this.conPrepare(insert)) return;
+		try {
+			prepStatement.setInt(1, this.id);
+			prepStatement.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		return;
 	}
 
 	public void setDescription(String description) {

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.models.*;
 /** 
- * @author jimzheng
+ * 
  * A Competition is a live, timed synchronous event
  * between several users on the site at a given time.
  * 

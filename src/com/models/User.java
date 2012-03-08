@@ -97,6 +97,15 @@ public class User extends DBObject {
 		return new User(name);
 	}
 	
+	/**
+	 * Creates and uploads a new User to the database with the given
+	 * parameters.
+	 * 
+	 * @param name
+	 * @param email
+	 * @param password
+	 * @return
+	 */
 	public static User createUser(String name, String email, String password) {
 		if(getUser(name).getId() != INVALID_USER) return null;
 

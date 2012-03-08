@@ -1,5 +1,6 @@
 package com.models;
 
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -124,4 +125,43 @@ public class Activity extends DBObject {
 		return username;
 	}
 	
+	
+	private String insert = "insert into " + DBObject.activityTable + 
+	" (user_id, quiz_id, score, timeTaken) values (?, ?, ?, ?)";
+	/**
+	 * inserts into current database
+	 * @return
+	 */
+	public boolean upload() {
+		if(! this.conPrepare(insert)) return false;
+		try {
+			prepStatement.setInt(1, this.user_id);
+			prepStatement.setInt(2, this.quiz_id);
+			prepStatement.setInt(3, this.score);
+			prepStatement.setDouble(3, this.timeTaken);
+			prepStatement.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * deletes something only if it exists
+	 */
+	private String delete = "delete from " + DBObject.activityTable +
+						" where user_id = ?";
+	public void delete() {
+		if(this.id < 1) return; 
+		if(! this.conPrepare(insert)) return;
+		try {
+			prepStatement.setInt(1, this.id);
+			prepStatement.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+		return;
+	}
 }

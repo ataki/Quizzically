@@ -24,7 +24,7 @@ public class AchievementManager extends DBObject {
 	}
 
 	private String base = "select * from " + DBObject.achievementTable;
-					
+	
 	public List<Achievement> getByUserId(int userid) {
 		String filter = " where user_id = ? ";
 		if(! this.conPrepare(base + filter + limit)) return null;
