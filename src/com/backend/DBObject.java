@@ -3,6 +3,7 @@ package com.backend;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.BorderLayout;
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -202,14 +203,11 @@ public class DBObject {
 			}
 			results = statement.executeBatch();
 			connection.setAutoCommit(true);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
 		if(results == null) return 0;
-		
 		int numUpdated = 0;
 		for(int i=0;i<results.length;i++)
 			numUpdated += results[i];
