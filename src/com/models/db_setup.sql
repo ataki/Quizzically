@@ -36,8 +36,8 @@ CREATE TABLE `Quiz_friendship` (
 ;
 
 CREATE TABLE `Quiz_friendRecommendation` (
-    `user_id`  PRIMARY KEY,
-    `toFriend_id` integer NOT NULL,
+    `user1_id` integer PRIMARY KEY,
+    `user2_id` integer NOT NULL,
     `num_commonFriends` integer NOT NULL
 )
 ;

@@ -2,12 +2,15 @@ package com.backend;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
@@ -24,7 +27,12 @@ public class FriendRecommendation extends DBObject{
 	private HashMap<FriendPair,Integer>	friendsRecTable;
 	private HashSet<FriendPair> noFriendPairs;
 	private int NUM_RECOMMENDATIONS = 30;
-	
+	private String base = "";
+	private String insertRec = "INSERT INTO " + DBObject.friendRecommendationTable + 
+									"VALUE (?,?,?)";
+	private String deleteRec = "DELETE * FROM " + DBObject.friendRecommendationTable + 
+	"WHERE user1_id = ? OR user2_id = ?";
+	private static boolean isRecTableSet = false;
 	public class FriendPair extends HashSet<Integer>{
 		
 		FriendPair(int user1, int user2){
@@ -38,23 +46,65 @@ public class FriendRecommendation extends DBObject{
 	
 	FriendRecommendation(){
 		super();
-
+		setFriendRecommendationTable();
 	}
-	
-	public void setFriendshipTable(){
+	/**
+	 * Setup the FriendRecommendation Table based on friendship table.
+	 * This should be called only once for initiate the table. 
+	 * @return true if the FriendRecommendationTable is set up correctly.
+	 */
+	public boolean setFriendRecommendationTable(){
 		friendsTable = new HashMap<Integer,HashSet<Integer>>();	
 		noFriendPairs =  new HashSet<FriendPair>();
 		friendsRecTable = new HashMap<FriendPair,Integer>();
 		setFriendsTable();
 		SetFriendRecTable();
-		//*sync up with Quiz_friendShip
+		//*upload to Quiz_friendShip
+		try {
+			for(Entry<FriendPair, Integer> entry:friendsRecTable.entrySet()){
+				if(! this.conPrepare(insertRec)) return false;
+				Integer[] pairArray = (Integer[])entry.getKey().toArray();
+				prepStatement.setInt(1,pairArray[0]);
+				prepStatement.setInt(2,pairArray[1]);
+				prepStatement.setInt(3, entry.getValue());
+				ResultSet r = prepStatement.executeQuery();
+			}	
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return true;	
 	}
+	/**
+	 * This method is called when a friended b, we want to 
+	 * remove the corresponding recommendation from the table and update
+	 * the statistics.
+	 * 
+	 * usage:
+	 * insertFriendship(a,b,3);
+	 * deleteRecommendation(a,b);
+	 * @param friendpair
+	 */
+	public void deleteRecommendation(int user1, int user2){		
+		//remove recommendation (a,b) 
+		
+		//recommend a's friends to b(but not b's friends),
+		//recommend b's friends to a(but not a's friends)
+	}
+	
+	public void addRecommendation(FriendPair friendpair){
+		//add recommendation (a,b)
+		//delete recommendation (a,c) c is a friend of b
+		//delete recommemdation (b,c) c is a friend of a
+	}
+	
 	/**
 	 * SetFriendRecommendationTable should be only called once
 	 * it will fill the friendRecommendationTable based on current Friendship Table.
 	 */
 	private void setFriendsTable(){
 		//get user table from DB
+		isRecTableSet = false;
 		FriendManager fm = new FriendManager();
 		HashSet<Integer> friendsSet;
 		List<FriendPair> friendships = fm.getAllFriendship();

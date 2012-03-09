@@ -1,14 +1,22 @@
 package com.models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map.Entry;
+
 import com.backend.DBObject;
+import com.backend.FriendRecommendation.FriendPair;
 
 public class Friend extends DBObject {
 	private int friendShipId;
 	private int friendId1;
 	private int friendId2;
 	private int type;
-	
-	Friend(){
+	private String condition = "SELECT * FROM " + DBObject.friendshipTable + " WHERE user1_id=? AND user2_id=?";
+	private String updateFriendship = "UPDATE "+ DBObject.friendshipTable + " SET friendType=? WHERE " +
+										"user1_id=? AND user2_id=?"; 
+	private String insertFriendship = "INSERT INTO " + DBObject.friendshipTable + " VALUES(null,?,?,?)";
+	public Friend(){
 		super(DBObject.friendshipTable);
 	}
 	
@@ -18,7 +26,40 @@ public class Friend extends DBObject {
 		this.friendId2=friendId2;
 		this.type = type;
 	}
+	
+	public boolean insert(int friendId1, int friendId2,int type){
+		if(friendId1>friendId2){
+			int temp = friendId1;
+			friendId1 = friendId2;
+			friendId2 = friendId1;
+		}
+		try {
+			String query;
+			int[] var = new int[3];			
+			
+			if(! this.conPrepare(updateFriendship)) return false;
+			prepStatement.setInt(1,type);
+			prepStatement.setInt(2,friendId1);
+			prepStatement.setInt(3,friendId2);			
+			System.out.println(prepStatement.toString());
+			if(prepStatement.executeUpdate()==0){
+			
+				if(! this.conPrepare(insertFriendship)) return false;
+				prepStatement.setInt(1,friendId1);
+				prepStatement.setInt(2,friendId2);
+				prepStatement.setInt(3,type);			
+				System.out.println(prepStatement.toString());
+				prepStatement.execute();
+			}
+				
+			
 
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 	/**
 	 * @return the friendShipId
 	 */

@@ -11,7 +11,6 @@ import com.models.User;
 
 /**
  * 
- * @author Sydney
  *	handles db Quiz userTable <-> servlets 
  */
 public class UserManager extends DBObject {
@@ -20,20 +19,20 @@ public class UserManager extends DBObject {
 		super();
 	}
 	
-	private String base = "select (id, username, email, admin) from " + DBObject.userTable;
+	private String base = "select id, name, email, admin from " + DBObject.userTable;
 	/**
 	 * Takes ResultSet and converts it into List of minimalist
 	 * users. These columns must match the base select query columns.
 	 * @param r
 	 * @return
 	 */
-	public List<User> convertToList(ResultSet r) {
+	public static List<User> convertToList(ResultSet r) {
 		List<User> result = new ArrayList<User>();
 		try {
 			while(r.next()) {
 				result.add(new User(
 					r.getInt("id"),
-					r.getString("username"),
+					r.getString("name"),
 					r.getString("email"),
 					r.getBoolean("admin")
 				));

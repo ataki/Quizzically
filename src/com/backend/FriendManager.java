@@ -10,18 +10,20 @@ import com.models.User;
 
 public class FriendManager extends DBObject {
 	private int NUMFRIENDS = 30;
-	private String base = "SELECT (id, username, email, admin) FROM " + DBObject.friendshipTable;
-	private String joinedBase = base + " INNER JOIN " + DBObject.userTable;
+	//t1 represents friendshipTable;
+	//t2 represents userTable
+	private String base = "SELECT t2.id, t2.name, t2.email, t2.admin FROM " + DBObject.friendshipTable + " as t1";
+	private String joinedBase = base + " INNER JOIN " + DBObject.userTable + " as t2";
 	/**** Friendship ****/
 	private String friend_complex_query = 
 			joinedBase + 
-			" ON (Quiz_frindship.user_id = Quiz_user.id AND" +
-			" Quiz_friendship.user1_id = ?)" + 
-			"OR (Quiz_friendship.user_id = Quiz_user.id AND" +
-			" Quiz_friendship.user2_id = ?)";
+			" ON (t1.user2_id = t2.id AND" +
+			" t1.user1_id = ?)" + 
+			"OR (t1.user1_id = t2.id AND" +
+			" t1.user2_id = ?)";
 	private String all_friends_query = "SELECT * FROM " + DBObject.friendshipTable 
 		+ " WHERE friendType = 3";
-	FriendManager(){
+	public FriendManager(){
 		super();
 	}
 	
@@ -30,7 +32,7 @@ public class FriendManager extends DBObject {
 	 * Gets friends by specified userid
 	 * 
 	 * query:
-	 * SELECT (id, username, email, admin) FROM Quiz_user WHERE id IN 
+	 * SELECT (t2.id, t2.username, t2.email, t2.admin) FROM Quiz_user WHERE id IN 
 	 * 	((SELECT user1_id from Quiz_friendship WHERE friendType = 3 AND user2_id = ?) UNION
 	 *   (SELECT user2_id from Quiz_friendship WHERE friendType = 3 AND user1_id = ?))
 	 * 
@@ -46,8 +48,9 @@ public class FriendManager extends DBObject {
 		try {
 			prepStatement.setInt(1, userId);
 			prepStatement.setInt(2, userId);
+			System.out.println(prepStatement.toString());
 			ResultSet r = prepStatement.executeQuery(); 
-			return convertToList(r);
+			return UserManager.convertToList(r);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -59,22 +62,7 @@ public class FriendManager extends DBObject {
 	 * @param r
 	 * @return
 	 */
-	public List<User> convertToList(ResultSet r) {
-		List<User> result = new ArrayList<User>();
-		try {
-			while(r.next()) {
-				result.add(new User(
-					r.getInt("id"),
-					r.getString("username"),
-					r.getString("email"),
-					r.getBoolean("admin")
-				));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+
 	
 	public ArrayList<Integer> getRecommendation(int id){
 		return null;
