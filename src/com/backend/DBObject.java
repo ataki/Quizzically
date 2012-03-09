@@ -33,7 +33,6 @@ public class DBObject {
 	| Quiz_question              |
 	| Quiz_quiz                  |
 	| Quiz_user                  |
-	| products                   |
 	+----------------------------+
 	*/
 	
@@ -48,7 +47,7 @@ public class DBObject {
 	protected static String tagTable = "Quiz_tag";
 	protected static String activityTable = "Quiz_activity";
 	protected static String achievementTable = "Quiz_achievement";
-	
+	protected static String friendRecommendationTable = "Quiz_friendRecommendation";
 	private static Connection connection;
 
 	// to be used by inherited classes to run queries
