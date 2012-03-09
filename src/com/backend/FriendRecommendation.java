@@ -7,7 +7,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
  * 
@@ -15,66 +18,73 @@ import java.util.Scanner;
  * This is a simple recommendation system based on the number of shared friends
  * between two users. 
  */
-public class FriendRecommendation {
+public class FriendRecommendation extends DBObject{
 	
 	private HashMap<Integer,HashSet<Integer>> friendsTable;
 	private HashMap<FriendPair,Integer>	friendsRecTable;
 	private HashSet<FriendPair> noFriendPairs;
-	private int NUM_RECOMMENDATIONS = 5;
+	private int NUM_RECOMMENDATIONS = 30;
 	
 	public class FriendPair extends HashSet<Integer>{
 		
 		FriendPair(int user1, int user2){
 			super.add(user1);
 			super.add(user2);
+		
 		}
 		
 		
 	}
 	
 	FriendRecommendation(){
+		super();
+
+	}
+	
+	public void setFriendshipTable(){
 		friendsTable = new HashMap<Integer,HashSet<Integer>>();	
 		noFriendPairs =  new HashSet<FriendPair>();
 		friendsRecTable = new HashMap<FriendPair,Integer>();
+		setFriendsTable();
+		SetFriendRecTable();
+		//*sync up with Quiz_friendShip
 	}
-	
-	public void setFriendsTable(){
+	/**
+	 * SetFriendRecommendationTable should be only called once
+	 * it will fill the friendRecommendationTable based on current Friendship Table.
+	 */
+	private void setFriendsTable(){
 		//get user table from DB
-		//right now, read the user table from test dataset
-		File file = new File("src\\com\\backend\\RecTestSet.txt");
-		try {
-			HashSet<Integer> friendsSet;
-			Scanner scanner = new Scanner(file);
-			while(scanner.hasNextLine()){
-				int from = scanner.nextInt();
-				int to = scanner.nextInt();
-				noFriendPairs.add(new FriendPair(from,to));
-				if(friendsTable.containsKey(from)){
-					friendsSet = friendsTable.get(from);
-					friendsSet.add(to);	
-				}else{
-					friendsSet = new HashSet<Integer>();
-					friendsSet.add(to);
-					friendsTable.put(from, friendsSet);
-				}
-				if(friendsTable.containsKey(to)){
-					friendsSet = friendsTable.get(to);
-					friendsSet.add(from);	
-				}else{
-					friendsSet = new HashSet<Integer>();
-					friendsSet.add(from);
-					friendsTable.put(to, friendsSet);
-				}
-				
+		FriendManager fm = new FriendManager();
+		HashSet<Integer> friendsSet;
+		List<FriendPair> friendships = fm.getAllFriendship();
+		for(FriendPair pair : friendships){
+			Integer[] pairArray = (Integer[]) pair.toArray();
+			int from = pairArray[0];
+			int to = pairArray[1];
+			noFriendPairs.add(pair);
+			if(friendsTable.containsKey(from)){
+				friendsSet = friendsTable.get(from);
+				friendsSet.add(to);	
+			}else{
+				friendsSet = new HashSet<Integer>();
+				friendsSet.add(to);
+				friendsTable.put(from, friendsSet);
 			}
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(friendsTable.containsKey(to)){
+				friendsSet = friendsTable.get(to);
+				friendsSet.add(from);	
+			}else{
+				friendsSet = new HashSet<Integer>();
+				friendsSet.add(from);
+				friendsTable.put(to, friendsSet);
+			}
+				
 		}
+			
 		
 	}
-	public ArrayList<FriendPair> FindTuples(HashSet<Integer> users){
+	private ArrayList<FriendPair> FindTuples(HashSet<Integer> users){
 		int tempi, tempj;
 		ArrayList<FriendPair> combinations = new ArrayList<FriendPair>();
 		FriendPair newPair;
@@ -93,7 +103,7 @@ public class FriendRecommendation {
 		return combinations;
 		
 	}
-	public void SetFriendRecTable(){
+	private void SetFriendRecTable(){
 		for(int key: friendsTable.keySet()){
 			ArrayList<FriendPair> toFriendPairs = FindTuples(friendsTable.get(key));
 			for(FriendPair pair: toFriendPairs){

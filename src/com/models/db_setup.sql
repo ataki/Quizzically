@@ -34,6 +34,14 @@ CREATE TABLE `Quiz_friendship` (
     `friendType` integer NOT NULL
 )
 ;
+
+CREATE TABLE `Quiz_friendRecommendation` (
+    `user_id`  PRIMARY KEY,
+    `toFriend_id` integer NOT NULL,
+    `num_commonFriends` integer NOT NULL
+)
+;
+
 ALTER TABLE `Quiz_friendship` ADD CONSTRAINT `user1_id_refs_id_853509fe` FOREIGN KEY (`user1_id`) REFERENCES `Quiz_user` (`id`);
 ALTER TABLE `Quiz_friendship` ADD CONSTRAINT `user2_id_refs_id_853509fe` FOREIGN KEY (`user2_id`) REFERENCES `Quiz_user` (`id`);
 CREATE TABLE `Quiz_history` (
