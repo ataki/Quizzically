@@ -1,9 +1,9 @@
-/* Form Creation ---------------
+/* Form Creation -------------------
 * Team Mach One  
 * CS 108 Stanford University
-* Form is for when we're creating
-* the quizzes
-* ---------------------------- */
+* 
+* Form deals with quiz creation.
+* ---------------------------------- */
 $(document).ready(function() {
 
 	if(window.Mach != null) {

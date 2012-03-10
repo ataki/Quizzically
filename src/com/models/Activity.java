@@ -45,6 +45,10 @@ public class Activity extends DBObject {
 		return new Activity(Activity.INVALID, user_id, quiz_id, Activity.INVALID, null, Activity.INVALID);
 	}
 	
+	public Activity() {
+		/* default constructor; takes no params */
+	}
+	
 	public Activity(int id, int user_id, int quiz_id, int score, Date timestamp,double timeTaken){
 		this.setId(id);
 		this.setUser_id(user_id);
