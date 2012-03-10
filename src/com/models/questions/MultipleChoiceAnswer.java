@@ -1,17 +1,19 @@
 package com.models.questions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MultipleChoiceAnswer extends BaseAnswer {
+	private List<String> choices;
 
-	private List<String> answers;
 
-	public MultipleChoiceAnswer(List<String> answers) {
-		this.answers = answers;
+	public MultipleChoiceAnswer(String answer,List<String> choices) {
+		super(answer);
+		this.choices = new ArrayList<String>(choices);
 	}
-	@Override 
-	public int checkAnswer(List<String> userAnswers){
-		return 1;
+	
+	public List<String> getChoices(){
+		return choices;
 	}
 	
 }
