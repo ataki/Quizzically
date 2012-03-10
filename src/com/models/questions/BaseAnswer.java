@@ -14,7 +14,7 @@ public class BaseAnswer {
 	
 	public int checkAnswer(List<String> userAnswers) {
 		if(userAnswers.size() == 1)
-			return answer.equals(userAnswers.get(0)) == true? 1:0;
+			return answer.toLowerCase().equals(userAnswers.get(0).toLowerCase()) == true? 1:0;
 		return 0;
 	}
 

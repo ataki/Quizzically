@@ -12,6 +12,7 @@ public class MultipleAnswersAnswer extends BaseAnswer {
 		this.answers = new ArrayList<String>(answers);
 		this.order = order;
 	}
+
 	/**
 	 * if order is true, checks answers one by one.
 	 * if order is true, counts the (answer^userAnswer).size 
@@ -19,18 +20,28 @@ public class MultipleAnswersAnswer extends BaseAnswer {
 	@Override 
 	public int checkAnswer(List<String> userAnswers){
 		int score = 0;
+		if(userAnswers.size()!=answers.size())
+			return 0;
 		if(order == true){
 			for(int i = 0; i < answers.size(); i++){
-				if(userAnswers.get(i).equals(answers.get(i))){
+				if(userAnswers.get(i).toLowerCase().equals(answers.get(i).toLowerCase())){
 					score++;
 				}				
 			}
 		}else{
 			//translate userAnswer into a set to distinct answers
-			Set<String> userAnswersSet = new HashSet<String>(userAnswers);
-			Set<String> answersSet = new HashSet<String>(answers);
-			userAnswers.retainAll(answersSet);
-			score = userAnswers.size();
+			Set<String> userAnswersSet = new HashSet<String>();
+			for(String answer:userAnswers){
+				userAnswersSet.add(answer.toLowerCase());
+			}
+				
+			Set<String> answersSet = new HashSet<String>();
+			for(String answer: answers){
+				answersSet.add(answer.toLowerCase());
+			}
+				
+			userAnswersSet.retainAll(answersSet);
+			score = userAnswersSet.size();
 		}
 		return score;	
 		
