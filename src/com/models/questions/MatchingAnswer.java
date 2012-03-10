@@ -13,7 +13,7 @@ public class MatchingAnswer extends BaseAnswer {
 		if(answers.size() != userAnswers.size())
 			return 0;
 		for(int i = 0; i < userAnswers.size(); i++){
-			if(answers.get(i)!=userAnswers.get(i))
+			if(!answers.get(i).equals(userAnswers.get(i)))
 				return 0;
 		}
 		return 1;
