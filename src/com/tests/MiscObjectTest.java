@@ -32,6 +32,10 @@ public class MiscObjectTest {
 	UserManager userManager = new UserManager();
 	AnnouncementManager announcementManager = new AnnouncementManager();
 	
+	/**
+	 * Set up 100 new users
+	 * @throws Exception
+	 */
 	@BeforeClass
 	public void setUpBeforeClass() throws Exception {
 		DBObject db = new DBObject();
@@ -41,12 +45,16 @@ public class MiscObjectTest {
 		}
 	}
 	
+	
+	/**
+	 * For each user, add that they created and took a quiz.
+	 * Then, print out the most recent activities.
+	 */
 	@Test
 	public void testActivity() {
 		Activity act = Activity.TOOK_QUIZ(2, 3, 343, 234.3);
 		assertEquals(true, act.upload());
 		act.delete();
-		
 		List<Activity> activities = new ArrayList<Activity>();
 		for(int i = 0; i < user_ids.size(); i++) {
 			activities.add(Activity.TOOK_QUIZ(user_ids.get(i), 1+i, 34 + i, 234.42 + (double)i));
@@ -55,6 +63,7 @@ public class MiscObjectTest {
 		
 	}
 
+	
 	public void testAchievements() {
 		
 	}

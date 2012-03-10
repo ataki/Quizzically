@@ -9,13 +9,13 @@
 	*/
 	int curQuestionNum = (Integer) session.getAttribute("curQuestion");
 	Quiz quiz = (Quiz) session.getAttribute("quiz");
-	Question question = null;
-	//Question question = quiz.nextQuestion(curQuestionNum);
+	Question question = 
 	if(question == null) {
 		// no more questions ! 
 		// redirect to results page
-	   // response.sendRedirect("/quiz-results.jsp");
+	   response.sendRedirect("/quiz-results.jsp");
 	}
+	
 %>  
 
 <!DOCTYPE html>
@@ -100,7 +100,7 @@
 								<a data-reveal-id="CompetitionModal" data-animation="fade" title=""><img src="images/icons/145-persondot.png" /><br/></a>
 							</div>
 						
-			<% if (question.getType().equals(Question.Type.QuestionResponse)) { %>
+							<% if (question.getType().equals(Question.Type.QuestionResponse)) { %>
 				 <!-- Question Response -->
 				<h6 class="undo-matching"><a>[-] Undo Matching</a></h6>
 				<div class="twelve column">
@@ -168,6 +168,8 @@
 					</form>
 				</div>
 			<% } %>
+			
+			
 						</div>
 					</div>
 					
