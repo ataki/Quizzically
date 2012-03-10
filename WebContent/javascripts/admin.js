@@ -36,7 +36,7 @@ function adminInit() {
 		// what we want to do with that person.
 		$("." + Mach.optionsArray[i]).click(function() {
 			
-			generateGrowl("Title", "Message", false, 10000);
+			generateGrowl("as;kdfjlfj", "Message", false, 3000);
 			var opt = $(this).attr("class");
 			
 			var userid = $(this).parent().siblings(".options-user-id").html();
@@ -46,6 +46,7 @@ function adminInit() {
 			
 			var thisPtr = this;
 			console.log(Mach.adminServer);
+			
 			$.ajax({
 				url: Mach.adminServer,
 				type: "POST",

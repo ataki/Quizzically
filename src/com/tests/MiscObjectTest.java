@@ -38,11 +38,11 @@ public class MiscObjectTest {
 	 */
 	@BeforeClass
 	public void setUpBeforeClass() throws Exception {
-		DBObject db = new DBObject();
+		/* DBObject db = new DBObject();
 		for(int i = 0; i < 100; i++) {
 			User user = User.
-			user_ids.add(user.getId());
-		}
+			// user_ids.add(user.getId());
+		}*/
 	}
 	
 	
@@ -74,5 +74,10 @@ public class MiscObjectTest {
 	
 	public void testTags() {
 		
+	}
+	
+	public void testAnnouncements() {
+		
+	}
 	}
 }
