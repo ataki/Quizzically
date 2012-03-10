@@ -1,18 +1,20 @@
 package com.models;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
-
-import com.backend.DBObject;
-import com.models.Question;
-
-import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.backend.DBObject;
+import com.models.questions.BaseQuestion;
+import com.models.questions.QuestionGSON;
 
 /**
  * 
@@ -39,12 +41,13 @@ public class Quiz extends DBObject {
 	private boolean single_page;
 	private boolean immediate_feedback;
 	private boolean random;
+	private List<BaseQuestion> questions;
 	private boolean done = false;
 
 	
-	// DB Column: id, creator_id, name, description, single_page, immediate_feedback, random, points, rating, numRated, timestamp, category_id
-	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), ?)";
-	private static String updateString = "UPDATE " + DBObject.quizTable + " SET name = ?, description = ?, single_page = ?, immediate_feedback = ?, random = ?";
+	// DB Column: id, creator_id, name, description, single_page, immediate_feedback, random, points, rating, numRated, timestamp, category_id, questions
+	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), ?, ?)";
+	private static String updateString = "UPDATE " + DBObject.quizTable + " SET name = ?, description = ?, single_page = ?, immediate_feedback = ?, random = ?, questions = ?";
 	private static String deleteString = "DELETE FROM " + DBObject.quizTable;
 	
 	/** A quick way of creating a quiz and syncing it immediately
@@ -57,7 +60,8 @@ public class Quiz extends DBObject {
 							  boolean random, 
 							  boolean immediate_feedback, 
 							  boolean single_page,
-							  int points) {
+							  int points,
+							  List<BaseQuestion> questions) {
 		Connection con = getConnection();
 		try {
 			prepStatement = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
@@ -68,6 +72,7 @@ public class Quiz extends DBObject {
 			prepStatement.setBoolean(5, immediate_feedback);
 			prepStatement.setInt(6, points);
 			prepStatement.setInt(7, category_id);
+			prepStatement.setString(8, QuestionGSON.questionToJSON(questions));
 			prepStatement.executeUpdate();		 	
 			ResultSet rs = prepStatement.getGeneratedKeys();
 			if (rs.next())
@@ -101,6 +106,7 @@ public class Quiz extends DBObject {
 			prepStatement.setBoolean(3, single_page);
 			prepStatement.setBoolean(4, immediate_feedback);
 			prepStatement.setBoolean(5, random);
+			prepStatement.setString(6, QuestionGSON.questionToJSON(questions));
 			return (prepStatement.executeUpdate() != 0);
 		} catch (SQLException e) {
 			return false;
@@ -179,7 +185,7 @@ public class Quiz extends DBObject {
 	public Quiz(int id, int creator_id, String name,
 			String description, boolean single_page, boolean immediate_feedback,
 			boolean random, int points, double rating, int numRated,
-			Timestamp timestamp) {
+			Timestamp timestamp, List<BaseQuestion> questions) {
 		this.id = id;
 		this.creator_id = creator_id;
 		this.name = name;
@@ -190,6 +196,7 @@ public class Quiz extends DBObject {
 		this.points = points;
 		this.rating = rating;
 		this.numRated = numRated;
+		this.questions = questions;
 		Date d = null;
 		try {
 			d = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(timestamp.toString());
@@ -228,6 +235,7 @@ public class Quiz extends DBObject {
 			this.single_page = rs.getBoolean("single_page");
 			this.immediate_feedback = rs.getBoolean("immediate_feedback");
 			this.numRated = rs.getInt("numRated");
+			this.questions = (ArrayList<BaseQuestion>) QuestionGSON.jsonToQuestion(rs.getString("questions"));
 			this.done = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -423,8 +431,15 @@ public class Quiz extends DBObject {
 	 * Keeps track of parameters necessary when taking quiz  
 	 */
 	private int quizIndex;
-	private List<Question>questions;
 	
+	public List<BaseQuestion> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<BaseQuestion> questions) {
+		this.questions = questions;
+	}
+
 	/**
 	 * fetch questions from remote database related to this quiz
 	 */

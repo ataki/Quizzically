@@ -6,7 +6,4 @@ public class FillInBlanksQuestion extends BaseQuestion {
 		super(question, answer);
 	}
 
-	public FillInBlanksQuestion(String question, String answer, int time) {
-		super(question, answer, time);
-	}
 }

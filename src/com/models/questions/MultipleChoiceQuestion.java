@@ -4,16 +4,10 @@ import java.util.List;
 
 public class MultipleChoiceQuestion extends BaseQuestion {
 	
-	public MultipleChoiceQuestion(String question, List<String> answers) {
+	public MultipleChoiceQuestion(String question, String answer, List<String> choices) {
 		this.question = question;
 		this.isTimed = false;
-		this.answer = new MultipleChoiceAnswer(answers);
+		this.answer = new MultipleChoiceAnswer(answer, choices);
 	}
 	
-	public MultipleChoiceQuestion(String question, List<String> answers, int time) {
-		this.question = question;
-		this.isTimed = true;
-		this.time = time;
-		this.answer = new MultipleChoiceAnswer(answers);
-	}
 }

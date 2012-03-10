@@ -17,14 +17,17 @@ public class BaseQuestion {
 		this.answer = new BaseAnswer(answer);
 	}
 	
-	public BaseQuestion(String question, String answer, int time) {
-		this.question = question;
-		this.isTimed = true;
-		this.time = time;
-		this.answer = new BaseAnswer(answer);
-	}
-	
 	public int checkAnswer(List<String> userAnswers) {
 		return answer.checkAnswer(userAnswers);
+	}
+	
+	public void setTime(int time) {
+		if (time == 0) {
+			this.isTimed = false;
+		}
+		else {
+			this.isTimed = true;
+			this.time = time;
+		}
 	}
 }

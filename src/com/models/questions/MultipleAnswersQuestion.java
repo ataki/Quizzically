@@ -10,10 +10,4 @@ public class MultipleAnswersQuestion extends BaseQuestion {
 		this.answer = new MultipleAnswersAnswer(answers, random);
 	}
 	
-	public MultipleAnswersQuestion(String question, List<String> answers, boolean random, int time) {
-		this.question = question;
-		this.isTimed = true;
-		this.time = time;
-		this.answer = new MultipleAnswersAnswer(answers, random);
-	}
 }
