@@ -40,7 +40,7 @@ public class MiscObjectTest {
 	public void setUpBeforeClass() throws Exception {
 		DBObject db = new DBObject();
 		for(int i = 0; i < 100; i++) {
-			User user = User.createUser("newUser" + i, "newUser" + i + "@gmail.com", "newUser" + i);
+			User user = User
 			user_ids.add(user.getId());
 		}
 	}
