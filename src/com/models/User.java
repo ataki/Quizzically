@@ -28,11 +28,14 @@ public class User extends DBObject {
 	private int id;
 	private String email;
 	private String username;
-	private int numQuizzesTaken;
+	// private int numQuizzesTaken;  -- not needed... should get count from Activity table
 	private boolean admin;
 	public TagManager tagManager;
 	 // in minimal mode, only display user's id/username/email/admin
 	private boolean minimal = false;
+
+	private String setEmail; // new email address
+	private boolean setAdmin; // new admin setting
 
 	public static String userDBSelect = "SELECT id, username, email, admin FROM " + userTable + " ";
 
@@ -47,14 +50,16 @@ public class User extends DBObject {
 	}
 
 	/**
-	 * sets htis user's fields according to certain fields passed in 
+	 * sets this user's fields according to certain fields passed in 
 	 */
 	private void setValues(int id, String username, String email, boolean admin) {
 		this.id = id;
 		this.username = username;
-		this.setEmail(email);	
+		this.email = email;	
 		this.admin = admin;
 		this.tagManager = new TagManager();
+		setAdmin = admin;
+		setEmail = email;
 	}
 
 	/**
@@ -102,19 +107,77 @@ public class User extends DBObject {
 		this.admin = admin;
 		this.minimal = true;
 	}
+	
+	/**
+	 * Synchronizes changes in DB
+	 */
+	public void sync() {
+		StringBuilder query = new StringBuilder();
+		query.append(" UPDATE " + userTable + " ");
+		query.append(" SET ");
+		query.append(" email = \"" + setEmail + "\" ");
+		query.append(" , ");
+		if(setAdmin) query.append(" admin = 1 ");
+		else query.append(" admin = 0 ");
+		query.append(" WHERE id = " + id);
+		query.append(";");
+		System.out.println(query);
+		updateTable(query.toString());
+		admin = setAdmin;
+		email = setEmail;
+	}
+
+	public void setAdmin(boolean admin) {
+		setAdmin = admin;
+	}
+
+	public void setEmail(String email) {
+		setEmail = email;
+	}
+
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public String getName() {
+		return username;
+	}
 
 	public String getUserName() { 
 		return username; 
 	}
 
+	public String getEmail() {
+		return email;
+	}
+	
 	public int getId() {
 		return id;
 	}
 
-	// we should never return an unauthenticated User object...
+	/* Not needed... should count from Activity table
+	public void setNumQuizzesTaken(int numQuizzesTaken) {
+		// need to update database
+		this.numQuizzesTaken = numQuizzesTaken;
+	}
+
+	public int getNumQuizzesTaken() {
+		return numQuizzesTaken;
+	}
+*/
+	
 	private static User getUser(String name) {
 		return new User(name);
 	}
+	
+//	public static String getName(int id) throws SQLException {
+//		String query = "SELECT username FROM " + User.userTable + " WHERE id = " + id;
+//		statement.executeQuery(query);
+//		ResultSet rs = statement.getResultSet();
+//		if (rs.next()) return rs.getString("username");
+//		else return null;
+//	}
 	
 	/**
 	 * Creates and uploads a new User to the database with the given
@@ -161,26 +224,6 @@ public class User extends DBObject {
 		return null;
 	}
 
-	private ArrayList<String> getPassword() {
-		StringBuilder query = new StringBuilder();
-		query.append("SELECT password, salt FROM " + userTable + " ");
-		query.append("WHERE username = \"" + username + "\";");
-		
-		ResultSet rs = getResults(query.toString());
-		try {
-			ArrayList<String> pwd = new ArrayList<String>();
-			if(rs.next()) {
-				pwd.add(rs.getString(1));
-				pwd.add(rs.getString(2));
-				return pwd;
-			}
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	public static User authenticateUser(String name, String password) {
 		User user = new User(name);
 		if(user.getId() == INVALID_USER) return null;
@@ -204,6 +247,26 @@ public class User extends DBObject {
 		return null;
 	}
 	
+	private ArrayList<String> getPassword() {
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT password, salt FROM " + userTable + " ");
+		query.append("WHERE username = \"" + username + "\";");
+		
+		ResultSet rs = getResults(query.toString());
+		try {
+			ArrayList<String> pwd = new ArrayList<String>();
+			if(rs.next()) {
+				pwd.add(rs.getString(1));
+				pwd.add(rs.getString(2));
+				return pwd;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	// taken from Cracker assignment
 	private static String hexToString(byte[] bytes) {
 		StringBuffer buff = new StringBuffer();
@@ -215,45 +278,6 @@ public class User extends DBObject {
 		}
 		return buff.toString();
 	}	
-	
-	public static String getName(int id) throws SQLException {
-		String query = "SELECT username FROM " + User.userTable + " WHERE id = " + id;
-		statement.executeQuery(query);
-		ResultSet rs = statement.getResultSet();
-		if (rs.next()) return rs.getString("username");
-		else return null;
-	}
-
-	public void setAdmin(boolean admin) {
-		// need to update database
-		this.admin = admin;
-	}
-
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	public void setNumQuizzesTaken(int numQuizzesTaken) {
-		// need to update database
-		this.numQuizzesTaken = numQuizzesTaken;
-	}
-
-	public int getNumQuizzesTaken() {
-		return numQuizzesTaken;
-	}
-
-	public void setEmail(String email) {
-		// need to update database
-		this.email = email;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-	
-	public String getName() {
-		return username;
-	}
 	
 	public String toString() {
 		return username;
