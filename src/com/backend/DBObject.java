@@ -16,38 +16,45 @@ import com.Config;
 // Author: Samir Patel
 
 public class DBObject {
-	private static final String account = "ccs108wawa3070"; 
+	/*private static final String account = "ccs108wawa3070"; 
 	private static final String password = "duhijieb";          
 	private static final String server = "mysql-user.stanford.edu";
 	private static final String database = "c_cs108_wawa3070"; 
-
+*/
+	private static final String account = "ccs108jimzheng"; 
+	private static final String password = "xieghood";          
+	private static final String server = "mysql-user.stanford.edu";
+	private static final String database = "c_cs108_jimzheng";
+	
 	/*
 	+----------------------------+
-	| Tables_in_c_cs108_wawa3070 |
+	| Tables_in_c_cs108_jimzheng |
 	+----------------------------+
+	| Quiz_achievement           |
+	| Quiz_activity              |
 	| Quiz_announcement          |
 	| Quiz_category              |
+	| Quiz_friendrecommendation  |
 	| Quiz_friendship            |
-	| Quiz_history               |
 	| Quiz_message               |
-	| Quiz_question              |
 	| Quiz_quiz                  |
+	| Quiz_tag                   |
+	| Quiz_tag_quiz              |
 	| Quiz_user                  |
 	+----------------------------+
 	*/
 	
+	protected static String achievementTable = "Quiz_achievement";
+	protected static String activityTable = "Quiz_activity";
 	protected static String announcementTable = "Quiz_announcement";
 	protected static String categoryTable = "Quiz_category";
 	protected static String friendshipTable = "Quiz_friendship";
-	protected static String historyTable = "Quiz_history";
 	protected static String messageTable = "Quiz_message";
-	protected static String questionTable = "Quiz_question";
 	protected static String quizTable = "Quiz_quiz";
 	protected static String userTable = "Quiz_user";
 	protected static String tagTable = "Quiz_tag";
-	protected static String activityTable = "Quiz_activity";
-	protected static String achievementTable = "Quiz_achievement";
-	protected static String friendRecommendationTable = "Quiz_friendRecommendation";
+	protected static String friendRecommendationTable = "Quiz_friendrecommendation";
+	
 	private static Connection connection;
 
 	// to be used by inherited classes to run queries
