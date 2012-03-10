@@ -109,7 +109,8 @@ public class User extends DBObject {
 	}
 	
 	/**
-	 * Synchronizes changes in DB
+	 * Synchronizes changes in DB for admin and email
+	 * Password reset is isolated to password reset method
 	 */
 	public void sync() {
 		StringBuilder query = new StringBuilder();
@@ -121,23 +122,13 @@ public class User extends DBObject {
 		else query.append(" admin = 0 ");
 		query.append(" WHERE id = " + id);
 		query.append(";");
-		System.out.println(query);
 		updateTable(query.toString());
 		admin = setAdmin;
 		email = setEmail;
 	}
 
-	public void setAdmin(boolean admin) {
-		setAdmin = admin;
-	}
-
-	public void setEmail(String email) {
-		setEmail = email;
-	}
-
-
-	public boolean isAdmin() {
-		return admin;
+	public int getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -152,8 +143,46 @@ public class User extends DBObject {
 		return email;
 	}
 	
-	public int getId() {
-		return id;
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setEmail(String email) {
+		setEmail = email;
+	}
+
+	public void setAdmin(boolean admin) {
+		setAdmin = admin;
+	}
+
+	/**
+	 * Resets password, takes immediate effect
+	 * @param newPassword
+	 */
+	public void resetPassword(String newPassword) {
+		Random random = new Random();
+
+		int salt = random.nextInt();
+		String password = newPassword + Integer.toString(salt);
+		MessageDigest md;
+
+		try {
+			md = MessageDigest.getInstance("SHA");
+			password = hexToString(md.digest(password.getBytes()));
+
+			StringBuilder query = new StringBuilder();
+			query.append(" UPDATE " + userTable + " ");
+			query.append(" SET ");
+			query.append(" password = \"" + password + "\" ");
+			query.append(" , ");
+			query.append(" salt = \"" + salt + "\" ");
+			query.append(" WHERE id = " + id);
+			query.append(";");
+			updateTable(query.toString());
+		}
+		catch(NoSuchAlgorithmException e) { 
+			e.printStackTrace();
+		}
 	}
 
 	/* Not needed... should count from Activity table
@@ -280,6 +309,7 @@ public class User extends DBObject {
 	}	
 	
 	public String toString() {
+		if(id == INVALID_USER) return "THIS IS AN INVALID USER!!";
 		return username;
 	}
 

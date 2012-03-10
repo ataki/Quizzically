@@ -61,6 +61,23 @@ public class UserTest {
 		System.out.println("Syncing");
 		test.sync();
 		System.out.println("Name: " + test.getName() + " Email: " + test.getEmail() + " Admin: " + test.isAdmin());
+
+		System.out.println("\nbefore reset");
+		System.out.println(User.authenticateUser("Samir", "test"));
+		System.out.println(User.authenticateUser("Samir", "blah"));
+
+		System.out.println("\nReset to blah");
+		test.resetPassword("blah");
+		System.out.println(User.authenticateUser("Samir", "test"));
+		System.out.println(User.authenticateUser("Samir", "blah"));
+
+		System.out.println(User.authenticateUser("Samir", "test"));
+		System.out.println(User.authenticateUser("Samir", "blah"));
+
+		System.out.println("\nReset to test");
+		test.resetPassword("test");
+		System.out.println(User.authenticateUser("Samir", "test"));
+		System.out.println(User.authenticateUser("Samir", "blah"));
 	}
 	
 
