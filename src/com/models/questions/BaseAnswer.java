@@ -2,7 +2,7 @@ package com.models.questions;
 
 import java.util.*;
 
-public class Answer {
+public class BaseAnswer {
 	
 	private String answer;
 	
