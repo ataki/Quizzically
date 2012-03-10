@@ -4,10 +4,25 @@ import java.util.*;
 
 public class BaseQuestion {
 	
-	private String question;
-	private BaseAnswer answer;
+	protected boolean isTimed;
+	protected int time;
+	protected String question;
+	protected BaseAnswer answer;
 	
-	boolean checkAnswer(List<String> userAnswers) {
+	protected BaseQuestion() {}
+	
+	public BaseQuestion(String answer) {
+		this.isTimed = false;
+		this.answer = new BaseAnswer(answer);
+	}
+	
+	public BaseQuestion(int time, String answer) {
+		this.isTimed = true;
+		this.time = time;
+		this.answer = new BaseAnswer(answer);
+	}
+	
+	public int checkAnswer(List<String> userAnswers) {
 		return answer.checkAnswer(userAnswers);
 	}
 }

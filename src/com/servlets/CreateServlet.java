@@ -66,8 +66,11 @@ public class CreateServlet extends HttpServlet {
 			List<String> answers = Arrays.asList(request.getParameterValues("answer-" + i));
 			String imageUrl = request.getParameter("image-" + i);
 			Question q = Question.insert(questionType, texts, answers, quizId, imageUrl);
-			/*
+			
 			if (questionType.equals("question-response")) {
+				
+			}
+			else if (questionType.equals("fill-in-the-blank")) {
 				
 			}
 			else if (questionType.equals("multi-answer-question")) {
@@ -87,7 +90,7 @@ public class CreateServlet extends HttpServlet {
 			}
 			else { //graded-questions
 				
-			}*/
+			}
 		}
 	}
 }
