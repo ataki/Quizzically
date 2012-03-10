@@ -49,8 +49,8 @@ public class LoginServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 
-		String usr = (String) request.getParameter("Field0");
-		String pwd = (String) request.getParameter("Field1");
+		String usr = (String) request.getParameter("username");
+		String pwd = (String) request.getParameter("password");
 
 		user = User.authenticateUser(usr, pwd);
 

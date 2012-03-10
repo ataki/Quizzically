@@ -9,7 +9,7 @@
 	*/
 	int curQuestionNum = (Integer) session.getAttribute("curQuestion");
 	Quiz quiz = (Quiz) session.getAttribute("quiz");
-	Question question = 
+	Question question = null;
 	if(question == null) {
 		// no more questions ! 
 		// redirect to results page

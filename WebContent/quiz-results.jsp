@@ -2,8 +2,10 @@
     pageEncoding="ISO-8859-1" import="java.util.*, com.backend.*, com.models.* " %>
 <%
 	/* Get results from our session 
+	* TODO: MAKE THIS PART HAPPEN;
 	*/
-	Quiz.Result res = (Quiz.Result) session.getAttribute("results");
+	// Quiz.Result res = (Quiz.Result) session.getAttribute("results");
+	Quiz res = null;
 	if(res == null) {
 		response.sendRedirect("/404.html");	
 	}

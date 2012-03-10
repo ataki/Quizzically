@@ -17,7 +17,7 @@ public class UserTest {
 	 */
 	
 	@Test
-	public void test() {
+	public void test1() {
 		// Previously called arleay
 		//User newUser1 = User.createUser("sydney", "test@test.com", "123");
 		//User newUser2 = User.createUser("chris", "test@test.com", "123");
@@ -37,5 +37,11 @@ public class UserTest {
 			User newUser  = User.createUser("user" + i, "test@test.com", "123");
 		}*/
 	}
+	
+	@Test
+	public void testRetrieval() {
+		
+	}
+	
 
 }

@@ -24,14 +24,14 @@ public class SignUpServlet extends HttpServlet {
      */
     public SignUpServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        /* Ignored */
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		/* Ignored */
 	}
 
 	/**
@@ -40,20 +40,24 @@ public class SignUpServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
-		String usr = (String) request.getParameter("Field0");
-		String email = (String) request.getParameter("Field1");
-		String pwd1 = (String) request.getParameter("Field2");
-		String pwd2 = (String) request.getParameter("Field3");
+		String usr = (String) request.getParameter("username");
+		String email = (String) request.getParameter("email");
+		String pwd1 = (String) request.getParameter("password");
+		String pwd2 = (String) request.getParameter("password2");
 		
+		// do some error checking
 		if(pwd1.equals(pwd2) == false) {
-			RequestDispatcher rd = request.getRequestDispatcher("/signup.html");
+			RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
+			request.setAttribute("error", "Passwords don't match");
 			rd.forward(request, response);
 		}
 
+		// try to create the user
 		User user = User.createUser(usr, email, pwd1);
 
 		if(user == null || user.getId() == User.INVALID_USER) {
-			RequestDispatcher rd = request.getRequestDispatcher("/signup.html");
+			request.setAttribute("error", "Please choose another username");
+			RequestDispatcher rd = request.getRequestDispatcher("/signup.jsp");
 			rd.forward(request, response);
 		}
 		else {
