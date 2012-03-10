@@ -53,12 +53,17 @@ public class CreateServlet extends HttpServlet {
 	    // TODO: Create quizCategory enum, tags
 		RequestDispatcher dispatch;
 		List<BaseQuestion> questions = new ArrayList<BaseQuestion>(); 
-		if (populateQuestions(request, singlePage, questions) == 0) {
-			Quiz quiz = Quiz.insert(user.getId(), quizName, quizDescription, dummyCategory_id, randomness, immediate_feedback, singlePage, points, questions);
-			dispatch = request.getRequestDispatcher("quiz-summary.jsp?quizId=" + quiz.getId());
+		int returnValue = populateQuestions(request, singlePage, questions);
+		if (returnValue == 0) {
+			Quiz quiz = Quiz.insert(0, quizName, quizDescription, dummyCategory_id, randomness, immediate_feedback, singlePage, points, questions);
+			//Quiz quiz = Quiz.insert(user.getId(), quizName, quizDescription, dummyCategory_id, randomness, immediate_feedback, singlePage, points, questions);
+			if (quiz != null)
+				dispatch = request.getRequestDispatcher("quiz-summary.jsp?quizId=" + quiz.getId());
+			else
+				dispatch = request.getRequestDispatcher("404.html");
 		}
 		else {
-			dispatch = request.getRequestDispatcher("quiz-create.html");
+			dispatch = request.getRequestDispatcher("quiz-create.html?errorId=" + returnValue);
 		}
 		dispatch.forward(request, response);
 	}

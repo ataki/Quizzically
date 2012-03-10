@@ -36,7 +36,7 @@ public class Quiz extends DBObject {
 	private String name;
 	private String description;
 	private Date timestamp;
-	private String category;
+	private int category_id;
 	private String tags;
 	private boolean single_page;
 	private boolean immediate_feedback;
@@ -46,7 +46,7 @@ public class Quiz extends DBObject {
 
 	
 	// DB Column: id, creator_id, name, description, single_page, immediate_feedback, random, points, rating, numRated, timestamp, category_id, questions
-	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), ?, ?)";
+	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), ?, ?)";
 	private static String updateString = "UPDATE " + DBObject.quizTable + " SET name = ?, description = ?, single_page = ?, immediate_feedback = ?, random = ?, questions = ?";
 	private static String deleteString = "DELETE FROM " + DBObject.quizTable;
 	
@@ -70,9 +70,10 @@ public class Quiz extends DBObject {
 			prepStatement.setString(3, description);
 			prepStatement.setBoolean(4, single_page);
 			prepStatement.setBoolean(5, immediate_feedback);
-			prepStatement.setInt(6, points);
-			prepStatement.setInt(7, category_id);
-			prepStatement.setString(8, QuestionGSON.questionToJSON(questions));
+			prepStatement.setBoolean(6, random);
+			prepStatement.setInt(7, points);
+			prepStatement.setInt(8, category_id);
+			prepStatement.setString(9, QuestionGSON.questionToJSON(questions));
 			prepStatement.executeUpdate();		 	
 			ResultSet rs = prepStatement.getGeneratedKeys();
 			if (rs.next())
@@ -223,13 +224,13 @@ public class Quiz extends DBObject {
 			this.description = rs.getString("description");
 			Date d = null;
 			try {
-				d = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss").parse(rs.getTimestamp("timestamp").toString());
+				d = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(rs.getTimestamp("timestamp").toString());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			this.timestamp = d;
-			this.category= rs.getString("category");
-			this.random=rs.getBoolean("randomness");
+			this.category_id= rs.getInt("category_id");
+			this.random=rs.getBoolean("random");
 			this.rating=rs.getInt("rating");
 			this.points= rs.getInt("points");
 			this.single_page = rs.getBoolean("single_page");
@@ -286,16 +287,16 @@ public class Quiz extends DBObject {
 		this.timestamp = d;
 	}
 	/**
-	 * @return the category
+	 * @return the category_id
 	 */
-	public String getCategory() {
-		return category;
+	public int getCategory_id() {
+		return category_id;
 	}
 	/**
-	 * @param category the category to set
+	 * @param category_id the category_id to set
 	 */
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategory(int category_id) {
+		this.category_id = category_id;
 	}
 	/**
 	 * @return the tags

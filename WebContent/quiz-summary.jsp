@@ -5,9 +5,6 @@
 <%
 	int quizId = Integer.parseInt(request.getParameter("quizId"));
 	Quiz quiz = Quiz.fetch(quizId);
-	System.out.println(quizId);
-
-	System.out.println(quiz);
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
