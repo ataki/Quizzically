@@ -1,0 +1,114 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+
+	<!-- Set the viewport width to device width for mobile -->
+	<meta name="viewport" content="width=device-width" />
+
+	<title>Welcome to Foundation</title>
+  
+	<!-- Included CSS Files -->
+	<link rel="stylesheet" href="stylesheets/foundation.css">
+	<link rel="stylesheet" href="stylesheets/app.css">
+	<link rel="stylesheet" href="stylesheets/reveal.css">
+	<script src="javascripts/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+	<script src="javascripts/jquery.reveal.js" type="text/javascript"></script>
+
+	<!--[if lt IE 9]>
+		<link rel="stylesheet" href="stylesheets/ie.css">
+	<![endif]-->
+
+
+	<!-- IE Fix for HTML5 Tags -->
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+	<!-- container -->
+	<div class="container">
+		
+		<!-- Heading -->
+		<div class="row" style="padding-top:30px">
+			<div class="twelve columns">
+				<div class="six columns">
+					<div><img src="images/quizzically-logo-small.png" /></div>
+					<p>Powered by Team Mach-One, cs108, Stanford University</p>
+				</div>
+			</div>
+		<hr />
+		</div>
+		<!-- End Heading -->
+		
+		<div class="row">
+			<h5>Signup</h5>
+			<h6>Already a user? <a href="login.html">Login instead</a></h6>
+			<div class="row" style="padding-top:30px">
+				<!-- Begin creation form-->
+				<form action="SignUpServlet" method="post">				
+				<ul>
+				<li id="fo69li0" class="notranslate">
+				<label class="desc" id="title0" for="Field0" size="12">
+				
+				<% if (request.getAttribute("error") != null) { %>
+					<p>
+					  <span class="red label">Error</span><h6 style="color:#FFF000"><%= request.getAttribute("error").toString() %></h6> 
+					</p>
+				<% } %>
+				
+				
+				<h5>Identification:</h5>
+				<h6>Pick your email and give yourself a username.</h6>
+				</label>
+				<span>
+				<label for="username">Username</label>
+				<input id="Field0" name="password" type="text" class="field text fn" value="" size="16" tabindex="1" />
+				
+				</span>
+				<span>
+				<label for="email">Email</label>
+				<input id="Field1" name="email" type="text" class="field text ln" value="" size="16" tabindex="1" />
+				
+				</span>
+				</li>
+				
+				<li id="fo69li2" class="complex notranslate">
+				<h5>Password:</h5>
+				<h6>Pick a good password</h6>
+				<label for="password">Password</label>
+				<input id="password" name="password" type="password" class="field text fn" value="" size="16" tabindex="1" />
+				<label for="password2">Re-enter Password</label>
+				<input id="password2" name="password2" type="password" class="field text fn" value="" size="16" tabindex="1"/>
+				</ul>
+				<input type="submit" value="Submit" class="blue button" />
+				</form>				
+		</div>
+		<div id="footer" class="row">
+			Stanford University Winter 2012. Site powered by Google App Engine, built using Zurb Foundations, and JQuery.
+		</div>
+		
+	</div>
+	<!-- container -->
+	
+
+
+
+	<!-- Included JS Files -->
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/modernizr.foundation.js"></script>
+	<script src="javascripts/foundation.js"></script>
+	<script src="javascripts/app.js"></script>
+
+</body>
+</html>
