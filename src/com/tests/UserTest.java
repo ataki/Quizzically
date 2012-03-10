@@ -1,8 +1,10 @@
-package com.models; 
+package com.tests; 
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.models.User;
 
 
 public class UserTest {

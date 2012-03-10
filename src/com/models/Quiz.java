@@ -40,6 +40,7 @@ public class Quiz extends DBObject {
 	private boolean immediate_feedback;
 	private boolean random;
 	private boolean done = false;
+
 	
 	// DB Column: id, creator_id, name, description, single_page, immediate_feedback, random, points, rating, numRated, timestamp, category_id
 	private static String insertString = "INSERT INTO " + DBObject.quizTable + " VALUE (null, ?, ?, ?, ?, ?, ?, 0, 0, NOW(), ?)";
@@ -417,4 +418,26 @@ public class Quiz extends DBObject {
 		
 		return (this.executeBatch(queries) > 0);
 	}
+	
+	/** QUIZ-TAKING
+	 * Keeps track of parameters necessary when taking quiz  
+	 */
+	private int quizIndex;
+	private List<Question>questions;
+	
+	/**
+	 * fetch questions from remote database related to this quiz
+	 */
+	private void fetchQuestions() {
+		if(questions != null) return;
+	}
+	
+	public void startQuiz() {
+		quizIndex = 0;
+		if(questions == null) {
+			fetchQuestions();
+		}
+	}
+	
+	
 }

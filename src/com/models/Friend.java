@@ -6,6 +6,17 @@ import java.util.Map.Entry;
 
 import com.backend.DBObject;
 import com.backend.FriendRecommendation.FriendPair;
+	
+	/*
+	+------------+---------+------+-----+---------+----------------+
+	| Field      | Type    | Null | Key | Default | Extra          |
+	+------------+---------+------+-----+---------+----------------+
+	| id         | int(11) | NO   | PRI | NULL    | auto_increment |
+	| user1_id   | int(11) | NO   | MUL | NULL    |                |
+	| user2_id   | int(11) | NO   | MUL | NULL    |                |
+	| friendType | int(11) | NO   |     | NULL    |                |
+	+------------+---------+------+-----+---------+----------------+
+	*/
 
 public class Friend extends DBObject {
 	private int friendShipId;

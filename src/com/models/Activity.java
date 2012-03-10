@@ -11,6 +11,19 @@ import com.backend.DBObject;
 
 public class Activity extends DBObject {
 	
+	/*
+	+-----------+--------------+------+-----+---------+----------------+
+	| Field     | Type         | Null | Key | Default | Extra          |
+	+-----------+--------------+------+-----+---------+----------------+
+	| id        | int(11)      | NO   | PRI | NULL    | auto_increment |
+	| user_id   | int(11)      | NO   | MUL | NULL    |                |
+	| quiz_id   | int(11)      | NO   | MUL | NULL    |                |
+	| score     | decimal(3,2) | NO   |     | NULL    |                |
+	| timestamp | datetime     | NO   |     | NULL    |                |
+	| timeTaken | double       | NO   |     | NULL    |                |
+	+-----------+--------------+------+-----+---------+----------------+
+	 */
+	
 	/* if id is invalid, means that this was not 
 	 * a retrieved object.
 	 */

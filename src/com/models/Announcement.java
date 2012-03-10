@@ -5,7 +5,18 @@ import java.sql.Time;
 import com.backend.DBObject;
 
 public class Announcement extends DBObject {
-
+	/*
+	+------------+----------+------+-----+---------+----------------+
+	| Field      | Type     | Null | Key | Default | Extra          |
+	+------------+----------+------+-----+---------+----------------+
+	| id         | int(11)  | NO   | PRI | NULL    | auto_increment |
+	| user_id    | int(11)  | NO   | MUL | NULL    |                |
+	| text       | longtext | NO   |     | NULL    |                |
+	| importance | int(11)  | NO   |     | NULL    |                |
+	| timestamp  | datetime | NO   |     | NULL    |                |
+	+------------+----------+------+-----+---------+----------------+
+	 */
+	
 	public enum Importance { 
 		LOW(""), MEDIUM("success"), HIGH("error");
 		
