@@ -9,13 +9,13 @@ public class MatchingAnswer extends BaseAnswer {
 		this.answers = new ArrayList<String>(answers);
 	}
 	@Override 
-	public boolean checkAnswer(List<String> userAnswers){
+	public int checkAnswer(List<String> userAnswers){
 		if(answers.size() != userAnswers.size())
-			return false;
+			return 0;
 		for(int i = 0; i < userAnswers.size(); i++){
 			if(answers.get(i)!=userAnswers.get(i))
-				return false;
+				return 0;
 		}
-		return true;
+		return 1;
 	}
 }

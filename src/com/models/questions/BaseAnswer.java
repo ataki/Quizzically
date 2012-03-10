@@ -5,8 +5,9 @@ import java.util.*;
 public class BaseAnswer {
 	
 	protected String answer;
-	public boolean checkAnswer(List<String> userAnswers) {
-		return answer.equals(userAnswers.get(0));
+	
+	public int checkAnswer(List<String> userAnswers) {		
+		return answer.equals(userAnswers.get(0)) == true? 1:0;
 	}
 
 }
