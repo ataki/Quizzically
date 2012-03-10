@@ -46,6 +46,9 @@ public class User extends DBObject {
 		}
 	}
 
+	/**
+	 * sets htis user's fields according to certain fields passed in 
+	 */
 	private void setValues(int id, String username, String email, boolean admin) {
 		this.id = id;
 		this.username = username;
@@ -54,16 +57,18 @@ public class User extends DBObject {
 		this.tagManager = new TagManager();
 	}
 
-	public User() {
-		super(DBObject.userTable);
-		setValues(INVALID_USER, "", "", false);
-	}
-
+	/**
+	 * parses user from a resultset representation; useful
+	 * when retrieving lists of users from the database
+	 */
 	public User(ResultSet rs) {
 		super(DBObject.userTable);
 		parseResults(rs);
 	}
 	
+	/**
+	 * FETCHES a user from the database
+	 */
 	public User(int id) {
 		super(DBObject.userTable);
 		id = INVALID_USER;
@@ -73,6 +78,9 @@ public class User extends DBObject {
 		parseResults(rs);
 	}
 
+	/**
+	 * FETCHES a user from the database
+	 */
 	public User(String username) {
 		super(DBObject.userTable);
 		id = INVALID_USER;

@@ -171,7 +171,7 @@
 											<%= q.getId() %>
 										</a>
 									</td>
-									<td><%= questionManager.getByQuizId(q.getId()).size() %></td>
+									<td><%= q.getQuestions().size() %></td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
 								<% } %>
@@ -208,7 +208,7 @@
 									<% for (Quiz q: recentQuizzes) { %>
 									<tr>
 										<td><%= q.getName() %></td>
-										<td><%= q.getCreator_id() // need to create a UserLite %></td>
+										<td><%= q.getCreator_id() %></td>
 										<td><%= q.getDescription() %></td>
 										<td><%= q.getTimestamp() %></td>
 									</tr>

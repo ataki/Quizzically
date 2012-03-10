@@ -9,13 +9,13 @@ import com.models.*;
 
 public class QuestionManager extends DBObject {
 	
-	private String base = "select * from " + DBObject.questionTable;
+	/*private String base = "select * from " + DBObject.questionTable;
 	private String quizid_filter = " WHERE quiz_id = ?";
 	
 	
 	private boolean debug;
 	public QuestionManager() {
-		/* empty initializer */
+		
 		debug = false;
 	}
 	
@@ -44,5 +44,5 @@ public class QuestionManager extends DBObject {
 			e.printStackTrace();
 			return null;
 		}
-	}
+	}*/
 }
