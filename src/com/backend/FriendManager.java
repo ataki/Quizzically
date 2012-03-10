@@ -12,7 +12,7 @@ public class FriendManager extends DBObject {
 	private int NUMFRIENDS = 30;
 	//t1 represents friendshipTable;
 	//t2 represents userTable
-	private String base = "SELECT t2.id, t2.name, t2.email, t2.admin FROM " + DBObject.friendshipTable + " as t1";
+	private String base = "SELECT t2.id, t2.username, t2.email, t2.admin FROM " + DBObject.friendshipTable + " as t1";
 	private String joinedBase = base + " INNER JOIN " + DBObject.userTable + " as t2";
 	/**** Friendship ****/
 	private String friend_complex_query = 
