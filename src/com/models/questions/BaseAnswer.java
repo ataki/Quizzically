@@ -6,6 +6,10 @@ public class BaseAnswer {
 	
 	protected String answer;
 	
+	public String getAnswer() {
+		return answer;
+	}
+
 	public BaseAnswer() {};
 	
 	public BaseAnswer(String answer) {
