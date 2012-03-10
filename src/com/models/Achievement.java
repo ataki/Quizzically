@@ -10,6 +10,19 @@ import java.util.List;
 import java.util.Locale;
 
 import com.backend.DBObject;
+	
+   /*
+	+-------------+----------+------+-----+---------+----------------+
+	| Field       | Type     | Null | Key | Default | Extra          |
+	+-------------+----------+------+-----+---------+----------------+
+	| id          | int(11)  | NO   | PRI | NULL    | auto_increment |
+	| user_id     | int(11)  | NO   | MUL | NULL    |                |
+	| award       | longtext | NO   |     | NULL    |                |
+	| description | longtext | NO   |     | NULL    |                |
+	| url         | longtext | NO   |     | NULL    |                |
+	| timestamp   | datetime | NO   |     | NULL    |                |
+	+-------------+----------+------+-----+---------+----------------+
+	*/
 
 /**
  * List of user's achievements.

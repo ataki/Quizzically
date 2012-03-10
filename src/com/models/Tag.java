@@ -15,25 +15,25 @@ import com.backend.DBObject;
  * Tags are associated with both user and id,
  * and so keep track of both (a bit wasteful)
  * 
- * The reason we keep so much about tags is that
- * we can now have a way of displaying 'hits'
- * in our site using tags. 
- * 
- * In the future these will become a new object.
+ * We also have a Quiz_tag_quiz Many-To-Many relationship
+ * between quiz and tags. This means that whenever we insert
+ * a tag or quiz, make sure to update this relations table so
+ * that we can refer to it when necessary;
  * 
  * Database object:
  * 
- * +----------------------------+
-	| Tag                        |
-	+----------------------------+
-	| UNIQUE ID                  |
-	| FOREIGN KEY USERID         |
-	| FOREIGN KEY QUIZID         |
-	| CHARFIELD TAG MAXLENGTH=30 |
-	+----------------------------+
+	+---------+--------------+------+-----+---------+----------------+
+	| Field   | Type         | Null | Key | Default | Extra          |
+	+---------+--------------+------+-----+---------+----------------+
+	| id      | int(11)      | NO   | PRI | NULL    | auto_increment |
+	| user_id | int(11)      | NO   | MUL | NULL    |                |
+	| tag     | varchar(130) | NO   |     | NULL    |                |
+	+---------+--------------+------+-----+---------+----------------+
+ 
  * @author jimzheng
  *
  */
+
 public class Tag {
 	public int id; // could be user or quiz
 	public int quiz_id;
@@ -44,4 +44,7 @@ public class Tag {
 		this.id = id;
 		this.tag = tag;
 	}
+	
+	
+	
 }

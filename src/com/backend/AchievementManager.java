@@ -8,7 +8,7 @@ import java.util.List;
 import com.models.Achievement;
 import com.models.Activity;
 public class AchievementManager extends DBObject {
-
+	
 	/**
 	 * Retrieve lists of achievements using following filters:
 	 *  - get achievement for certain user_id

@@ -6,6 +6,20 @@ import com.backend.DBObject;
 
 public class Message extends DBObject {
 	
+	/*
+		+-------------+--------------+------+-----+---------+----------------+
+		| Field       | Type         | Null | Key | Default | Extra          |
+		+-------------+--------------+------+-----+---------+----------------+
+		| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+		| fromUser_id | int(11)      | NO   | MUL | NULL    |                |
+		| toUser_id   | int(11)      | NO   | MUL | NULL    |                |
+		| message     | longtext     | NO   |     | NULL    |                |
+		| read        | tinyint(1)   | NO   |     | NULL    |                |
+		| messageType | varchar(130) | NO   |     | NULL    |                |
+		| timestamp   | datetime     | NO   |     | NULL    |                |
+		+-------------+--------------+------+-----+---------+----------------+
+	 */
+	
 	private int id;
 	private int fromUserId;
 	private int toUserId;

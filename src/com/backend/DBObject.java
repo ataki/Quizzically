@@ -53,6 +53,7 @@ public class DBObject {
 	protected static String quizTable = "Quiz_quiz";
 	protected static String userTable = "Quiz_user";
 	protected static String tagTable = "Quiz_tag";
+	protected static String tagQuizRelationsTable = "Quiz_tag_quiz";
 	protected static String friendRecommendationTable = "Quiz_friendrecommendation";
 	
 	private static Connection connection;
