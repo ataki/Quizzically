@@ -2,11 +2,11 @@ package com.models.questions;
 
 public class FillInBlanksQuestion extends BaseQuestion {
 
-	FillInBlanksQuestion(String answer) {
-		super(answer);
+	public FillInBlanksQuestion(String question, String answer) {
+		super(question, answer);
 	}
 
-	FillInBlanksQuestion(int time, String answer) {
-		super(time, answer);
+	public FillInBlanksQuestion(String question, String answer, int time) {
+		super(question, answer, time);
 	}
 }

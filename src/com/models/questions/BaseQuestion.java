@@ -11,12 +11,14 @@ public class BaseQuestion {
 	
 	protected BaseQuestion() {}
 	
-	public BaseQuestion(String answer) {
+	public BaseQuestion(String question, String answer) {
+		this.question = question;
 		this.isTimed = false;
 		this.answer = new BaseAnswer(answer);
 	}
 	
-	public BaseQuestion(int time, String answer) {
+	public BaseQuestion(String question, String answer, int time) {
+		this.question = question;
 		this.isTimed = true;
 		this.time = time;
 		this.answer = new BaseAnswer(answer);
