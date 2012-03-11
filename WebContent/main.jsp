@@ -7,42 +7,51 @@
 	if(request.getAttribute("special") == null) {	
 		response.sendRedirect("/404.html");		
 	}
-	if(!request.getAttribute("special").equals("29dd2f9f8d9312235caab2629e28ad45")) {
+	else if(!request.getAttribute("special").equals("29dd2f9f8d9312235caab2629e28ad45")) {
 		response.sendRedirect("/404.html");
 	}
-	
+
 	/* Get the managers */
 	ServletContext context = request.getServletContext();
-	AnnouncementManager announcementManager = (AnnouncementManager) context.getAttribute("announcementManager");
-	QuizManager quizManager = (QuizManager) context.getAttribute("quizManager");
-	QuestionManager questionManager = (QuestionManager) context.getAttribute("questionManager");
-	MessageManager messageManager = (MessageManager) context.getAttribute("messageManager");
-	ActivityManager activityManager = (ActivityManager) context.getAttribute("activityManager");
-	AchievementManager achievementManager = (AchievementManager) context.getAttribute("achievementManager");
 	UserManager userManager = (UserManager) context.getAttribute("userManager");
-	
 	User user = (User) request.getSession().getAttribute("user");
-	/* Get Annoucements */
-	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
+
+	if(user == null || user.getId() == User.INVALID_USER) {
+	    response.sendRedirect("/login.html");
+	}
 	
-	/* Get Best performance for this user (highest scoring activities) */
-	List<Activity> activities = activityManager.getTopActivity();
+ 	AnnouncementManager announcementManager = (AnnouncementManager) context.getAttribute("announcementManager");
+// 	QuizManager quizManager = (QuizManager) context.getAttribute("quizManager");
+// 	QuestionManager questionManager = (QuestionManager) context.getAttribute("questionManager");
+ 	MessageManager messageManager = (MessageManager) context.getAttribute("messageManager");
+ 	ActivityManager activityManager = (ActivityManager) context.getAttribute("activityManager");
+// 	AchievementManager achievementManager = (AchievementManager) context.getAttribute("achievementManager");
 	
-	/* Get friends activities */
-	List<Activity> friendActivities = activityManager.getRecentFriendActivity(user.getId(), userManager.getFriends(user.getId()));
+// 	/* Get Annoucements */
+ 	List<Announcement> announcementArray = announcementManager.getAllAnnouncement();
 	
-	/* Get recently created quizzes for the whole site */
-	List<Quiz> recentQuizzes = quizManager.getRecent();
-	
-	/* Get popular quizzes for whole site */
-	List<Quiz> popularQuizzes = quizManager.getPopular();
-	
-	/* Get messages for this user */
-	List<Message> messageArray = messageManager.getUserMessages(user.getId());
-	
-	/* get achievements */
-	List<Achievement> achievements = achievementManager.getByUserId(user.getId());
-	
+// 	/* Get Best performance for this user (highest scoring activities) */
+ 	List<Activity> activities = activityManager.getTopActivity();
+
+// 	/* Get friends activities */
+// 	List<Activity> friendActivities = activityManager.getRecentFriendActivity(user.getId(), userManager.getFriends(user.getId()));
+
+// 	/* Get messages for this user */
+// 	List<Message> messageArray = messageManager.getUserMessages(user.getId());
+	List<Message> messageArray = null;
+
+// 	/* get achievements */
+// 	List<Achievement> achievements = achievementManager.getByUserId(user.getId());
+ 	List<Achievement> achievements = new ArrayList<Achievement>(); // temp until AchievementManager getByUserID works
+
+// 	/* Get recently created quizzes for the whole site */
+//	List<Quiz> recentQuizzes = quizManager.getRecent();
+ 	List<Quiz> recentQuizzes = new ArrayList<Quiz>(); // temp until QuizManager getRecent works
+			
+// 	/* Get popular quizzes for whole site */
+//	List<Quiz> popularQuizzes = quizManager.getPopular();
+ 	List<Quiz> popularQuizzes = new ArrayList<Quiz>(); // tmp until QuizManager getPopular works
+//  */
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -133,14 +142,24 @@
 							<ul id="announcement-container" style="width:75%;">
 								
 								<%
+								Announcement.Importance localAnnouncementImportance;
+								String localAnnouncement;
+								if(announcementArray.isEmpty() == false) {
 									for (int i = 0; i < announcementArray.size(); i++) {
 										Announcement announcement = announcementArray.get(i);
-								%>
-									<li class="announcement">
-										<div class="alert-box <%=announcement.getImportance()%>"><%=announcement.getText()%></div>
-									</li>
-								<% 
-									} 
+										localAnnouncement = announcement.getText();
+										localAnnouncementImportance = announcement.getImportance();
+										%>
+										<li class="announcement">
+											<div class="alert-box <%=localAnnouncementImportance%>"><%=localAnnouncement%></div>
+										</li>
+									<% 
+										} 
+								}
+								else {
+									localAnnouncement = "No announcements!";
+									localAnnouncementImportance = Announcement.Importance.LOW;
+								}
 								%>
 							</ul>
 						</div>
@@ -163,7 +182,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<% for(Quiz q: popularQuizzes) { %>
+								<% 
+								if(popularQuizzes.isEmpty() == false) {
+									for(Quiz q: popularQuizzes) { %>
 								<tr>
 									<td><%= q.getRating() %></td>
 									<td class="hover-highlight">
@@ -174,7 +195,7 @@
 									<td><%= q.getQuestions().size() %></td>
 									<td>Can you name all the capitals in the city?</td>
 								</tr>
-								<% } %>
+								<% } } %>
 							</tbody>
 						</table>
 			  
@@ -205,14 +226,16 @@
 									</tr>
 								</thead>
 								<tbody>
-									<% for (Quiz q: recentQuizzes) { %>
+									<%
+									if(recentQuizzes.isEmpty() != false) {
+									for (Quiz q: recentQuizzes) { %>
 									<tr>
 										<td><%= q.getName() %></td>
 										<td><%= q.getCreator_id() %></td>
 										<td><%= q.getDescription() %></td>
 										<td><%= q.getTimestamp() %></td>
 									</tr>
-									<% } %>
+									<% } } %>
 								</tbody>
 							</table>
 						
@@ -295,6 +318,7 @@
 							</thead>
 							<tbody>
 							<% 
+								if(messageArray.isEmpty() == false) {
 								for (int i = 0; i < messageArray.size(); i++) {
 									Message message = messageArray.get(i);
 							%>
@@ -304,7 +328,7 @@
 									<td><%=message.getTimestamp()%></td>
 								</tr>
 							<% 
-								} 
+								} }
 							%>
 							</tbody>
 				</table>
