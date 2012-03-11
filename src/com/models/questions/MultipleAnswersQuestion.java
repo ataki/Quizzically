@@ -4,10 +4,10 @@ import java.util.List;
 
 public class MultipleAnswersQuestion extends BaseQuestion {
 	
-	public MultipleAnswersQuestion(String question, List<String> answers, boolean random) {
+	public MultipleAnswersQuestion(String question, List<String> answers, boolean inOrder) {
 		this.question = question;
 		this.isTimed = false;
-		this.answer = new MultipleAnswersAnswer(answers, random);
+		this.answer = new MultipleAnswersAnswer(answers, inOrder);
 	}
 	
 }

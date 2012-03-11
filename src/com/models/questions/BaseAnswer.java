@@ -22,4 +22,7 @@ public class BaseAnswer {
 		return 0;
 	}
 
+	public int points() {
+		return 1;
+	}
 }

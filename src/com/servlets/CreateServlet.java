@@ -1,7 +1,9 @@
 package com.servlets;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,8 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.*;
-import com.models.questions.*;
+import com.models.Quiz;
+import com.models.User;
+import com.models.questions.BaseQuestion;
+import com.models.questions.MatchingQuestion;
+import com.models.questions.MultipleAnswersQuestion;
+import com.models.questions.MultipleChoiceAndAnswersQuestion;
+import com.models.questions.MultipleChoiceQuestion;
+import com.models.questions.PictureResponseQuestion;
 
 /**
  * Servlet implementation class CreateServlet
@@ -37,7 +45,7 @@ public class CreateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		// if no session , redirect to login
 		User user = (User) request.getSession().getAttribute("user");
 		
 		String quizName = request.getParameter("quiz-name");
@@ -46,7 +54,6 @@ public class CreateServlet extends HttpServlet {
 		boolean immediate_feedback = request.getParameter("immediate-correction").equals("yes") ? true : false;
 		boolean randomness = request.getParameter("order").equals("yes") ? false : true;
 		boolean singlePage = request.getParameter("quiz-display").equals("one") ? true : false;
-		int points = Integer.parseInt(request.getParameter("num-questions"));
 		// Push the quiz data into database (quiz name?), numQuestions? category? remove question?
 
 		int dummyCategory_id = 0;
@@ -54,9 +61,12 @@ public class CreateServlet extends HttpServlet {
 		RequestDispatcher dispatch;
 		List<BaseQuestion> questions = new ArrayList<BaseQuestion>(); 
 		int returnValue = populateQuestions(request, singlePage, questions);
+		
 		if (returnValue == 0) {
-			Quiz quiz = Quiz.insert(0, quizName, quizDescription, dummyCategory_id, randomness, immediate_feedback, singlePage, points, questions);
-			//Quiz quiz = Quiz.insert(user.getId(), quizName, quizDescription, dummyCategory_id, randomness, immediate_feedback, singlePage, points, questions);
+			int points = 0;
+			for (BaseQuestion q: questions)
+				points += q.points();
+			Quiz quiz = Quiz.insert(user.getId(), quizName, quizDescription, dummyCategory_id, randomness, immediate_feedback, singlePage, points, questions);
 			if (quiz != null)
 				dispatch = request.getRequestDispatcher("quiz-summary.jsp?quizId=" + quiz.getId());
 			else
@@ -65,6 +75,7 @@ public class CreateServlet extends HttpServlet {
 		else {
 			dispatch = request.getRequestDispatcher("quiz-create.html?errorId=" + returnValue);
 		}
+		
 		dispatch.forward(request, response);
 	}
 
@@ -87,9 +98,9 @@ public class CreateServlet extends HttpServlet {
 			else if (questionType.equals("multiple-choice")) {
 				questionList.add(new MultipleChoiceQuestion(questions.get(0), answers.get(0), answers));
 			}
-			else if (questionType.equals("multi-answer-question")) {
-				boolean randomness = request.getParameter("ordered" + i).equals("yes") ? false : true;
-				questionList.add(new MultipleAnswersQuestion(questions.get(0), answers, randomness));
+			else if (questionType.equals("multi-answer")) {
+				boolean inOrder = (request.getParameter("ordered" + i) == null) ? false : true;
+				questionList.add(new MultipleAnswersQuestion(questions.get(0), answers, inOrder));
 			}
 			else if (questionType.equals("picture-response")) {
 				String imageUrl = request.getParameter("image-" + i);
@@ -97,8 +108,12 @@ public class CreateServlet extends HttpServlet {
 				else questionList.add(new PictureResponseQuestion(questions.get(0), answers.get(0), imageUrl));
 			}
 			else if (questionType.equals("multiple-choice-multiple-answer")) {
-				// Logic here to be done
-				//questionList.add(new MultipleChoiceAndAnswersQuestion(questions.get(0), answers.get(0), answers));
+				List<String> nanswers = Arrays.asList(request.getParameterValues("nanswer-" + i));
+				for (String nanswer: nanswers)
+					if (nanswer == null) return i;
+				List<String> choices = new ArrayList<String>(answers);
+				choices.addAll(nanswers);
+				questionList.add(new MultipleChoiceAndAnswersQuestion(questions.get(0), answers, choices));
 			}
 			else if (questionType.equals("matching")) {
 				questionList.add(new MatchingQuestion(questions, answers));

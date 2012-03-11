@@ -46,4 +46,10 @@ public class MultipleAnswersAnswer extends BaseAnswer {
 		return score;	
 		
 	}
+	
+	@Override
+	public int points() {
+		return answers.size();
+	}
+	
 }

@@ -36,18 +36,7 @@ public class QuizManager extends DBObject {
 	private List<Quiz>convertToList(ResultSet r) throws SQLException {
 		List<Quiz> result = new ArrayList<Quiz>();
 		while(r.next()) {
-			result.add(new Quiz(r.getInt("id"), 
-								r.getInt("creator_id"),
-								r.getString("name"),
-								r.getString("description"),
-								r.getBoolean("single_page"),
-								r.getBoolean("immediate_feedback"),
-								r.getBoolean("random"),
-								r.getInt("points"),
-								r.getDouble("rating"),
-								r.getInt("numRated"),
-								r.getTimestamp("timestamp"))
-								);
+			result.add(Quiz.fetch(r.getInt("id")));
 		}
 		return result;
 	}

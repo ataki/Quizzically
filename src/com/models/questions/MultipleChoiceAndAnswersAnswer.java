@@ -18,4 +18,9 @@ public class MultipleChoiceAndAnswersAnswer extends BaseAnswer {
 		userAnswers.retainAll(answersSet);
 		return userAnswers.size();
 	}
+	@Override
+	public int points() {
+		return answers.size();
+	}
+	
 }

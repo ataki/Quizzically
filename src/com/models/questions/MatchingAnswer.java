@@ -18,4 +18,8 @@ public class MatchingAnswer extends BaseAnswer {
 		}
 		return 1;
 	}
+	@Override
+	public int points() {
+		return answers.size();
+	}
 }

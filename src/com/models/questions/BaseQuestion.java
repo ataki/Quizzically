@@ -30,4 +30,8 @@ public class BaseQuestion {
 			this.time = time;
 		}
 	}
+	
+	public int points() {
+		return answer.points();
+	}
 }
