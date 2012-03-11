@@ -14,12 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.models.Quiz;
 import com.models.User;
-import com.models.questions.BaseQuestion;
-import com.models.questions.MatchingQuestion;
-import com.models.questions.MultipleAnswersQuestion;
-import com.models.questions.MultipleChoiceAndAnswersQuestion;
-import com.models.questions.MultipleChoiceQuestion;
-import com.models.questions.PictureResponseQuestion;
+import com.models.questions.*;
 
 /**
  * Servlet implementation class CreateServlet
@@ -92,8 +87,11 @@ public class CreateServlet extends HttpServlet {
 			for (String answer: answers)
 				if (answer == null) return i;
 			
-			if (questionType.equals("question-response") || questionType.equals("fill-in-the-blank")) {
+			if (questionType.equals("question-response")) {
 				questionList.add(new BaseQuestion(questions.get(0), answers.get(0)));			
+			}
+			else if (questionType.equals("fill-in-the-blank")) {
+				questionList.add(new FillInBlanksQuestion(questions.get(0), answers.get(0)));		
 			}
 			else if (questionType.equals("multiple-choice")) {
 				questionList.add(new MultipleChoiceQuestion(questions.get(0), answers.get(0), answers));

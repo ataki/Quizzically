@@ -8,6 +8,7 @@ public class MultipleChoiceQuestion extends BaseQuestion {
 		this.question = question;
 		this.isTimed = false;
 		this.answer = new MultipleChoiceAnswer(answer, choices);
+		this.type = QuestionType.MultiChoice;
 	}
 	
 }

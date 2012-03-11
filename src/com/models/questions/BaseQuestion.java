@@ -8,15 +8,21 @@ public class BaseQuestion {
 	protected int time;
 	protected String question;
 	protected BaseAnswer answer;
+	protected QuestionType type;
 	
 	protected BaseQuestion() {}
 	
 	public BaseQuestion(String question, String answer) {
 		this.question = question;
 		this.isTimed = false;
+		this.type = QuestionType.QuestionResponse;
 		this.answer = new BaseAnswer(answer);
 	}
 	
+	public QuestionType getType() {
+		return type;
+	}
+
 	public int checkAnswer(List<String> userAnswers) {
 		return answer.checkAnswer(userAnswers);
 	}

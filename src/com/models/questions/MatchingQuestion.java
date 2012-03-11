@@ -11,6 +11,7 @@ public class MatchingQuestion extends BaseQuestion {
 		this.questions = questions;
 		this.isTimed = false;
 		this.answer = new MatchingAnswer(answers);
+		this.type = QuestionType.Matching;
 	}
 
 }

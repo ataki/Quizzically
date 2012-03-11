@@ -8,6 +8,7 @@ public class PictureResponseQuestion extends BaseQuestion {
 		super(question, answer);
 		this.imgUrl = imgUrl;
 		this.answer = new BaseAnswer(answer);
+		this.type = QuestionType.PictureResponse;
 	}
 	
 }

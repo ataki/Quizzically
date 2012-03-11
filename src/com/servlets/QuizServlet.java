@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.models.Question;
 import com.models.Quiz;
 import com.models.User;
+import com.models.questions.BaseQuestion;
 
 /**
  * Servlet implementation class QuizServlet
@@ -33,20 +33,18 @@ public class QuizServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//error checking first
-		String curQuestionStr = (String)request.getSession().getAttribute("curQuestion");
-		if(curQuestionStr == null){}
-			//redirrect to error checking
-
+		
+		int quizId = Integer.parseInt(request.getParameter("quizId"));
+		Quiz quiz = Quiz.fetch(quizId);
+		
+		//Store the current quiz into session
+		request.getSession().setAttribute("quiz", quiz);
 		
 		//setup session info
-		User user = (User)request.getSession().getAttribute("user");
-		String quizIdStr = (String)request.getParameter("quiz_id");
-		int quizId = Integer.parseInt(quizIdStr);
 		int curQuestion = 0;
 		int curScore = 0;
 		int totalScore = 0;
-		List<Question> questions = (List<Question>) Quiz.fetch(quizId).getQuestions();
+		List<BaseQuestion> questions = (List<BaseQuestion>) Quiz.fetch(quizId).getQuestions();
 		//pass back to session
 		request.getSession().setAttribute("curQuestion", curQuestion);
 		request.getSession().setAttribute("questions", questions);
@@ -60,7 +58,9 @@ public class QuizServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String curQuestionStr = (String)request.getSession().getAttribute("curQuestion");
+		if (curQuestionStr == null) {}
+			//redirrect to error checking
 	}
 
 }

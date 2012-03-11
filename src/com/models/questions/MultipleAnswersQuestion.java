@@ -8,6 +8,7 @@ public class MultipleAnswersQuestion extends BaseQuestion {
 		this.question = question;
 		this.isTimed = false;
 		this.answer = new MultipleAnswersAnswer(answers, inOrder);
+		this.type = QuestionType.MultiAnswer;
 	}
 	
 }
