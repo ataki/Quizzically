@@ -38,7 +38,7 @@
 
 // 	/* Get messages for this user */
 // 	List<Message> messageArray = messageManager.getUserMessages(user.getId());
-	List<Message> messageArray = null;
+	List<Message> messageArray = new ArrayList<Message>();
 
 // 	/* get achievements */
 // 	List<Achievement> achievements = achievementManager.getByUserId(user.getId());
