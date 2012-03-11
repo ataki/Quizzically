@@ -5,10 +5,12 @@
 <%
 	/* special error checking to see if request and session are valid */
 	if(request.getAttribute("special") == null) {	
-		response.sendRedirect("/404.html");		
+		response.sendRedirect("404.html");
+		return;
 	}
 	else if(!request.getAttribute("special").equals("29dd2f9f8d9312235caab2629e28ad45")) {
-		response.sendRedirect("/404.html");
+		response.sendRedirect("404.html");
+		return;
 	}
 
 	/* Get the managers */
@@ -17,7 +19,8 @@
 	User user = (User) request.getSession().getAttribute("user");
 
 	if(user == null || user.getId() == User.INVALID_USER) {
-	    response.sendRedirect("/login.html");
+	    response.sendRedirect("login.html");
+	    return;
 	}
 	
  	AnnouncementManager announcementManager = (AnnouncementManager) context.getAttribute("announcementManager");
