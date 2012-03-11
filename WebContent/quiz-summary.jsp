@@ -3,8 +3,15 @@
 <!DOCTYPE html>
 
 <%
+	/*
+	* Gets the quiz id from the requests parameters 
+	* and fetches the quiz information as well as creator
+	* info
+	*/
 	int quizId = Integer.parseInt(request.getParameter("quizId"));
 	Quiz quiz = Quiz.fetch(quizId);
+	User creator = new User(quiz.getCreator_id());
+	
 %>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -62,19 +69,31 @@
 		</div>
 		<!-- End Heading -->
 		
-		<div id="myModal" class="reveal-modal">
-			<h1>Are you sure you want to exit this quiz?</h1>
-			<p>Exiting will cause you to lose all data, including progress, question, and more.</p>
-			<!-- Don't know why but can't click properly on the link, so must use Javascript -->
-			<a href="main.html" class="nice radius red button" data-reveal-id="myModal" data-animation="none" style="margin-top:30px" 
-				onclick="self.location='main.html'">Exit</a>
+		<div id="create-Message-Modal" class="reveal-modal">
+			<h5>Send Challenge</h5>
+			<form id="challenge" action="MessageServlet" method="post">
+				<h6>Send to friend:</h6>
+				<input type="text" name="friend" placeholder="Name" />
+				<input type="hidden" name="fromUser_id" value="14234" /><!--  Make sure to replace value here with quizid -->
+				<input type="hidden" name="type" value="challenge" />
+				<input class="small green button" type="submit" value="Send!" />  
+			</form>
 			<a class="close-reveal-modal">&#215;</a>
 		</div>
 		
 		
 		<div class="row" style="min-width:1000px;">
 			<div class="twelve columns">
-				<h3><%=quiz.getName()%></h3>
+				<h3><%= quiz.getName() %></h3>
+				
+				
+				<ul class='star-rating'>
+					  <li><a href='#' title='Rate this 1 star out of 5' class='one-star star-child'>1</a></li>
+					  <li><a href='#' title='Rate this 2 stars out of 5' class='two-stars star-child'>2</a></li>
+					  <li><a href='#' title='Rate this 3 stars out of 5'  class='three-stars star-child'>3</a></li>
+					  <li><a href='#' title='Rate this 4 stars out of 5' class='four-stars star-child'>4</a></li>
+					  <li><a href='#' title='Rate this 5 stars out of 5' class='five-stars star-child'>5</a></li>
+				</ul>
 				
 				<div class="row">
 					<div class="four columns" style="padding:20px; max-width:300px;">
@@ -90,37 +109,34 @@
 						id to whatever links necessitate them.
 						 -->				
 					
-						<h5>By <a href="UserServlet/94834" style="margin-right:15px;"><%=quiz.getCreator_id() %></a>
-							<a href="QuizServlet/23423" title="action=view" class="radius button">Take!</a>
+						<h5>By <a href="UserServlet/94834" style="margin-right:10px;">quantum2030</a><br/><br/>
+							<form action="QuizServlet" method="get">
+								<input type="hidden" name="quiz_id" value="23432" />
+								<input type="submit" value="Take!" title="action=view" class="radius button" />
+							</form>
+							<a class="radius red button" data-reveal-id="create-Message-Modal" data-animation="none">Send Challenge</a>
 						</h5>
 						<br/>
-						
-						<h6><%=quiz.getDescription()%></h6>
-						
-					<ul class='star-rating'>
-					  <li><a href='#' title='Rate this 1 star out of 5' class='one-star star-child'>1</a></li>
-					  <li><a href='#' title='Rate this 2 stars out of 5' class='two-stars star-child'>2</a></li>
-					  <li><a href='#' title='Rate this 3 stars out of 5'  class='three-stars star-child'>3</a></li>
-					  <li><a href='#' title='Rate this 4 stars out of 5' class='four-stars star-child'>4</a></li>
-					  <li><a href='#' title='Rate this 5 stars out of 5' class='five-stars star-child'>5</a></li>
-					</ul>
-						
-					<br/>
+
 					</div>
 					<a class="columns gray box bluehover-highlight" style="min-width:175px; min-height:85px; width:175px; height:85px; overflow:hidden">2430<br/><br/><h6>Taken</h6></a>
 					<a class="columns blue box hover-highlight" style="width:175px; height:85px; overflow:hidden">10<br/><br/><h6>Difficulty</h6></a>
 					<a class="columns pink box pinkhover-highlight" style="width:175px; height:85px;  float:left; overflow:hidden">67%<br/><br/><h6>Highest Score</h6></a>
 				</div>
+				
+				<h6><%= quiz.getDescription() %></h6>
 				<br/>
-				<blockquote>Tags: <a class="round tag" href="TagServlet/world">#world</a> 
+				Tags: <a class="round tag" href="TagServlet/world">#world</a> 
 								<a class="round tag" href="TagServlet/geography">#georgraphy</a> 
 								<a class="round tag" href="TagServlet/news">#news</a> 
 								<a class="round tag" href="TagServlet/colors" >#colors</a>
 								<a class="round tag" href="TagServlet/interest">#interest</a> 
 								<a class="round tag" href="TagServlet/birds" >#birds</a> 
-				</blockquote>
 				<hr/>
 				<br/>
+				<br/>
+				
+				
 				<h5>Performance Comparison:</h5><br/>
 				
 				<!-- RESULTS TABS -->

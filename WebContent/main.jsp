@@ -145,6 +145,7 @@
 							<ul id="announcement-container" style="width:75%;">
 								
 								<%
+								
 								Announcement.Importance localAnnouncementImportance;
 								String localAnnouncement;
 								if(announcementArray.isEmpty() == false) {

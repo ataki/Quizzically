@@ -111,7 +111,6 @@
 						id to whatever links necessitate them.
 						 -->				
 						
-						<h6><%= user.getDescription() %> </h6>
 						<blockquote>Tags:
 							<% for(Tag t : tags) { %> 
 								<a class="round tag" href="ResultServlet/<%= t.tag %>">#<%= t.tag %></a> 
